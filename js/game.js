@@ -1,6 +1,6 @@
 let canvas;
 let ctx;
-let character = new Character();
+let world = new World();
 
 function init(){
     canvas = document.getElementById('canvas');             // Holt das <canvas>-Element aus dem HTML-Dokument
