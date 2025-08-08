@@ -6,6 +6,12 @@ class World {
         new PufferFish(),
     ];
 
+
+backgroundObjects = [
+    new BackgroundObject('img/3. Background/Layers/2. Floor/D.png'),
+];
+
+
 canvas;
 ctx;
 
@@ -18,10 +24,12 @@ constructor(canvas){
 
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);       //Sorgt für immer wieder erneutes Löschen damit der Character nicht doppelt ist sondern sich "bewegt"
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
+
+        this.addToMap(this.character);                    //Hier wird der Character gezeichnet
         this.enemies.forEach(enemy => {
-            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+            this.addToMap(enemy);
         });
+
 
 
         let self = this;                              //This wird innerhalb der Funktion nicht mehr erkannt, weshalb man mit let self dann das this ersatzweise erstellt - draw() wird immer wieder ausgeführt
@@ -29,5 +37,14 @@ constructor(canvas){
             self.draw();                               //sorgt im Prinzip dafür, dass die Animation nach dem "malen" geladen wird
         });
 
+        this.backgroundObjects.forEach(bgObject => {
+            this.addToMap(bgObject);
+        });
+
+    }
+
+    addToMap(mo){
+        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    
     }
 }
