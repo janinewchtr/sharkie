@@ -36,7 +36,7 @@ class Character extends MovableObject {
     animate(){
         setInterval(() => {
         let i = this.currentImage % this.IMAGES_IDLE.length; // Loop through the images
-        let path = this.IMAGES_IDLE[this.currentImage];
+        let path = this.IMAGES_IDLE[i];
         this.img = this.imageCache[path];
         this.currentImage++;
     }, 200 ); // Adjust the interval for animation speed 
