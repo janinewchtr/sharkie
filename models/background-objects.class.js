@@ -1,7 +1,7 @@
 class BackgroundObject extends MovableObject {
 
-    width = 720; // Set a default width for the background object
-    height = 200; // Set a default height for the background object
+    width = 820; // Set a default width for the background object
+    height = 400; // Set a default height for the background object
 
     constructor(imagePath, x, y) {
         super();

@@ -1,8 +1,8 @@
 class MovableObject {
     x = 120;
-    y = 150;
+    y = 250;
     img;
-    height = 200;
+    height = 100; // Set a default height for the movable object
     width = 100;
 
     loadImage(path){
