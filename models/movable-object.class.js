@@ -1,5 +1,5 @@
 class MovableObject {
-    x = 120;
+    x = 0;
     y = 250;
     img;
     height = 100; // Set a default height for the movable object
