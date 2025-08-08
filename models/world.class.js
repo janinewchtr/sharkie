@@ -8,7 +8,9 @@ class World {
 
 
 backgroundObjects = [
-    new BackgroundObject('img/3. Background/Layers/2. Floor/D.png'),
+    new BackgroundObject('img/3. Background/Layers/3.Fondo 1/D.png', 0),
+    new BackgroundObject('img/3. Background/Layers/4.Fondo 2/D.png', 0),
+    new BackgroundObject('img/3. Background/Layers/2. Floor/D.png', 0),
 ];
 
 
@@ -25,22 +27,21 @@ constructor(canvas){
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);       //Sorgt für immer wieder erneutes Löschen damit der Character nicht doppelt ist sondern sich "bewegt"
 
+
+        this.addObjectsToMap(this.backgroundObjects);    //Hier werden die Hintergrundobjekte gezeichnet 
         this.addToMap(this.character);                    //Hier wird der Character gezeichnet
-        this.enemies.forEach(enemy => {
-            this.addToMap(enemy);
+        this.addObjectsToMap(this.enemies);               //Hier werden die Gegner gezeichnet
+
+        let self = this; // Damit 'this' in der Funktion auf die World-Instanz verweist
+        requestAnimationFrame(function() {
+            self.draw(); // Ruft die draw-Funktion erneut auf, um eine Animation zu erzeugen
         });
+    }
 
-
-
-        let self = this;                              //This wird innerhalb der Funktion nicht mehr erkannt, weshalb man mit let self dann das this ersatzweise erstellt - draw() wird immer wieder ausgeführt
-        requestAnimationFrame(function(){
-            self.draw();                               //sorgt im Prinzip dafür, dass die Animation nach dem "malen" geladen wird
+    addObjectsToMap(objects){
+        objects.forEach(object => {
+            this.addToMap(object);
         });
-
-        this.backgroundObjects.forEach(bgObject => {
-            this.addToMap(bgObject);
-        });
-
     }
 
     addToMap(mo){
