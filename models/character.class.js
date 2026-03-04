@@ -22,6 +22,7 @@ class Character extends MovableObject {
         'img/1.Sharkie/1.IDLE/17.png',
         'img/1.Sharkie/1.IDLE/18.png',
     ];
+    world;
 
     currentImage = 0; // Index for the current image in the animation sequence
 
@@ -35,10 +36,15 @@ class Character extends MovableObject {
 
     animate(){
         setInterval(() => {
+
+            if(this.world.keyboard.RIGHT){
+
+
         let i = this.currentImage % this.IMAGES_IDLE.length; // Loop through the images
         let path = this.IMAGES_IDLE[i];
         this.img = this.imageCache[path];
         this.currentImage++;
+            }
     }, 200 ); // Adjust the interval for animation speed 
     }
 

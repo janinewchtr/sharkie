@@ -7,6 +7,7 @@ class PufferFish extends MovableObject {
     super();
     this.loadImage("../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png");
     this.x = 200 + Math.random() * 500;
+    this.speed = 0.15 + Math.random() * 0.1; // Random speed for each puffer fish
     this.animate();
   }
 

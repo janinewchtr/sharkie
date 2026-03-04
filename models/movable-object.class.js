@@ -5,6 +5,8 @@ class MovableObject {
     height = 100; // Set a default height for the movable object
     width = 100;
     imageCache = {}; // Array to hold available images for the object
+    curentImage = 0;
+    speed = 0.15;
 
     loadImage(path){
         this.img = new Image();      //Abbild von dem img tag <img>
@@ -24,7 +26,4 @@ class MovableObject {
         console.log('moving right');
     }
 
-    moveLeft(){
-        
-    }
 }
