@@ -2,6 +2,7 @@ class World {
   canvas;
   ctx;
   keyboard;
+  camera_x = 0;
 
   character;
   enemies;
@@ -16,13 +17,23 @@ class World {
 
     this.enemies = [new PufferFish(), new PufferFish(), new PufferFish()];
 
-    this.backgroundObjects = [
-      new BackgroundObject("img/3. Background/Layers/5. Water/D.png", 0),
-      new BackgroundObject("img/3. Background/Layers/4.Fondo 2/D.png", 0),
-      new BackgroundObject("img/3. Background/Layers/3.Fondo 1/D.png", 0),
-      new BackgroundObject("img/3. Background/Legacy/Layers/1. Light/3.png", 0),
-      new BackgroundObject("img/3. Background/Layers/2. Floor/D.png", 0),
-    ];
+    let backgroundLayerImages = [
+        "img/3. Background/Layers/5. Water/D.png",
+        "img/3. Background/Layers/4.Fondo 2/D.png",
+        "img/3. Background/Layers/3.Fondo 1/D.png",
+        "img/3. Background/Legacy/Layers/1. Light/3.png",
+        "img/3. Background/Layers/2. Floor/D.png"
+      ];
+      
+      this.backgroundObjects = [];
+      
+      for (let layerIndex = 0; layerIndex < 5; layerIndex++) {          // Anzahl der Background-Segmente
+        for (let bliIndex = 0; bliIndex < backgroundLayerImages.length; bliIndex++) {
+          this.backgroundObjects.push(
+            new BackgroundObject(backgroundLayerImages[bliIndex], layerIndex  * 920)
+          );
+        }
+      }
 
     this.setWorld();
     this.character.start();
@@ -36,9 +47,13 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    this.ctx.translate(this.camera_x, 0); // Move the entire world to the left by camera_x
+
     this.addObjectsToMap(this.backgroundObjects);
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
+
+    this.ctx.translate(-this.camera_x, 0); // Move the world back to its original position
 
     requestAnimationFrame(() => this.draw());
   }

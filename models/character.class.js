@@ -29,7 +29,6 @@ class Character extends MovableObject {
     super();
     this.loadImage("../img/1.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_IDLE);
-    //this.animate();
   }
 
   start() {
@@ -55,6 +54,8 @@ class Character extends MovableObject {
       if (this.world.keyboard.DOWN) {
         this.y += this.speed;
       }
+
+      this.world.camera_x = -this.x; // Adjust the camera position based on the character's x position
     }, 1000 / 60); // Adjust the interval for smoother movement (60 frames per second)
 
     setInterval(() => {
