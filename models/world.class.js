@@ -15,7 +15,11 @@ class World {
 
     this.character = new Character();
 
-    this.enemies = [new PufferFish(), new PufferFish(), new PufferFish()];
+    this.enemies = [
+        new PufferFish(), 
+        new PufferFish(), 
+        new PufferFish(),
+    ];
 
     let backgroundLayerImages = [
         "img/3. Background/Layers/5. Water/D.png",
@@ -27,7 +31,7 @@ class World {
       
       this.backgroundObjects = [];
       
-      for (let layerIndex = 0; layerIndex < 5; layerIndex++) {          // Anzahl der Background-Segmente
+      for (let layerIndex = 0; layerIndex < 10; layerIndex++) {          // Anzahl der Background-Segmente
         for (let bliIndex = 0; bliIndex < backgroundLayerImages.length; bliIndex++) {
           this.backgroundObjects.push(
             new BackgroundObject(backgroundLayerImages[bliIndex], layerIndex  * 920)
