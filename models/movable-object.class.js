@@ -6,7 +6,7 @@ class MovableObject {
     width = 100;
     imageCache = {}; // Array to hold available images for the object
     curentImage = 0;
-    speed = 0.15;
+    speed = 5;
 
     loadImage(path){
         this.img = new Image();      //Abbild von dem img tag <img>

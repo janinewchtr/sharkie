@@ -30,6 +30,10 @@ class Character extends MovableObject {
         super();
         this.loadImage('../img/1.Sharkie/1.IDLE/1.png');
         this.loadImages(this.IMAGES_IDLE);
+        //this.animate();
+    }
+
+    start(){
         this.animate();
     }
 
@@ -38,8 +42,11 @@ class Character extends MovableObject {
         setInterval(() => {
 
             if(this.world.keyboard.RIGHT){
+                this.x += this.speed; // Move the character to the right
 
 
+
+         //walk animation
         let i = this.currentImage % this.IMAGES_IDLE.length; // Loop through the images
         let path = this.IMAGES_IDLE[i];
         this.img = this.imageCache[path];
