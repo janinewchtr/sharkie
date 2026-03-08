@@ -19,6 +19,7 @@ class World {
         new PufferFish(), 
         new PufferFish(), 
         new PufferFish(),
+        new Endboss(),
     ];
 
     let backgroundLayerImages = [
@@ -31,7 +32,7 @@ class World {
       
       this.backgroundObjects = [];
       
-      for (let layerIndex = 0; layerIndex < 10; layerIndex++) {          // Anzahl der Background-Segmente
+      for (let layerIndex = 0; layerIndex < 5; layerIndex++) {          // Anzahl der Background-Segmente
         for (let bliIndex = 0; bliIndex < backgroundLayerImages.length; bliIndex++) {
           this.backgroundObjects.push(
             new BackgroundObject(backgroundLayerImages[bliIndex], layerIndex  * 920)
@@ -78,4 +79,5 @@ class World {
       this.ctx.restore(); // Restore the context to its original state
     }
   }
+
 }

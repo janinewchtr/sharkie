@@ -42,7 +42,7 @@ class Character extends MovableObject {
         this.otherDirection = false; // Set the direction to right
       }
 
-      if (this.world.keyboard.LEFT) {
+      if (this.world.keyboard.LEFT && this.x > 0) {
         this.x -= this.speed;
         this.otherDirection = true; // Set the direction to left
       }
@@ -60,10 +60,7 @@ class Character extends MovableObject {
 
     setInterval(() => {
       //walk animation
-      let i = this.currentImage % this.IMAGES_IDLE.length; // Loop through the images
-      let path = this.IMAGES_IDLE[i];
-      this.img = this.imageCache[path];
-      this.currentImage++;
+      this.playAnimation(this.IMAGES_IDLE);
     }, 200); // Adjust the interval for animation speed
   }
 

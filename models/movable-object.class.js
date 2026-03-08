@@ -5,7 +5,7 @@ class MovableObject {
   height = 100; // Set a default height for the movable object
   width = 100;
   imageCache = {}; // Array to hold available images for the object
-  curentImage = 0;
+  currentImage = 0;
   speed = 5;
   otherDirection = false;
 
@@ -25,4 +25,12 @@ class MovableObject {
   moveRight() {
     console.log("moving right");
   }
+
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
+
 }
