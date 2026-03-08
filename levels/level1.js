@@ -1,11 +1,9 @@
 const level1 = new Level(
     {
         enemies: [
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Endboss()
+            new PufferFish(), 
+            new PufferFish(), 
+            new PufferFish(),
         ],
         backgroundObjects: [
             new BackgroundObject('img/5_background/layers/air.png', -719),

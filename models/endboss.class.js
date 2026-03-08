@@ -1,4 +1,10 @@
 class Endboss extends MovableObject {
+
+        height = 600; // Set a default height for the endboss
+        width = 500; // Set a default width for the endboss
+        y = -140; // Set a default y position for the endboss
+
+
     IMAGES_IDLE = [
         "img/2.Enemy/3 Final Enemy/1.Introduce/1.png",
         "img/2.Enemy/3 Final Enemy/1.Introduce/2.png",
@@ -15,17 +21,13 @@ class Endboss extends MovableObject {
     constructor(){
         super().loadImage(this.IMAGES_IDLE[0]);
         this.loadImages(this.IMAGES_IDLE);
-        this.x = 500; // Start position of the endboss
-        this.y = 100; // Set a default y position for the endboss
+        this.x = 800; // Start position of the endboss
         this.animate(); // Start the animation of the endboss   
     }
 
     animate() {
         setInterval(() => {
-            //walk animation
             this.playAnimation(this.IMAGES_IDLE);
           }, 200); // Adjust the interval for animation speed
         }
-
-
 }

@@ -47,11 +47,11 @@ class Character extends MovableObject {
         this.otherDirection = true; // Set the direction to left
       }
 
-      if (this.world.keyboard.UP) {
+      if (this.world.keyboard.UP && this.y > -60) {
         this.y -= this.speed;
       }
 
-      if (this.world.keyboard.DOWN) {
+      if (this.world.keyboard.DOWN && this.y < this.world.canvas.height - this.height) {
         this.y += this.speed;
       }
 
