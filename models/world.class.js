@@ -21,6 +21,7 @@ class World {
         new PufferFish(),
         new JellyFish(),
         new JellyFish(),
+        new Poison(),
         new Endboss(),
     ];
 
