@@ -2,6 +2,14 @@ class Character extends MovableObject {
   height = 250; // Set a default height for the character
   width = 200; // Set a default width for the character
   y = 40; // Set a default y position for the character
+
+  offset = {
+    top: 100,
+    right: 25,
+    bottom: 50,
+    left: 25,
+  };
+  
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/2.png",
     "img/1.Sharkie/1.IDLE/3.png",

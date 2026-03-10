@@ -46,10 +46,21 @@ class World {
     this.setWorld();
     this.character.start();
     this.draw();
+    this.checkCollisions();
   }
 
   setWorld() {
     this.character.world = this;
+  }
+
+  checkCollisions() {
+        setInterval(() => {
+            this.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                console.log("Collision detected between character and enemy!");
+            }
+            });
+        }, 100); // Check for collisions every 100 milliseconds
   }
 
   draw() {
@@ -91,7 +102,5 @@ class World {
     this.ctx.translate(-mo.x - mo.width / 2, 0); // Move the context back to its original position
 
   }
-
-
 
 }
