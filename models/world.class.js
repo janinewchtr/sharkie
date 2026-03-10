@@ -57,10 +57,11 @@ class World {
         setInterval(() => {
             this.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                console.log("Collision detected between character and enemy!");
+                this.character.hit();
+                console.log("Collision with character, energy: ", this.character.energy);
             }
             });
-        }, 100); // Check for collisions every 100 milliseconds
+        }, 1000); // Check for collisions every 100 milliseconds
   }
 
   draw() {

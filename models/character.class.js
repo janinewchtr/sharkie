@@ -29,6 +29,36 @@ class Character extends MovableObject {
     "img/1.Sharkie/1.IDLE/17.png",
     "img/1.Sharkie/1.IDLE/18.png",
   ];
+
+  IMAGES_HURT_POISONED = [
+    "img/1.Sharkie/5.Hurt/1.Poisoned/1.png",
+    "img/1.Sharkie/5.Hurt/1.Poisoned/2.png",  
+    "img/1.Sharkie/5.Hurt/1.Poisoned/3.png",
+    "img/1.Sharkie/5.Hurt/1.Poisoned/4.png",
+    "img/1.Sharkie/5.Hurt/1.Poisoned/5.png",
+];
+
+IMAGES_HURT_ELECTRO = [
+    "img/1.Sharkie/5.Hurt/2.Electric shock/1.png",
+    "img/1.Sharkie/5.Hurt/2.Electric shock/2.png",
+    "img/1.Sharkie/5.Hurt/2.Electric shock/3.png",
+];
+
+  IMAGES_DEAD = [
+    "img/1.Sharkie/6.dead/1.Poisoned/1.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/2.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/3.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/4.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/5.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/6.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/7.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/8.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/9.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/10.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/11.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/12.png",
+  ];
+
   world;
 
   currentImage = 0; // Index for the current image in the animation sequence
@@ -37,6 +67,9 @@ class Character extends MovableObject {
     super();
     this.loadImage("../img/1.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_HURT_POISONED);
+    this.loadImages(this.IMAGES_HURT_ELECTRO);
+    this.loadImages(this.IMAGES_DEAD);
   }
 
   start() {
@@ -67,10 +100,15 @@ class Character extends MovableObject {
     }, 1000 / 60); // Adjust the interval for smoother movement (60 frames per second)
 
     setInterval(() => {
-      //walk animation
-      this.playAnimation(this.IMAGES_IDLE);
-    }, 200); // Adjust the interval for animation speed
-  }
-
-  jump() {}
+        if (this.isDead()) {
+          this.playAnimation(this.IMAGES_DEAD);
+        } else if (this.isHurtPoisoned()) {
+          this.playAnimation(this.IMAGES_HURT_POISONED);
+        } else if (this.isHurtElectro()) {
+          this.playAnimation(this.IMAGES_HURT_ELECTRO);
+        } else {
+          this.playAnimation(this.IMAGES_IDLE);
+        }
+      }, 200);
+    }
 }

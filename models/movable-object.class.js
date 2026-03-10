@@ -8,12 +8,15 @@ class MovableObject {
   currentImage = 0;
   speed = 5;
   otherDirection = false;
+  energy = 100;
+
   offset = {
     top: 0,
     right: 0,
     bottom: 0,
     left: 0,
   };
+
 
   loadImage(path) {
     this.img = new Image(); //Abbild von dem img tag <img>
@@ -47,6 +50,27 @@ class MovableObject {
       this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
       this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     );
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy < 0) {
+      this.energy = 0;
+    }
+  }
+
+  isDead() {
+    return this.energy == 0;
+  }
+
+  isHurtPoisoned() {
+    let timePassed = new Date().getTime() - this.lastPoisonHit;
+    return timePassed < 1000;
+  }
+  
+  isHurtElectro() {
+    let timePassed = new Date().getTime() - this.lastElectroHit;
+    return timePassed < 1000;
   }
 
   loadImages(arr) {
