@@ -72,15 +72,26 @@ class World {
 
   addToMap(mo) {
     if(mo.otherDirection) {
-      this.ctx.save();
-      this.ctx.translate(mo.x + mo.width / 2, 0); // Move the context to the center of the object
-      this.ctx.scale(-1, 1); // Flip the context horizontally
-      this.ctx.translate(-mo.x - mo.width / 2, 0); // Move the context back to its original position
+        this.flipImage(mo);
     }
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    
+    mo.draw(this.ctx); // Call the draw method of the movable object to render it on the canvas
+
+    mo.drawFrame(this.ctx); // Call the drawFrame method of the movable object to render its bounding box (for debugging purposes)  
+
     if(mo.otherDirection) {
-      this.ctx.restore(); // Restore the context to its original state
+        this.ctx.restore();
     }
   }
+
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.x + mo.width / 2, 0); // Move the context to the center of the object
+    this.ctx.scale(-1, 1); // Flip the context horizontally
+    this.ctx.translate(-mo.x - mo.width / 2, 0); // Move the context back to its original position
+
+  }
+
+
 
 }

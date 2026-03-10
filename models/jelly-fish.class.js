@@ -16,7 +16,7 @@ IMAGES_IDLE = [
 constructor(){
   super().loadImage(this.IMAGES_IDLE[0]);
   this.loadImages(this.IMAGES_IDLE);
-  this.x = 200; 
+  this.x = 600; 
   this.animate();  
 }
 
