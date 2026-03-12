@@ -4,9 +4,9 @@ class Character extends MovableObject {
   y = 40; // Set a default y position for the character
 
   offset = {
-    top: 100,
-    right: 25,
-    bottom: 30,
+    top: 115,
+    right: 40,
+    bottom: 50,
     left: 25,
   };
 
@@ -49,6 +49,15 @@ class Character extends MovableObject {
     'img/1.Sharkie/2.Long_IDLE/I13.png',
     'img/1.Sharkie/2.Long_IDLE/I14.png',
 
+  ];
+
+  IMAGES_SWIM = [
+    'img/1.Sharkie/3.Swim/1.png',
+    'img/1.Sharkie/3.Swim/2.png',
+    'img/1.Sharkie/3.Swim/3.png',
+    'img/1.Sharkie/3.Swim/4.png',
+    'img/1.Sharkie/3.Swim/5.png',
+    'img/1.Sharkie/3.Swim/6.png',
   ];
 
   IMAGES_HURT_POISONED = [
