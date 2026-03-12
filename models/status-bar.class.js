@@ -9,6 +9,24 @@ class StatusBar extends DrawableObject {
         'img/4. Marcadores/green/Life/100_  copia 2.png'
     ];
 
+    IMAGES_COINS = [
+        'img/4. Marcadores/green/Coin/0_  copia 4.png',
+        'img/4. Marcadores/green/Coin/20_  copia 2.png',
+        'img/4. Marcadores/green/Coin/40_  copia 4.png',
+        'img/4. Marcadores/green/Coin/60_  copia 4.png',
+        'img/4. Marcadores/green/Coin/80_  copia 4.png',
+        'img/4. Marcadores/green/Coin/100_ copia 4.png'
+    ];
+
+    IMAGES_POISONED_BUBBLES = [
+        'img/4. Marcadores/green/poisoned bubbles/0_ copia 2.png',
+        'img/4. Marcadores/green/poisoned bubbles/20_ copia 3.png',
+        'img/4. Marcadores/green/poisoned bubbles/40_ copia 2.png',
+        'img/4. Marcadores/green/poisoned bubbles/60_ copia 2.png',
+        'img/4. Marcadores/green/poisoned bubbles/80_ copia 2.png',
+        'img/4. Marcadores/green/poisoned bubbles/100_ copia 3.png'
+    ];
+
     percentage = 100;
 
     constructor() {

@@ -10,6 +10,8 @@ class Character extends MovableObject {
     left: 25,
   };
 
+
+  isSwimming = false;
   lastMove = Date.now();
   longIdleHold = 5000;
   
@@ -99,6 +101,7 @@ IMAGES_HURT_ELECTRO = [
     this.loadImage("../img/1.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_LONG_IDLE);
+    this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_HURT_POISONED);
     this.loadImages(this.IMAGES_HURT_ELECTRO);
     this.loadImages(this.IMAGES_DEAD);
@@ -140,6 +143,8 @@ IMAGES_HURT_ELECTRO = [
         }
       }
 
+      this.isSwimming = isMoving;
+
       if (isMoving) {
         this.lastMove = Date.now();
       }
@@ -154,6 +159,8 @@ IMAGES_HURT_ELECTRO = [
         this.playAnimation(this.IMAGES_HURT_ELECTRO);
       } else if (this.isHurtPoisoned()) {
         this.playAnimation(this.IMAGES_HURT_POISONED);
+      } else if (this.isSwimming) {
+        this.playAnimation(this.IMAGES_SWIM);
       } else if (this.isLongIdle()) {
         this.playAnimation(this.IMAGES_LONG_IDLE);
       } else {
