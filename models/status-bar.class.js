@@ -1,4 +1,4 @@
-class StatusBar {
+class StatusBar extends DrawableObject {
 
     IMAGES_LIFE = [
         'img/4. Marcadores/green/Life/0_  copia 3.png',
@@ -12,15 +12,33 @@ class StatusBar {
     percentage = 100;
 
     constructor() {
-        this.loadImage(this.IMAGES_LIFE[5]);
+        super();
         this.loadImages(this.IMAGES_LIFE);
+        this.x = 100;
+        this.y = 50;
+        this.reducePercentage(100);
     }
 
-    reducePercentage(amount) {
-        this.percentage -= amount;
-        if (this.percentage < 0) {
-            this.percentage = 0;
+    reducePercentage(percentage) {
+        this.percentage = percentage;
+        let path = this.IMAGES_LIFE[this.getImageIndex()];
+        this.img = this.imageCache[path];
+
+    }
+
+    getImageIndex() {
+        if (this.percentage == 100) {
+            return 5;
+        } else if (this.percentage >= 80) {
+            return 4;
+        } else if (this.percentage >= 60) {
+            return 3;
+        } else if (this.percentage >= 40) {
+            return 2;
+        } else if (this.percentage >= 20) {
+            return 1;
+        } else {
+            return 0;
         }
-        this.updateImage();
     }
 }

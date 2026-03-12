@@ -3,6 +3,7 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  statusBar = new StatusBar();
 
   character;
   enemies;
@@ -78,6 +79,7 @@ class World {
     this.ctx.translate(this.camera_x, 0); // Move the entire world to the left by camera_x
 
     this.addObjectsToMap(this.backgroundObjects);
+    this.addToMap(this.statusBar);
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
 
