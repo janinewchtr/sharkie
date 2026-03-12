@@ -66,9 +66,7 @@ class World {
             this.character.hit("poison"); // oder "normal", wenn du später extra Animationen willst
           } else if (enemy instanceof Endboss) {
             this.character.hit("electro"); // oder eigener Typ, je nach gewünschtem Verhalten
-          }
-  
-          console.log("Collision with", enemy.constructor.name, "energy:", this.character.energy);
+          } this.statusBar.reducePercentage(this.character.energy);
         }
       });
     }, 100);
@@ -79,7 +77,11 @@ class World {
     this.ctx.translate(this.camera_x, 0); // Move the entire world to the left by camera_x
 
     this.addObjectsToMap(this.backgroundObjects);
+
+    this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
+    this.ctx.translate(this.camera_x, 0);
+
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
 
