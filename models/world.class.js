@@ -54,16 +54,24 @@ class World {
   }
 
   checkCollisions() {
-        setInterval(() => {
-            this.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                console.log("Collision with character, energy: ", this.character.energy);
-            }
-            });
-        }, 1000); // Check for collisions every 100 milliseconds
+    setInterval(() => {
+      this.enemies.forEach((enemy) => {
+        if (this.character.isColliding(enemy)) {
+          if (enemy instanceof Poison) {
+            this.character.hit("poison");
+          } else if (enemy instanceof JellyFish) {
+            this.character.hit("electro");
+          } else if (enemy instanceof PufferFish) {
+            this.character.hit("poison"); // oder "normal", wenn du später extra Animationen willst
+          } else if (enemy instanceof Endboss) {
+            this.character.hit("electro"); // oder eigener Typ, je nach gewünschtem Verhalten
+          }
+  
+          console.log("Collision with", enemy.constructor.name, "energy:", this.character.energy);
+        }
+      });
+    }, 100);
   }
-
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 

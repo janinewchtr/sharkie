@@ -9,6 +9,9 @@ class MovableObject {
   speed = 5;
   otherDirection = false;
   energy = 100;
+  lastHit = 0;
+  lastPoisonHit = 0;
+  lastElectroHit = 0;
 
   offset = {
     top: 0,
@@ -52,10 +55,26 @@ class MovableObject {
     );
   }
 
-  hit() {
+  hit(type) {
+    let now = Date.now();
+  
+    if (now - this.lastHit < 1000) {
+      return;
+    }
+  
+    this.lastHit = now;
     this.energy -= 5;
+  
     if (this.energy < 0) {
       this.energy = 0;
+    }
+  
+    if (type === "poison") {
+      this.lastPoisonHit = now;
+    }
+  
+    if (type === "electro") {
+      this.lastElectroHit = now;
     }
   }
 
