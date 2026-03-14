@@ -21,7 +21,7 @@ class DrawableObject {
         if(this instanceof Character || this instanceof Endboss || this instanceof PufferFish || this instanceof JellyFish || this instanceof Poison) {
         ctx.beginPath();
         ctx.linewidth = '2';
-        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = 'transparent';
         ctx.rect(
             this.x + this.offset.left,
             this.y + this.offset.top,
