@@ -4,6 +4,7 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
+  throwableObjects = [new ThrowableObject()];
 
 
   character;
@@ -85,6 +86,7 @@ class World {
 
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.throwableObjects);
 
     this.ctx.translate(-this.camera_x, 0); // Move the world back to its original position
 
