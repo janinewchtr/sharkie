@@ -91,6 +91,28 @@ IMAGES_HURT_ELECTRO = [
     "img/1.Sharkie/6.dead/1.Poisoned/12.png",
   ];
 
+  IMAGES_ATTACK = [
+    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png',
+    'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png'
+  ];
+
+  IMAGES_FIN_SLAP = [
+    'img/1.Sharkie/4.Attack/Fin slap/1.png',
+    'img/1.Sharkie/4.Attack/Fin slap/2.png',
+    'img/1.Sharkie/4.Attack/Fin slap/3.png',
+    'img/1.Sharkie/4.Attack/Fin slap/4.png',
+    'img/1.Sharkie/4.Attack/Fin slap/5.png',
+    'img/1.Sharkie/4.Attack/Fin slap/6.png',
+    'img/1.Sharkie/4.Attack/Fin slap/7.png',
+    'img/1.Sharkie/4.Attack/Fin slap/8.png'
+  ];
+
   world;
 
   currentImage = 0; // Index for the current image in the animation sequence
