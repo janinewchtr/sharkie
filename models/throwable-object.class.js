@@ -1,12 +1,18 @@
 class ThrowableObject extends MovableObject{
-    constructor(){
+    constructor(x, y){
         super();
         this.loadImage("img/1.Sharkie/4.Attack/Bubble trap/Bubble.png");
-        this.x = 50; 
-        this.y = 50;
+        this.x = x; 
+        this.y = y;
         this.width = 50;
         this.height = 50; 
-        this.speedY = 10; 
-        this.gravity = 0.5; 
+        this.throw();
+    }
+
+    throw(){
+        this.speedX = 10;
+        setInterval(() => {
+            this.x += this.speedX; // Move the bubble upwards
+        }, 100); 
     }
 }

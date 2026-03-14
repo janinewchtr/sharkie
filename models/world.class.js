@@ -4,7 +4,7 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
-  throwableObjects = [new ThrowableObject()];
+  throwableObjects = [];
 
 
   character;
@@ -49,30 +49,41 @@ class World {
     this.setWorld();
     this.character.start();
     this.draw();
-    this.checkCollisions();
+    this.run();
   }
 
   setWorld() {
     this.character.world = this;
   }
 
-  checkCollisions() {
+  run() {
     setInterval(() => {
-      this.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-          if (enemy instanceof Poison) {
-            this.character.hit("poison");
-          } else if (enemy instanceof JellyFish) {
-            this.character.hit("electro");
-          } else if (enemy instanceof PufferFish) {
-            this.character.hit("poison"); // oder "normal", wenn du später extra Animationen willst
-          } else if (enemy instanceof Endboss) {
-            this.character.hit("electro"); // oder eigener Typ, je nach gewünschtem Verhalten
-          } this.statusBar.reducePercentage(this.character.energy);
-        }
-      });
+      this.checkCollisions();
+      this.checkThrowObjects();
     }, 100);
   }
+
+  checkThrowObjects() {
+    if (this.keyboard.d) {
+      let throwableObject = new ThrowableObject(this.character.x + 100, this.character.y + 50, this.character.otherDirection);
+      this.throwableObjects.push(throwableObject);
+    }
+  }
+
+  checkCollisions() {
+    this.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        if (enemy instanceof JellyFish) {
+          this.character.hit("electro");
+        } else if (enemy instanceof PufferFish) {
+          this.character.hit("poison"); // oder "normal", wenn du später extra Animationen willst
+        } else if (enemy instanceof Endboss) {
+          this.character.hit("electro"); // oder eigener Typ, je nach gewünschtem Verhalten
+        } this.statusBar.reducePercentage(this.character.energy);
+      }
+    });
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
