@@ -17,3 +17,16 @@ canvas{
     font-family: 'Luckiest-Guy-Regular';
     src: url('font/Luckiest_Guy/LuckiestGuy-Regular.ttf') format('truetype');
 }
+
+h1 {
+    font-family: 'Luckiest-Guy-Regular';
+    color: white;
+    font-size: 48px;
+    -webkit-text-stroke: 1px #000000;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
+}
+
+canvas{
+    border: 2px solid white;
+    border-radius: 10px;
+}
