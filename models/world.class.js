@@ -6,6 +6,7 @@ class World {
   statusBar = new StatusBar('life');
   throwableObjects = [];
   poisonBar = new StatusBar('poison');
+  coinBar = new StatusBar('coin');
 
 
   character;
@@ -17,13 +18,17 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
 
-    this.poisonBar.y = 40;
+    this.poisonBar.y = 30;
     this.poisonBar.setPercentage(0);
+
+    this.coinBar.y = 60;
+    this.coinBar.setPercentage(0);
 
     this.character = new Character();
 
     this.enemies = [];
     this.poisonBottles = [];
+    this.coins = [];
 
     let backgroundLayerImages = [
         "img/3. Background/Layers/5. Water/D.png",
@@ -53,6 +58,8 @@ class World {
 
       this.createEnemies();
       this.createPoisonBottles();
+      this.createCoins();
+
 
     this.setWorld();
     this.character.start();
@@ -76,6 +83,17 @@ class World {
   
     if (this.camera_x > maxCameraX) {
       this.camera_x = maxCameraX;
+    }
+  }
+
+  createCoinArc(startX, startY, amount, spacing, height) {
+    for (let i = 0; i < amount; i++) {
+      let x = startX + i * spacing;
+  
+      // Parabel für Bogenform
+      let y = startY - Math.sin((i / (amount - 1)) * Math.PI) * height;
+  
+      this.coins.push(new Coin(x, y));
     }
   }
 
@@ -105,6 +123,14 @@ class World {
       new Poison(3100, 150),
       new Poison(3700, 220),
     ];
+  }
+
+  createCoins() {
+    this.coins = [];
+    this.createCoinArc(400, 300, 7, 60, 120);
+    this.createCoinArc(1400, 280, 6, 60, 100);
+    this.createCoinArc(2400, 260, 8, 60, 140);
+    this.createCoinArc(3300, 300, 5, 60, 80);
   }
   
   getRandomX(min, max) {
@@ -171,11 +197,13 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.poisonBar);
+    this.addToMap(this.coinBar);
     this.ctx.translate(this.camera_x, 0);
   
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
     this.addObjectsToMap(this.poisonBottles);
+    this.addObjectsToMap(this.coins);
     this.addObjectsToMap(this.throwableObjects);
   
     this.ctx.translate(-this.camera_x, 0);

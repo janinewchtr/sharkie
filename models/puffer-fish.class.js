@@ -24,6 +24,6 @@ class PufferFish extends MovableObject {
       }
 
       this.x -= 2;
-    }, 200);
+    }, 100);
   }
 }
