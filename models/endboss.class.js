@@ -42,7 +42,7 @@ class Endboss extends MovableObject {
         super().loadImage('img/2.Enemy/3 Final Enemy/2.floating/1.png');
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_FLOATING);
-        this.x = 800; // Start position of the endboss
+        this.x = 4000; // Start position of the endboss
         this.animate(); // Start the animation of the endboss   
     }
 
@@ -58,7 +58,7 @@ class Endboss extends MovableObject {
         
                 i++;
 
-                if(World.character.x > 500 && !hadFirstContact) {
+                if(World.character.x > 4000 && !hadFirstContact) {
                     i = 10;
                     hadFirstContact = true;
                 }
