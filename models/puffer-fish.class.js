@@ -1,26 +1,29 @@
 class PufferFish extends MovableObject {
-  height = 60; // Set a default height for the puffer fish
-  width = 80; // Set a default width for the puffer fish
-  y = 250; // Set a default y position for the puffer fish
+  height = 60;
+  width = 80;
+  y = 250;
 
-  constructor() {
+  constructor(x, y) {
     super();
-    this.loadImage("../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png");
-    this.x = 200 + Math.random() * 500;
-    this.speed = 0.15 + Math.random() * 0.1; // Random speed for each puffer fish
+    this.loadImage("img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png");
+    this.x = x;
+    this.y = y;
+    this.speed = 0.15 + Math.random() * 0.1;
     this.animate();
   }
 
   animate() {
     let animateIndex = 1;
+
     setInterval(() => {
       if (animateIndex < 3) {
-        this.img.src = `../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim${animateIndex}.png`;
+        this.img.src = `img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim${animateIndex}.png`;
         animateIndex++;
       } else {
         animateIndex = 1;
       }
-      this.x -= 2; // Move the puffer fish to the left
+
+      this.x -= 2;
     }, 200);
   }
 }

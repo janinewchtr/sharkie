@@ -22,18 +22,8 @@ class World {
 
     this.character = new Character();
 
-    this.enemies = [
-        new PufferFish(), 
-        new PufferFish(), 
-        new PufferFish(),
-        new JellyFish(),
-        new JellyFish(),
-        new Endboss(),
-    ];
-
-    this.poisonBottles = [
-      new Poison()
-  ];
+    this.enemies = [];
+    this.poisonBottles = [];
 
     let backgroundLayerImages = [
         "img/3. Background/Layers/5. Water/D.png",
@@ -61,6 +51,9 @@ class World {
     
       this.levelWidth = numberOfSegments * segmentWidth;
 
+      this.createEnemies();
+      this.createPoisonBottles();
+
     this.setWorld();
     this.character.start();
     this.draw();
@@ -84,6 +77,42 @@ class World {
     if (this.camera_x > maxCameraX) {
       this.camera_x = maxCameraX;
     }
+  }
+
+  createEnemies() {
+    this.enemies = [
+      new PufferFish(700, 250),
+      new PufferFish(1300, 200),
+      new PufferFish(1900, 300),
+      new PufferFish(2600, 220),
+  
+      new JellyFish(1000, 80),
+      new JellyFish(2100, 120),
+      new JellyFish(3200, 100),
+    ];
+  
+    let endboss = new Endboss();
+    endboss.x = this.levelWidth - 500;
+    endboss.y = -200;
+    this.enemies.push(endboss);
+  }
+  
+  createPoisonBottles() {
+    this.poisonBottles = [
+      new Poison(600, 250),
+      new Poison(1500, 180),
+      new Poison(2300, 280),
+      new Poison(3100, 150),
+      new Poison(3700, 220),
+    ];
+  }
+  
+  getRandomX(min, max) {
+    return min + Math.random() * (max - min);
+  }
+  
+  getRandomY(min, max) {
+    return min + Math.random() * (max - min);
   }
 
   run() {

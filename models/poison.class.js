@@ -1,10 +1,8 @@
 class Poison extends MovableObject {
+  height = 80;
+  width = 60;
+  y = 150;
 
-    height = 80; 
-    width = 60; 
-    y = 150; 
-  
-  
   IMAGES_IDLE = [
     "img/4. Marcadores/Posi¢n/Animada/1.png",
     "img/4. Marcadores/Posi¢n/Animada/2.png",
@@ -14,20 +12,19 @@ class Poison extends MovableObject {
     "img/4. Marcadores/Posi¢n/Animada/6.png",
     "img/4. Marcadores/Posi¢n/Animada/7.png",
     "img/4. Marcadores/Posi¢n/Animada/8.png",
-  
   ];
-  
-  constructor(){
+
+  constructor(x, y) {
     super().loadImage(this.IMAGES_IDLE[0]);
     this.loadImages(this.IMAGES_IDLE);
-    this.x = 400; 
-    this.animate();  
+    this.x = x;
+    this.y = y;
+    this.animate();
   }
-  
+
   animate() {
     setInterval(() => {
-        this.playAnimation(this.IMAGES_IDLE);
-      }, 200); 
-    }
-  
+      this.playAnimation(this.IMAGES_IDLE);
+    }, 200);
   }
+}
