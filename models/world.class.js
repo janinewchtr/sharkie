@@ -24,9 +24,12 @@ class World {
         new PufferFish(),
         new JellyFish(),
         new JellyFish(),
-        new Poison(),
         new Endboss(),
     ];
+
+    this.poisonBottles = [
+      new Poison()
+  ];
 
     let backgroundLayerImages = [
         "img/3. Background/Layers/5. Water/D.png",
@@ -82,6 +85,7 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
+      this.checkCollectPoison();
       this.checkThrowObjects();
     }, 100);
   }
@@ -107,6 +111,16 @@ class World {
     });
   }
 
+  checkCollectPoison() {
+    this.poisonBottles = this.poisonBottles.filter((bottle) => {
+      if (this.character.isColliding(bottle)) {
+        this.character.collectPoison();
+        return false; // Flasche verschwindet
+      }
+      return true;
+    });
+  }
+
   draw() {
     this.updateCamera();
   
@@ -122,6 +136,7 @@ class World {
   
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.poisonBottles);
     this.addObjectsToMap(this.throwableObjects);
   
     this.ctx.translate(-this.camera_x, 0);

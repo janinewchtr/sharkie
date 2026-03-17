@@ -14,6 +14,7 @@ class Character extends MovableObject {
   isSwimming = false;
   lastMove = Date.now();
   longIdleHold = 5000;
+  collectedPoison = 0;
   
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/2.png",
@@ -190,4 +191,12 @@ IMAGES_HURT_ELECTRO = [
       }
     }, 200);
   }
+
+  collectPoison() {
+    if (this.collectedPoison < 5) {
+      this.collectedPoison++;
+    }
+  }
+
+  
 }
