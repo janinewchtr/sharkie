@@ -3,8 +3,9 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
-  statusBar = new StatusBar();
+  statusBar = new StatusBar('life');
   throwableObjects = [];
+  poisonBar = new StatusBar('poison');
 
 
   character;
@@ -15,6 +16,9 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+
+    this.poisonBar.y = 40;
+    this.poisonBar.setPercentage(0);
 
     this.character = new Character();
 
@@ -114,8 +118,13 @@ class World {
   checkCollectPoison() {
     this.poisonBottles = this.poisonBottles.filter((bottle) => {
       if (this.character.isColliding(bottle)) {
+  
         this.character.collectPoison();
-        return false; // Flasche verschwindet
+  
+        // Statusbar aktualisieren
+        this.poisonBar.setPercentage(this.character.collectedPoison * 20);
+  
+        return false;
       }
       return true;
     });
@@ -132,6 +141,7 @@ class World {
   
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
+    this.addToMap(this.poisonBar);
     this.ctx.translate(this.camera_x, 0);
   
     this.addToMap(this.character);

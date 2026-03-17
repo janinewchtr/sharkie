@@ -1,5 +1,4 @@
 class StatusBar extends DrawableObject {
-
     IMAGES_LIFE = [
         'img/4. Marcadores/green/Life/0_  copia 3.png',
         'img/4. Marcadores/green/Life/20_  copia 4.png',
@@ -12,9 +11,9 @@ class StatusBar extends DrawableObject {
     IMAGES_COINS = [
         'img/4. Marcadores/green/Coin/0_  copia 4.png',
         'img/4. Marcadores/green/Coin/20_  copia 2.png',
-        'img/4. Marcadores/green/Coin/40_  copia 4.png',
-        'img/4. Marcadores/green/Coin/60_  copia 4.png',
-        'img/4. Marcadores/green/Coin/80_  copia 4.png',
+        'img/4. Marcadores/green/Coin/40_ copia 4.png',
+        'img/4. Marcadores/green/Coin/60_ copia 4.png',
+        'img/4. Marcadores/green/Coin/80_ copia 4.png',
         'img/4. Marcadores/green/Coin/100_ copia 4.png'
     ];
 
@@ -28,26 +27,39 @@ class StatusBar extends DrawableObject {
     ];
 
     percentage = 100;
+    images = [];
 
-    constructor() {
+    constructor(type = 'life') {
         super();
-        this.loadImages(this.IMAGES_LIFE);
+
+        if (type === 'life') {
+            this.images = this.IMAGES_LIFE;
+        } else if (type === 'coin') {
+            this.images = this.IMAGES_COINS;
+        } else if (type === 'poison') {
+            this.images = this.IMAGES_POISONED_BUBBLES;
+        }
+
+        this.loadImages(this.images);
         this.x = 20;
         this.y = 0;
-        this.width = 200;
-        this.height = 60;
-        this.reducePercentage(100);
+        this.width = 150;
+        this.height = 50;
+        this.setPercentage(100);
+    }
+
+    setPercentage(percentage) {
+        this.percentage = percentage;
+        let path = this.images[this.getImageIndex()];
+        this.img = this.imageCache[path];
     }
 
     reducePercentage(percentage) {
-        this.percentage = percentage;
-        let path = this.IMAGES_LIFE[this.getImageIndex()];
-        this.img = this.imageCache[path];
-
+        this.setPercentage(percentage);
     }
 
     getImageIndex() {
-        if (this.percentage == 100) {
+        if (this.percentage >= 100) {
             return 5;
         } else if (this.percentage >= 80) {
             return 4;
