@@ -32,7 +32,7 @@ h1 {
     margin: 16px 0;
 }
 
-/* Standard Mobile */
+/* Smartphone ------ */
 @media only screen and (max-width: 820px) {
     canvas {
         width: 100%;
@@ -44,7 +44,7 @@ h1 {
     }
 }
 
-/* Handy im Querformat */
+/* Smartphone ------ */
 @media only screen and (max-width: 950px) and (orientation: landscape) {
     body {
         margin: 0;

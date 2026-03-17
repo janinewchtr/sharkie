@@ -36,15 +36,23 @@ class World {
         "img/3. Background/Layers/2. Floor/D.png"
       ];
       
+      const segmentWidth = 920;
+      const numberOfSegments = 5;
+    
       this.backgroundObjects = [];
-      
-      for (let layerIndex = 0; layerIndex < 5; layerIndex++) {          // Anzahl der Background-Segmente
-        for (let bliIndex = 0; bliIndex < backgroundLayerImages.length; bliIndex++) {
+    
+      for (let segmentIndex = 0; segmentIndex < numberOfSegments; segmentIndex++) {
+        for (let imageIndex = 0; imageIndex < backgroundLayerImages.length; imageIndex++) {
           this.backgroundObjects.push(
-            new BackgroundObject(backgroundLayerImages[bliIndex], layerIndex  * 920)
+            new BackgroundObject(
+              backgroundLayerImages[imageIndex],
+              segmentIndex * segmentWidth
+            )
           );
         }
       }
+    
+      this.levelWidth = numberOfSegments * segmentWidth;
 
     this.setWorld();
     this.character.start();
@@ -54,6 +62,21 @@ class World {
 
   setWorld() {
     this.character.world = this;
+  }
+
+  updateCamera() {
+    this.camera_x = -this.character.x + 100;
+  
+    const minCameraX = -(this.levelWidth - this.canvas.width);
+    const maxCameraX = 0;
+  
+    if (this.camera_x < minCameraX) {
+      this.camera_x = minCameraX;
+    }
+  
+    if (this.camera_x > maxCameraX) {
+      this.camera_x = maxCameraX;
+    }
   }
 
   run() {
@@ -85,22 +108,24 @@ class World {
   }
 
   draw() {
+    this.updateCamera();
+  
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    this.ctx.translate(this.camera_x, 0); // Move the entire world to the left by camera_x
-
+  
+    this.ctx.translate(this.camera_x, 0);
+  
     this.addObjectsToMap(this.backgroundObjects);
-
+  
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.ctx.translate(this.camera_x, 0);
-
+  
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
     this.addObjectsToMap(this.throwableObjects);
-
-    this.ctx.translate(-this.camera_x, 0); // Move the world back to its original position
-
+  
+    this.ctx.translate(-this.camera_x, 0);
+  
     requestAnimationFrame(() => this.draw());
   }
 
