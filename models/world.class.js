@@ -178,7 +178,7 @@ class World {
         this.character.collectPoison();
   
         // Statusbar aktualisieren
-        this.poisonBar.setPercentage(this.character.collectedPoison * 1);
+        this.poisonBar.setPercentage(this.character.collectedPoison * 20);
   
         return false;
       }

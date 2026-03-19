@@ -1,11 +1,11 @@
 class StatusBar extends DrawableObject {
     IMAGES_LIFE = [
-        'img/4. Marcadores/green/Life/0_  copia 3.png',
-        'img/4. Marcadores/green/Life/20_  copia 4.png',
-        'img/4. Marcadores/green/Life/40_  copia 3.png',
-        'img/4. Marcadores/green/Life/60_  copia 3.png',
-        'img/4. Marcadores/green/Life/80_  copia 3.png',
-        'img/4. Marcadores/green/Life/100_  copia 2.png'
+        'img/4. Marcadores/green/Life/0copia 3.png',
+        'img/4. Marcadores/green/Life/20copia 4.png',
+        'img/4. Marcadores/green/Life/40copia 3.png',
+        'img/4. Marcadores/green/Life/60copia 3.png',
+        'img/4. Marcadores/green/Life/80copia 3.png',
+        'img/4. Marcadores/green/Life/100copia 2.png'
     ];
 
     IMAGES_COINS = [
