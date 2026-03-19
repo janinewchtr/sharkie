@@ -145,6 +145,7 @@ class World {
     setInterval(() => {
       this.checkCollisions();
       this.checkCollectPoison();
+      this.checkCollectCoins();
       this.checkThrowObjects();
     }, 100);
   }
@@ -177,7 +178,22 @@ class World {
         this.character.collectPoison();
   
         // Statusbar aktualisieren
-        this.poisonBar.setPercentage(this.character.collectedPoison * 20);
+        this.poisonBar.setPercentage(this.character.collectedPoison * 1);
+  
+        return false;
+      }
+      return true;
+    });
+  }
+
+  checkCollectCoins() {
+    this.coins = this.coins.filter((coin) => {
+      if (this.character.isColliding(coin)) {
+  
+        this.character.collectCoins();
+  
+        // Statusbar aktualisieren
+        this.coinBar.setPercentage(this.character.collectedCoins * 20);
   
         return false;
       }

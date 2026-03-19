@@ -15,6 +15,7 @@ class Character extends MovableObject {
   lastMove = Date.now();
   longIdleHold = 5000;
   collectedPoison = 0;
+  collectedCoins = 0;
   
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/2.png",
@@ -198,5 +199,11 @@ IMAGES_HURT_ELECTRO = [
     }
   }
 
-  
+  collectCoins() {
+    if (this.collectedCoins < 5) {
+      this.collectedCoins++;
+    }
+  }
+
+
 }

@@ -9,12 +9,12 @@ class StatusBar extends DrawableObject {
     ];
 
     IMAGES_COINS = [
-        'img/4. Marcadores/green/Coin/0_  copia 4.png',
-        'img/4. Marcadores/green/Coin/20_  copia 2.png',
-        'img/4. Marcadores/green/Coin/40_ copia 4.png',
-        'img/4. Marcadores/green/Coin/60_ copia 4.png',
-        'img/4. Marcadores/green/Coin/80_ copia 4.png',
-        'img/4. Marcadores/green/Coin/100_ copia 4.png'
+        'img/4. Marcadores/green/Coin/0copia 4.png',
+        'img/4. Marcadores/green/Coin/20copia 2.png',
+        'img/4. Marcadores/green/Coin/40copia 4.png',
+        'img/4. Marcadores/green/Coin/60copia 4.png',
+        'img/4. Marcadores/green/Coin/80copia 4.png',
+        'img/4. Marcadores/green/Coin/100copia 4.png'
     ];
 
     IMAGES_POISONED_BUBBLES = [
