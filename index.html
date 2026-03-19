@@ -23,9 +23,22 @@
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
 </head>
-<body onload="init()">
-
+<body>
     <h1>Sharkie Attack</h1>
-    <canvas id="canvas" width="820px" height="400px"></canvas>    
+
+    <div class="game-wrapper">
+        <div id="start-screen" class="overlay">
+            <div class="overlay-content">
+                <div><img src="img/6.Botones/Key/arrow keys.png" alt="arrowKeys" width="60px"></div>
+                <div><img src="img/6.Botones/Key/D key.png" alt="dKey" width="60px"></div>
+                <div><img src="img/6.Botones/Key/Space Bar key.png" alt="spacebarKey" width="60px"></div>
+                <button onclick="startGame()"><img src="img/6.Botones/Start/1.png" alt="StartButton" width="60px"></button>
+        
+            </div>
+        </div>
+
+        <canvas id="canvas" width="820" height="400"></canvas>
+    </div>
+
 </body>
 </html>
