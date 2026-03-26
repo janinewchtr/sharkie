@@ -28,17 +28,33 @@
 
     <div class="game-wrapper">
         <div id="start-screen" class="overlay">
-            <div class="overlay-content">
-                <div><img src="img/6.Botones/Key/arrow keys.png" alt="arrowKeys" width="60px"></div>
-                <div><img src="img/6.Botones/Key/D key.png" alt="dKey" width="60px"></div>
-                <div><img src="img/6.Botones/Key/Space Bar key.png" alt="spacebarKey" width="60px"></div>
-                <button onclick="startGame()"><img src="img/6.Botones/Start/1.png" alt="StartButton" width="60px"></button>
-        
+          <div class="start-panel">
+            <h2 class="start-title">How to Play</h2>
+      
+            <div class="controls-list">
+              <div class="control-row">
+                <img class="key-img" src="img/6.Botones/Key/arrow keys.png" alt="Arrow Keys">
+                <img class="desc-img" src="img/6.Botones/Description/swim.png" alt="Swim">
+              </div>
+      
+              <div class="control-row">
+                <img class="key-img" src="img/6.Botones/Key/D key.png" alt="D Key">
+                <img class="desc-img" src="img/6.Botones/Description/poison-bubble.png" alt="Throw poison bubble">
+              </div>
+      
+              <div class="control-row">
+                <img class="key-img space-key" src="img/6.Botones/Key/Space Bar key.png" alt="Space Bar">
+                <img class="desc-img" src="img/6.Botones/Description/attack.png" alt="Attack">
+              </div>
             </div>
+      
+            <button class="start-button" onclick="startGame()">
+              <img src="img/6.Botones/Start/1.png" alt="Start">
+            </button>
+          </div>
         </div>
-
+      
         <canvas id="canvas" width="820" height="400"></canvas>
-    </div>
-
+      </div>
 </body>
 </html>
