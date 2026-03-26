@@ -5,7 +5,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image: url("img/7.BackgroundAsset/SharkieBackground.png");
+    background-image: url("img/7.BackgroundAsset/sharkie_koralle_background.png");
     background-position: center;
     background-size: cover;
     overflow: hidden;
@@ -14,8 +14,6 @@ body {
   canvas {
     display: block;
     background-color: black;
-    border: 2px solid white;
-    border-radius: 10px;
   }
   
   @font-face {
@@ -48,15 +46,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(7, 25, 52, 0.45);
+    background: rgba(83, 141, 228, 0.45);
   }
   
   .start-panel {
     width: 520px;
     max-width: 90%;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(7, 25, 52, 0.8);
     border-radius: 24px;
-    padding: 28px 32px;
+    padding: 10px;
     box-sizing: border-box;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   }
@@ -65,7 +63,7 @@ body {
     margin: 0 0 24px 0;
     font-family: "Luckiest-Guy-Regular";
     font-size: 32px;
-    color: #2f145f;
+    color: white;
     text-align: center;
   }
   
@@ -80,21 +78,34 @@ body {
     align-items: center;
     justify-content: flex-start;
     gap: 22px;
+    margin-left: 10px;
   }
   
   .key-img {
-    width: 72px;
+    width: 98px;
     height: auto;
     object-fit: contain;
     flex-shrink: 0;
   }
   
   .space-key {
-    width: 110px;
+    width: 200px;
+  }
+
+  .d-key {
+    width: 70px;
+  }
+
+  .poisonbubble-title {
+    font-family: "Luckiest-Guy-Regular";
+    font-size: 32px;
+    color: white;
+    text-align: center;
   }
   
+
   .desc-img {
-    height: 34px;
+    height: 28px;
     width: auto;
     object-fit: contain;
   }
