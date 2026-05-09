@@ -185,14 +185,13 @@ class World {
       y: this.character.y + 115,
     };
   }
-
+  
   checkBubbleCollisions() {
     this.throwableObjects.forEach((bubble, bubbleIndex) => {
       this.enemies.forEach((enemy) => {
         if (bubble.isColliding(enemy)) {
-          if (enemy instanceof JellyFish) {
-            enemy.isTrapped = true;
-            enemy.speedY = -3;
+          if (enemy instanceof JellyFish && !enemy.isDeadJelly) {
+            enemy.dieInBubble();
             this.throwableObjects.splice(bubbleIndex, 1);
           }
   
@@ -207,14 +206,20 @@ class World {
 
   checkCollisions() {
     this.enemies.forEach((enemy) => {
+      if (enemy instanceof JellyFish && enemy.isDeadJelly) {
+        return;
+      }
+  
       if (this.character.isColliding(enemy)) {
         if (enemy instanceof JellyFish) {
           this.character.hit("electro");
         } else if (enemy instanceof PufferFish) {
-          this.character.hit("poison"); // oder "normal", wenn du später extra Animationen willst
+          this.character.hit("poison");
         } else if (enemy instanceof Endboss) {
-          this.character.hit("electro"); // oder eigener Typ, je nach gewünschtem Verhalten
-        } this.statusBar.reducePercentage(this.character.energy);
+          this.character.hit("electro");
+        }
+  
+        this.statusBar.reducePercentage(this.character.energy);
       }
     });
   }
