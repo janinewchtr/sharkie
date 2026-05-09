@@ -7,6 +7,8 @@ class World {
   throwableObjects = [];
   poisonBar = new StatusBar('poison');
   coinBar = new StatusBar('coin');
+  lastBubbleThrow = 0;
+  bubbleCooldown = 600;
 
 
   character;
@@ -147,14 +149,60 @@ class World {
       this.checkCollectPoison();
       this.checkCollectCoins();
       this.checkThrowObjects();
+      this.checkBubbleCollisions();
     }, 100);
   }
 
   checkThrowObjects() {
-    if (this.keyboard.d) {
-      let throwableObject = new ThrowableObject(this.character.x + 100, this.character.y + 50, this.character.otherDirection);
-      this.throwableObjects.push(throwableObject);
+    if (this.keyboard.D && this.canThrowBubble()) {
+      let mouth = this.getSharkieMouthPosition();
+  
+      let bubble = new ThrowableObject(
+        mouth.x,
+        mouth.y,
+        this.character.otherDirection
+      );
+  
+      this.throwableObjects.push(bubble);
+      this.lastBubbleThrow = Date.now();
     }
+  }
+  
+  canThrowBubble() {
+    return Date.now() - this.lastBubbleThrow > this.bubbleCooldown;
+  }
+  
+  getSharkieMouthPosition() {
+    if (this.character.otherDirection) {
+      return {
+        x: this.character.x + 30,
+        y: this.character.y + 115,
+      };
+    }
+  
+    return {
+      x: this.character.x + this.character.width - 40,
+      y: this.character.y + 115,
+    };
+  }
+
+  checkBubbleCollisions() {
+    this.throwableObjects.forEach((bubble, bubbleIndex) => {
+      this.enemies.forEach((enemy) => {
+        if (bubble.isColliding(enemy)) {
+          if (enemy instanceof JellyFish) {
+            enemy.isTrapped = true;
+            enemy.speedY = -3;
+            this.throwableObjects.splice(bubbleIndex, 1);
+          }
+  
+          if (enemy instanceof Endboss) {
+            enemy.hit("bubble");
+            this.throwableObjects.splice(bubbleIndex, 1);
+          }
+        }
+      });
+    });
   }
 
   checkCollisions() {
