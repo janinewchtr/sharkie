@@ -71,6 +71,7 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    this.enemies.forEach(enemy => enemy.world = this);
   }
 
   updateCamera() {
@@ -185,7 +186,7 @@ class World {
       y: this.character.y + 115,
     };
   }
-  
+
   checkBubbleCollisions() {
     this.throwableObjects.forEach((bubble, bubbleIndex) => {
       this.enemies.forEach((enemy) => {
@@ -195,7 +196,7 @@ class World {
             this.throwableObjects.splice(bubbleIndex, 1);
           }
   
-          if (enemy instanceof Endboss) {
+          if (enemy instanceof Endboss && !enemy.isDead()) {
             enemy.hit("bubble");
             this.throwableObjects.splice(bubbleIndex, 1);
           }
@@ -206,6 +207,10 @@ class World {
 
   checkCollisions() {
     this.enemies.forEach((enemy) => {
+      if (enemy instanceof Endboss && enemy.isDead()) {
+        return;
+      }
+  
       if (enemy instanceof JellyFish && enemy.isDeadJelly) {
         return;
       }
