@@ -16,6 +16,10 @@ class Character extends MovableObject {
   longIdleHold = 5000;
   collectedPoison = 0;
   collectedCoins = 0;
+  isBubbleAttacking = false;
+  bubbleAttackFrame = 0;
+  bubbleAttackCounter = 0;
+  bubbleAttackFrameDelay = 3;
   
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/2.png",
@@ -126,6 +130,7 @@ IMAGES_HURT_ELECTRO = [
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.loadImages(this.IMAGES_SWIM);
+    this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_HURT_POISONED);
     this.loadImages(this.IMAGES_HURT_ELECTRO);
     this.loadImages(this.IMAGES_DEAD);
@@ -139,9 +144,37 @@ IMAGES_HURT_ELECTRO = [
     return Date.now() - this.lastMove > this.longIdleHold;
   }
 
+  startBubbleAttack() {
+    if (this.isBubbleAttacking) return;
+  
+    this.isBubbleAttacking = true;
+    this.bubbleAttackFrame = 0;
+  }
+
   animate() {
     setInterval(() => {
       let isMoving = false;
+
+      if (this.isBubbleAttacking) {
+        let path = this.IMAGES_ATTACK[this.bubbleAttackFrame];
+        this.img = this.imageCache[path];
+      
+        this.bubbleAttackCounter++;
+      
+        if (this.bubbleAttackCounter >= this.bubbleAttackFrameDelay) {
+          this.bubbleAttackFrame++;
+          this.bubbleAttackCounter = 0;
+        }
+      
+        if (this.bubbleAttackFrame >= this.IMAGES_ATTACK.length) {
+          this.isBubbleAttacking = false;
+          this.bubbleAttackFrame = 0;
+          this.bubbleAttackCounter = 0;
+          this.world.createBubbleFromSharkieMouth();
+        }
+      
+        return;
+      }
 
       if (!this.isDead()) {
         if (this.world.keyboard.RIGHT) {

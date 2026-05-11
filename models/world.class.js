@@ -155,18 +155,22 @@ class World {
   }
 
   checkThrowObjects() {
-    if (this.keyboard.D && this.canThrowBubble()) {
-      let mouth = this.getSharkieMouthPosition();
-  
-      let bubble = new ThrowableObject(
-        mouth.x,
-        mouth.y,
-        this.character.otherDirection
-      );
-  
-      this.throwableObjects.push(bubble);
+    if (this.keyboard.D && this.canThrowBubble() && !this.character.isBubbleAttacking) {
+      this.character.startBubbleAttack();
       this.lastBubbleThrow = Date.now();
     }
+  }
+  
+  createBubbleFromSharkieMouth() {
+    let mouth = this.getSharkieMouthPosition();
+  
+    let bubble = new ThrowableObject(
+      mouth.x,
+      mouth.y,
+      this.character.otherDirection
+    );
+  
+    this.throwableObjects.push(bubble);
   }
   
   canThrowBubble() {
