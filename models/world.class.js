@@ -144,6 +144,14 @@ class World {
     return min + Math.random() * (max - min);
   }
 
+  removeBubblesOutsideCanvas() {
+    this.throwableObjects = this.throwableObjects.filter((bubble) => {
+      let screenX = bubble.x + this.camera_x;
+  
+      return screenX > -bubble.width && screenX < this.canvas.width;
+    });
+  }
+
   run() {
     setInterval(() => {
       this.checkCollisions();
@@ -151,6 +159,7 @@ class World {
       this.checkCollectCoins();
       this.checkThrowObjects();
       this.checkBubbleCollisions();
+      this.removeBubblesOutsideCanvas();
     }, 100);
   }
 
@@ -160,7 +169,7 @@ class World {
       this.lastBubbleThrow = Date.now();
     }
   }
-  
+
   createBubbleFromSharkieMouth() {
     let mouth = this.getSharkieMouthPosition();
   
