@@ -204,7 +204,6 @@ IMAGES_HURT_ELECTRO = [
           this.isFinSlap = false;
           this.finSlapFrame = 0;
           this.finSlapCounter = 0;
-          this.world.createFinSlapHitbox();
         }
       
         return;

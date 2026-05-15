@@ -6,6 +6,9 @@ class PufferFish extends MovableObject {
   isPuffed = false;
   isTransitioning = false;
   transitionIndex = 0;
+  isDeadPuffer = false;
+  deadAnimationIndex = 0;
+  deadAnimationFinished = false;
 
   IMAGES_SWIM = [
     "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png",
@@ -31,6 +34,7 @@ class PufferFish extends MovableObject {
     this.loadImage(this.IMAGES_SWIM[0]);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_TRANSITION);
+    this.loadImages(this.IMAGES_DEAD);
 
     this.x = x;
     this.y = y;
@@ -43,7 +47,10 @@ class PufferFish extends MovableObject {
     setInterval(() => {
       this.checkDistanceToCharacter();
 
-      if (this.isTransitioning) {
+      if (this.isDeadPuffer) {
+        this.playDeathAnimationOnce();
+        this.y += 10; // Sink down when dead
+      } else if (this.isTransitioning) {
         this.playTransitionAnimation();
       } else if (this.isPuffed) {
         this.showPuffedImage();
@@ -106,4 +113,27 @@ class PufferFish extends MovableObject {
     let lastImage = this.IMAGES_TRANSITION[this.IMAGES_TRANSITION.length - 1];
     this.img = this.imageCache[lastImage];
   }
+
+  dieByFinSlap() {
+    if (this.isDeadPuffer) return;
+
+    this.isDeadPuffer = true;
+    this.deadAnimationIndex = 0;
+    this.playDeathAnimationOnce();
+  }
+
+  playDeathAnimationOnce() {
+    if (!this.deadAnimationFinished) {
+      let path = this.IMAGES_DEAD[this.deadAnimationIndex];
+      this.img = this.imageCache[path];
+
+      this.deadAnimationIndex++;
+
+      if (this.deadAnimationIndex >= this.IMAGES_DEAD.length) {
+        this.deadAnimationIndex = this.IMAGES_DEAD.length - 1;
+        this.deadAnimationFinished = true;
+      }
+    }
+  }
+
 }

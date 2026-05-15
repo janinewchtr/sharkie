@@ -210,10 +210,9 @@ class World {
 
   hitPufferFishWithFinSlap() {
     this.enemies.forEach((enemy) => {
-      if (enemy instanceof PufferFish && !enemy.isDead()) {
+      if (enemy instanceof PufferFish && !enemy.isDeadPuffer) {
         if (this.character.isColliding(enemy)) {
-          enemy.hit("finSlap");
-          this.statusBar.reducePercentage(this.character.energy);
+          enemy.dieByFinSlap();
         }
       }
     });
@@ -244,6 +243,10 @@ class World {
       }
   
       if (enemy instanceof JellyFish && enemy.isDeadJelly) {
+        return;
+      }
+
+      if (enemy instanceof PufferFish && enemy.isDeadPuffer) {
         return;
       }
   
