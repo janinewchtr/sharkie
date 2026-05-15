@@ -20,6 +20,10 @@ class Character extends MovableObject {
   bubbleAttackFrame = 0;
   bubbleAttackCounter = 0;
   bubbleAttackFrameDelay = 3;
+  isFinSlap = false;
+  finSlapFrame = 0;
+  finSlapCounter = 0;
+  finSlapFrameDelay = 3;
   
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/2.png",
@@ -131,6 +135,7 @@ IMAGES_HURT_ELECTRO = [
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_FIN_SLAP);
     this.loadImages(this.IMAGES_HURT_POISONED);
     this.loadImages(this.IMAGES_HURT_ELECTRO);
     this.loadImages(this.IMAGES_DEAD);
@@ -149,6 +154,14 @@ IMAGES_HURT_ELECTRO = [
   
     this.isBubbleAttacking = true;
     this.bubbleAttackFrame = 0;
+  }
+
+  startFinSlap() {
+    if (this.isFinSlap) return;
+  
+    this.isFinSlap = true;
+    this.finSlapFrame = 0;
+    this.finSlapCounter = 0;
   }
 
   animate() {
@@ -171,6 +184,27 @@ IMAGES_HURT_ELECTRO = [
           this.bubbleAttackFrame = 0;
           this.bubbleAttackCounter = 0;
           this.world.createBubbleFromSharkieMouth();
+        }
+      
+        return;
+      }
+
+      if (this.isFinSlap) {
+        let path = this.IMAGES_FIN_SLAP[this.finSlapFrame];
+        this.img = this.imageCache[path];
+      
+        this.finSlapCounter++;
+      
+        if (this.finSlapCounter >= this.finSlapFrameDelay) {
+          this.finSlapFrame++;
+          this.finSlapCounter = 0;
+        }
+      
+        if (this.finSlapFrame >= this.IMAGES_FIN_SLAP.length) {
+          this.isFinSlap = false;
+          this.finSlapFrame = 0;
+          this.finSlapCounter = 0;
+          this.world.createFinSlapHitbox();
         }
       
         return;

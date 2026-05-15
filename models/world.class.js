@@ -160,6 +160,7 @@ class World {
       this.checkThrowObjects();
       this.checkBubbleCollisions();
       this.removeBubblesOutsideCanvas();
+      this.checkFinSlapAttack();
     }, 100);
   }
 
@@ -198,6 +199,24 @@ class World {
       x: this.character.x + this.character.width - 40,
       y: this.character.y + 115,
     };
+  }
+
+  checkFinSlapAttack() {
+    if (this.keyboard.SPACE && !this.character.isFinSlap) {
+      this.character.startFinSlap();
+      this.hitPufferFishWithFinSlap();
+    }
+  }
+
+  hitPufferFishWithFinSlap() {
+    this.enemies.forEach((enemy) => {
+      if (enemy instanceof PufferFish && !enemy.isDead()) {
+        if (this.character.isColliding(enemy)) {
+          enemy.hit("finSlap");
+          this.statusBar.reducePercentage(this.character.energy);
+        }
+      }
+    });
   }
 
   checkBubbleCollisions() {
