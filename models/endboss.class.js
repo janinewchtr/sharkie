@@ -164,7 +164,7 @@ class Endboss extends MovableObject {
         let distanceX = Math.abs(character.x - this.x);
         let distanceY = Math.abs(character.y - this.y);
       
-        return distanceX < 250 && distanceY < 350;
+        return distanceX < 250 && distanceY < 400;
       }
       
       hit(type) {

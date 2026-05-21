@@ -9,6 +9,7 @@ class World {
   coinBar = new StatusBar('coin');
   lastBubbleThrow = 0;
   bubbleCooldown = 600;
+  gameOver = false;
 
 
   character;
@@ -166,6 +167,10 @@ class World {
   }
 
   checkThrowObjects() {
+    if (this.gameOver) {
+      return;
+    }
+  
     if (this.keyboard.D && this.canThrowBubble() && !this.character.isBubbleAttacking) {
       this.character.startBubbleAttack();
       this.lastBubbleThrow = Date.now();
@@ -188,10 +193,14 @@ class World {
   
     if (isPoisonBubble) {
       this.character.collectedPoison--;
-  
+    
       this.poisonBar.setPercentage(
         this.character.collectedPoison * 20
       );
+    
+      if (this.character.collectedPoison <= 0) {
+        this.triggerGameOver();
+      }
     }
   
     this.throwableObjects.push(bubble);
@@ -386,6 +395,22 @@ class World {
     this.ctx.scale(-1, 1); // Flip the context horizontally
     this.ctx.translate(-mo.x - mo.width / 2, 0); // Move the context back to its original position
 
+  }
+
+  triggerGameOver() {
+    if (this.gameOver) {
+      return;
+    }
+  
+    this.gameOver = true;
+    this.character.die();
+    this.statusBar.setPercentage(0);
+  
+    let gameOverScreen = document.getElementById("game-over-screen");
+  
+    if (gameOverScreen) {
+      gameOverScreen.style.display = "flex";
+    }
   }
 
 }

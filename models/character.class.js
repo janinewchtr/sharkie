@@ -283,5 +283,9 @@ IMAGES_HURT_ELECTRO = [
     }
   }
 
+  die() {
+    this.energy = 0;
+  }
+
 
 }
