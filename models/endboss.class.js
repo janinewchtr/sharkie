@@ -6,9 +6,17 @@ class Endboss extends MovableObject {
 
         energy = 100;
         lastHit = 0;
+        isAttacking = false;
+        attackFrame = 0;
+        attackCounter = 0;
+        attackFrameDelay = 2;
+        lastAttack = 0;
+        attackCooldown = 2000;
+        hasHitDuringAttack = false;
         isDeadEndboss = false;
         deadAnimationIndex = 0;
         deadAnimationFinished = false;
+
 
 
     IMAGES_IDLE = [
@@ -73,6 +81,7 @@ class Endboss extends MovableObject {
         super().loadImage('img/2.Enemy/3 Final Enemy/2.floating/1.png');
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_FLOATING);
+        this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.x = 4000; // Start position of the endboss
@@ -94,6 +103,11 @@ class Endboss extends MovableObject {
             this.playAnimation(this.IMAGES_HURT);
             return;
           }
+
+          if (this.isAttacking) {
+            this.playAttackAnimation();
+            return;
+          }
       
           if (i < 10) {
             this.playAnimation(this.IMAGES_IDLE);
@@ -110,6 +124,48 @@ class Endboss extends MovableObject {
         }, 150);
       }
 
+      playAttackAnimation() {
+        let path = this.IMAGES_ATTACK[this.attackFrame];
+        this.img = this.imageCache[path];
+      
+        this.attackCounter++;
+      
+        if (this.attackFrame === 3 && !this.hasHitDuringAttack) {
+          this.hitCharacter();
+          this.hasHitDuringAttack = true;
+        }
+      
+        if (this.attackCounter >= this.attackFrameDelay) {
+          this.attackFrame++;
+          this.attackCounter = 0;
+        }
+      
+        if (this.attackFrame >= this.IMAGES_ATTACK.length) {
+          this.isAttacking = false;
+          this.attackFrame = 0;
+          this.attackCounter = 0;
+        }
+      }
+
+      hitCharacter() {
+        if (!this.world || !this.world.character) {
+          return;
+        }
+      
+        if (this.isCharacterInAttackRange()) {
+          this.world.character.hit("electro");
+          this.world.statusBar.reducePercentage(this.world.character.energy);
+        }
+      }
+
+      isCharacterInAttackRange() {
+        let character = this.world.character;
+      
+        let distanceX = Math.abs(character.x - this.x);
+        let distanceY = Math.abs(character.y - this.y);
+      
+        return distanceX < 250 && distanceY < 350;
+      }
       
       hit(type) {
         let now = Date.now();
@@ -132,8 +188,26 @@ class Endboss extends MovableObject {
         }
       }
 
-          isHurt() {
-            return Date.now() - this.lastHit < 600 && !this.isDead();
+      startAttack() {
+        if (this.isAttacking || this.isDead() || this.isHurt()) {
+          return;
+        }
+      
+        let now = Date.now();
+      
+        if (now - this.lastAttack < this.attackCooldown) {
+          return;
+        }
+      
+        this.isAttacking = true;
+        this.attackFrame = 0;
+        this.attackCounter = 0;
+        this.hasHitDuringAttack = false;
+        this.lastAttack = now;
+      }
+
+        isHurt() {
+        return Date.now() - this.lastHit < 600 && !this.isDead();
           }
 
           playDeathAnimationOnce() {

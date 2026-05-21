@@ -146,6 +146,7 @@ IMAGES_HURT_ELECTRO = [
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_WHALE_ATTACK);
     this.loadImages(this.IMAGES_FIN_SLAP);
     this.loadImages(this.IMAGES_HURT_POISONED);
     this.loadImages(this.IMAGES_HURT_ELECTRO);

@@ -161,6 +161,7 @@ class World {
       this.checkBubbleCollisions();
       this.removeBubblesOutsideCanvas();
       this.checkFinSlapAttack();
+      this.checkEndbossAttack();
     }, 100);
   }
 
@@ -241,14 +242,12 @@ class World {
           }
   
           if (enemy instanceof Endboss && !enemy.isDead()) {
-            if (enemy instanceof Endboss && !enemy.isDead()) {
-
-              if (bubble.isPoisonBubble) {
-                enemy.hit("poison");
-              }
-            
-              this.throwableObjects.splice(bubbleIndex, 1);
+            if (bubble.isPoisonBubble) {
+              enemy.hit("poison");
             }
+          
+            this.throwableObjects.splice(bubbleIndex, 1);
+
           }
         }
       });
@@ -320,7 +319,21 @@ class World {
       return false;
     }
   
-    return Math.abs(this.character.x - endboss.x) < 800;
+    return Math.abs(this.character.x - endboss.x) < 350;
+  }
+
+  
+
+  checkEndbossAttack() {
+    let endboss = this.enemies.find(enemy => enemy instanceof Endboss);
+  
+    if (!endboss || endboss.isDead()) {
+      return;
+    }
+  
+    if (this.isNearEndboss()) {
+      endboss.startAttack();
+    }
   }
 
   draw() {
