@@ -136,6 +136,36 @@ body {
     transform: scale(0.98);
   }
 
+  .fullscreen-button {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    z-index: 30;
+  
+    width: 82px;
+    height: 46px;
+  
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  .fullscreen-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  
+  .fullscreen-button:hover {
+    transform: scale(1.06);
+  }
+  
+  .fullscreen-button:active {
+    transform: scale(0.96);
+  }
+
   .game-over-overlay {
     display: none;
     background: rgba(0, 0, 0, 0.65);

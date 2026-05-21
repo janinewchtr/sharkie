@@ -13,6 +13,16 @@ function startGame() {
   init();
 }
 
+function toggleFullscreen() {
+  let gameWrapper = document.getElementById("game-wrapper");
+
+  if (!document.fullscreenElement) {
+    gameWrapper.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
 window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") keyboard.RIGHT = true;
   if (e.key === "ArrowLeft") keyboard.LEFT = true;
