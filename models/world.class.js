@@ -181,7 +181,7 @@ class World {
     let mouth = this.getSharkieMouthPosition();
   
     let isPoisonBubble =
-      this.isNearEndboss() &&
+      this.isInEndbossBubbleRange() &&
       this.character.collectedPoison > 0;
   
     let bubble = new ThrowableObject(
@@ -193,17 +193,52 @@ class World {
   
     if (isPoisonBubble) {
       this.character.collectedPoison--;
-    
+  
       this.poisonBar.setPercentage(
         this.character.collectedPoison * 20
       );
-    
-      if (this.character.collectedPoison <= 0) {
-        this.triggerGameOver();
-      }
     }
   
     this.throwableObjects.push(bubble);
+  }
+
+  getEndboss() {
+    return this.enemies.find(enemy => enemy instanceof Endboss);
+  }
+  
+  isInEndbossBubbleRange() {
+    let endboss = this.getEndboss();
+  
+    if (!endboss || endboss.isDead()) {
+      return false;
+    }
+  
+    return Math.abs(this.character.x - endboss.x) < 800;
+  }
+  
+  isInEndbossAttackRange() {
+    let endboss = this.getEndboss();
+  
+    if (!endboss || endboss.isDead()) {
+      return false;
+    }
+  
+    return Math.abs(this.character.x - endboss.x) < 350;
+  }
+  
+  hasActivePoisonBubble() {
+    return this.throwableObjects.some(bubble => bubble.isPoisonBubble);
+  }
+  
+  hasNoChanceToBeatEndboss() {
+    let endboss = this.getEndboss();
+  
+    return (
+      endboss &&
+      !endboss.isDead() &&
+      this.character.collectedPoison <= 0 &&
+      !this.hasActivePoisonBubble()
+    );
   }
   
   canThrowBubble() {
@@ -244,19 +279,22 @@ class World {
   checkBubbleCollisions() {
     this.throwableObjects.forEach((bubble, bubbleIndex) => {
       this.enemies.forEach((enemy) => {
-        if (bubble.isColliding(enemy)) {
-          if (enemy instanceof JellyFish && !enemy.isDeadJelly) {
-            enemy.dieInBubble();
-            this.throwableObjects.splice(bubbleIndex, 1);
-          }
+        if (!bubble.isColliding(enemy)) {
+          return;
+        }
   
-          if (enemy instanceof Endboss && !enemy.isDead()) {
-            if (bubble.isPoisonBubble) {
-              enemy.hit("poison");
-            }
-          
-            this.throwableObjects.splice(bubbleIndex, 1);
-
+        if (enemy instanceof JellyFish && !enemy.isDeadJelly) {
+          enemy.dieInBubble();
+          this.throwableObjects.splice(bubbleIndex, 1);
+          return;
+        }
+  
+        if (enemy instanceof Endboss && !enemy.isDead() && bubble.isPoisonBubble) {
+          enemy.hit("poison");
+          this.throwableObjects.splice(bubbleIndex, 1);
+  
+          if (enemy.isDead()) {
+            this.triggerYouWin();
           }
         }
       });
@@ -338,13 +376,13 @@ class World {
   
 
   checkEndbossAttack() {
-    let endboss = this.enemies.find(enemy => enemy instanceof Endboss);
+    let endboss = this.getEndboss();
   
-    if (!endboss || endboss.isDead()) {
+    if (!endboss || endboss.isDead() || this.gameOver) {
       return;
     }
   
-    if (this.isNearEndboss()) {
+    if (this.isInEndbossAttackRange()) {
       endboss.startAttack();
     }
   }
@@ -415,6 +453,24 @@ class World {
     if (gameOverScreen) {
       gameOverScreen.style.display = "flex";
     }
+  }
+
+  triggerYouWin() {
+    if (this.gameOver) {
+      return;
+    }
+  
+    this.gameOver = true;
+  
+    let youWinScreen = document.getElementById("you-win-screen");
+  
+    if (youWinScreen) {
+      youWinScreen.style.display = "flex";
+    }
+  
+    setTimeout(() => {
+      location.reload();
+    }, 6000);
   }
 
 }
