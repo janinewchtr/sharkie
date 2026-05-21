@@ -155,6 +155,10 @@ class Endboss extends MovableObject {
         if (this.isCharacterInAttackRange()) {
           this.world.character.hit("electro");
           this.world.statusBar.reducePercentage(this.world.character.energy);
+      
+          if (this.world.character.isDead()) {
+            this.world.triggerGameOver();
+          }
         }
       }
 

@@ -285,8 +285,12 @@ class World {
         } else if (enemy instanceof Endboss) {
           this.character.hit("electro");
         }
-  
+      
         this.statusBar.reducePercentage(this.character.energy);
+      
+        if (this.character.isDead()) {
+          this.triggerGameOver();
+        }
       }
     });
   }
