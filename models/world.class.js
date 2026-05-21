@@ -174,11 +174,24 @@ class World {
   createBubbleFromSharkieMouth() {
     let mouth = this.getSharkieMouthPosition();
   
+    let isPoisonBubble =
+      this.isNearEndboss() &&
+      this.character.collectedPoison > 0;
+  
     let bubble = new ThrowableObject(
       mouth.x,
       mouth.y,
-      this.character.otherDirection
+      this.character.otherDirection,
+      isPoisonBubble
     );
+  
+    if (isPoisonBubble) {
+      this.character.collectedPoison--;
+  
+      this.poisonBar.setPercentage(
+        this.character.collectedPoison * 20
+      );
+    }
   
     this.throwableObjects.push(bubble);
   }
@@ -228,8 +241,14 @@ class World {
           }
   
           if (enemy instanceof Endboss && !enemy.isDead()) {
-            enemy.hit("bubble");
-            this.throwableObjects.splice(bubbleIndex, 1);
+            if (enemy instanceof Endboss && !enemy.isDead()) {
+
+              if (bubble.isPoisonBubble) {
+                enemy.hit("poison");
+              }
+            
+              this.throwableObjects.splice(bubbleIndex, 1);
+            }
           }
         }
       });
@@ -292,6 +311,16 @@ class World {
       }
       return true;
     });
+  }
+
+  isNearEndboss() {
+    let endboss = this.enemies.find(enemy => enemy instanceof Endboss);
+  
+    if (!endboss || endboss.isDead()) {
+      return false;
+    }
+  
+    return Math.abs(this.character.x - endboss.x) < 800;
   }
 
   draw() {

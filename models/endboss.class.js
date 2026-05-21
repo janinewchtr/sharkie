@@ -101,21 +101,27 @@ class Endboss extends MovableObject {
         }, 150);
       }
 
-        hit(type) {
-            let now = Date.now();
-          
-            if (now - this.lastHit < 600) {
-              return;
-            }
-          
-            this.lastHit = now;
-            this.energy -= 20;
-          
-            if (this.energy <= 0) {
-              this.energy = 0;
-              this.isDeadEndboss = true;
-            }
-          }
+      
+      hit(type) {
+        let now = Date.now();
+      
+        if (now - this.lastHit < 600) {
+          return;
+        }
+      
+        this.lastHit = now;
+      
+        if (type === "poison") {
+          this.energy -= 20;
+        } else {
+          this.energy -= 5;
+        }
+      
+        if (this.energy <= 0) {
+          this.energy = 0;
+          this.isDeadEndboss = true;
+        }
+      }
 
           isHurt() {
             return Date.now() - this.lastHit < 600 && !this.isDead();

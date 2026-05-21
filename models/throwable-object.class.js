@@ -1,7 +1,17 @@
 class ThrowableObject extends MovableObject {
-    constructor(x, y, otherDirection = false) {
+    constructor(x, y, otherDirection = false, isPoisonBubble = false) {
       super();
-      this.loadImage("img/1.Sharkie/4.Attack/Bubble trap/Bubble.png");
+      if (isPoisonBubble) {
+        this.loadImage(
+          "img/1.Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png"
+        );
+      } else {
+        this.loadImage(
+          "img/1.Sharkie/4.Attack/Bubble trap/Bubble.png"
+        );
+      }
+      
+      this.isPoisonBubble = isPoisonBubble;
   
       this.x = x;
       this.y = y;
