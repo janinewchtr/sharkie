@@ -41,6 +41,15 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3 Final Enemy/2.floating/13.png',
     ];
 
+    IMAGES_ATTACK = [
+        'img/2.Enemy/3 Final Enemy/Attack/1.png',
+        'img/2.Enemy/3 Final Enemy/Attack/2.png',
+        'img/2.Enemy/3 Final Enemy/Attack/3.png',
+        'img/2.Enemy/3 Final Enemy/Attack/4.png',
+        'img/2.Enemy/3 Final Enemy/Attack/5.png',
+        'img/2.Enemy/3 Final Enemy/Attack/6.png',
+    ];
+
     IMAGES_HURT = [
         'img/2.Enemy/3 Final Enemy/Hurt/1.png',
         'img/2.Enemy/3 Final Enemy/Hurt/2.png',
