@@ -174,7 +174,7 @@ class Endboss extends MovableObject {
       hit(type) {
         let now = Date.now();
       
-        if (now - this.lastHit < 600) {
+        if (type !== "poison" && now - this.lastHit < 600) {
           return;
         }
       

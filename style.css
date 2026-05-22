@@ -162,6 +162,27 @@ body {
   .fullscreen-button:active {
     transform: scale(0.96);
   }
+
+  .game-wrapper:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .game-wrapper:fullscreen canvas {
+    width: min(100vw, calc(100vh * 2.05));
+    height: auto;
+    max-height: 100vh;
+    aspect-ratio: 820 / 400;
+  }
+
+  .game-wrapper:fullscreen .fullscreen-button {
+    display: none;
+  }
   
   .game-over-overlay {
     display: none;
@@ -180,6 +201,7 @@ body {
     object-fit: contain;
     animation: youWinPulse 1.2s ease-in-out infinite;
   }
+
   
   @keyframes youWinPulse {
     0% {
