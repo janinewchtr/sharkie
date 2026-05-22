@@ -157,7 +157,7 @@ class World {
   }
 
   run() {
-      this.gameInterval = setInterval(() => {
+    this.gameInterval = setInterval(() => {
       this.checkCollisions();
       this.checkCollectPoison();
       this.checkCollectCoins();
@@ -243,6 +243,11 @@ class World {
       !this.hasActivePoisonBubble()
     );
   }
+
+  countActivePoisonBubbles() {
+    return this.throwableObjects.filter(bubble => bubble.isPoisonBubble).length;
+  }
+
   
   canThrowBubble() {
     return Date.now() - this.lastBubbleThrow > this.bubbleCooldown;
@@ -295,10 +300,13 @@ class World {
         if (enemy instanceof Endboss && !enemy.isDead() && bubble.isPoisonBubble) {
           enemy.hit("poison");
           this.throwableObjects.splice(bubbleIndex, 1);
-  
+        
           if (enemy.isDead()) {
             this.triggerYouWin();
+            return;
           }
+        
+          this.checkEndbossFightLost();
         }
       });
     });
@@ -387,6 +395,12 @@ class World {
   
     if (this.isInEndbossAttackRange()) {
       endboss.startAttack();
+    }
+  }
+
+  checkEndbossFightLost() {
+    if (this.hasNoChanceToBeatEndboss()) {
+      this.triggerGameOver();
     }
   }
 
