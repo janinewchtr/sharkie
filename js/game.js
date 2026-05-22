@@ -9,7 +9,8 @@ function init() {
 }
 
 function startGame() {
-  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("game-wrapper").classList.add("game-started");
   init();
 }
 
@@ -22,6 +23,39 @@ function toggleFullscreen() {
     document.exitFullscreen();
   }
 }
+
+function bindMobileButton(id, key) {
+  let button = document.getElementById(id);
+
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    keyboard[key] = true;
+  });
+
+  button.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    keyboard[key] = false;
+  });
+
+  button.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
+}
+
+function bindMobileControls() {
+  bindMobileButton("mobile-left", "LEFT");
+  bindMobileButton("mobile-right", "RIGHT");
+  bindMobileButton("mobile-up", "UP");
+  bindMobileButton("mobile-down", "DOWN");
+  bindMobileButton("mobile-bubble", "D");
+  bindMobileButton("mobile-fin", "SPACE");
+}
+
+bindMobileControls();
 
 window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") keyboard.RIGHT = true;

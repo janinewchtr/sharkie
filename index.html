@@ -26,6 +26,10 @@
 <body>
     <h1>Sharkie Attack</h1>
 
+    <div id="rotate-screen" class="rotate-screen">
+        <h2>Turn your display</h2>
+      </div>
+
     <div class="game-wrapper" id="game-wrapper">
         <div id="start-screen" class="overlay">
           <div class="start-panel">
@@ -75,6 +79,20 @@
           </div>
       
         <canvas id="canvas" width="820" height="400"></canvas>
+
+        <div class="mobile-controls">
+            <div class="mobile-left-controls">
+              <button class="mobile-btn" id="mobile-left">◀</button>
+              <button class="mobile-btn" id="mobile-right">▶</button>
+              <button class="mobile-btn" id="mobile-up">▲</button>
+              <button class="mobile-btn" id="mobile-down">▼</button>
+            </div>
+          
+            <div class="mobile-right-controls">
+              <button class="mobile-btn attack-btn" id="mobile-bubble">D</button>
+              <button class="mobile-btn attack-btn" id="mobile-fin">SLAP</button>
+            </div>
+          </div>
       </div>
 </body>
 </html>
