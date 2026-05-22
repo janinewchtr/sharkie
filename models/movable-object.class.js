@@ -60,9 +60,6 @@ class MovableObject extends DrawableObject {
     return timePassed < 1000;
   }
 
-  moveRight() {
-    console.log("moving right");
-  }
 
   playAnimation(images) {
     let i = this.currentImage % images.length;
