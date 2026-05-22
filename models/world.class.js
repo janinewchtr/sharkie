@@ -10,6 +10,9 @@ class World {
   lastBubbleThrow = 0;
   bubbleCooldown = 600;
   gameOver = false;
+  gameInterval;
+  animationFrameId;
+  restartTimeout;
 
 
   character;
@@ -154,7 +157,7 @@ class World {
   }
 
   run() {
-    setInterval(() => {
+      this.gameInterval = setInterval(() => {
       this.checkCollisions();
       this.checkCollectPoison();
       this.checkCollectCoins();
@@ -410,7 +413,7 @@ class World {
   
     this.ctx.translate(-this.camera_x, 0);
   
-    requestAnimationFrame(() => this.draw());
+    this.animationFrameId = requestAnimationFrame(() => this.draw());
   }
 
   addObjectsToMap(objects) {
@@ -468,9 +471,15 @@ class World {
       youWinScreen.style.display = "flex";
     }
   
-    setTimeout(() => {
-      location.reload();
+    this.restartTimeout = setTimeout(() => {
+      showStartScreen();
     }, 6000);
+  }
+
+  stop() {
+    clearInterval(this.gameInterval);
+    cancelAnimationFrame(this.animationFrameId);
+    clearTimeout(this.restartTimeout);
   }
 
 }

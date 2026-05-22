@@ -14,6 +14,8 @@ function startGame() {
   init();
 }
 
+
+
 function toggleFullscreen() {
   let gameWrapper = document.getElementById("game-wrapper");
 
@@ -56,6 +58,58 @@ function bindMobileControls() {
 }
 
 bindMobileControls();
+
+function restartGame() {
+  stopCurrentWorld();
+  resetKeyboard();
+  hideEndScreens();
+
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("game-wrapper").classList.add("game-started");
+
+  init();
+}
+
+function showStartScreen() {
+  stopCurrentWorld();
+  resetKeyboard();
+  hideEndScreens();
+  clearCanvas();
+
+  document.getElementById("start-screen").style.display = "flex";
+  document.getElementById("game-wrapper").classList.remove("game-started");
+}
+
+function stopCurrentWorld() {
+  if (world && world.stop) {
+    world.stop();
+  }
+}
+
+function hideEndScreens() {
+  document.getElementById("game-over-screen").style.display = "none";
+  document.getElementById("you-win-screen").style.display = "none";
+}
+
+function resetKeyboard() {
+  keyboard.RIGHT = false;
+  keyboard.LEFT = false;
+  keyboard.UP = false;
+  keyboard.DOWN = false;
+  keyboard.SPACE = false;
+  keyboard.D = false;
+}
+
+function clearCanvas() {
+  if (!canvas) {
+    canvas = document.getElementById("canvas");
+  }
+
+  let ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#071934";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
 window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") keyboard.RIGHT = true;
