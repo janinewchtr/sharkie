@@ -11,7 +11,6 @@ class World {
   lastBubbleThrow = 0;
   bubbleCooldown = 600;
   gameOver = false;
-  gameInterval;
   animationFrameId;
   restartTimeout;
 
@@ -158,7 +157,7 @@ class World {
   }
 
   run() {
-    this.gameInterval = setInterval(() => {
+    setStoppableInterval(() => {
       this.checkCollisions();
       this.checkCollectPoison();
       this.checkCollectCoins();
