@@ -172,6 +172,16 @@ class World {
     return this.throwableObjects.some((bubble) => bubble.isPoisonBubble);
   }
 
+  isCharacterNearEndboss(distance) {
+    let endboss = this.getEndboss();
+  
+    if (!endboss || endboss.isDead()) {
+      return false;
+    }
+  
+    return Math.abs(this.character.x - endboss.x) < distance;
+  }
+
   hasNoChanceToBeatEndboss() {
     let endboss = this.getEndboss();
 
@@ -364,27 +374,17 @@ class World {
     this.gameOver = true;
     this.character.die();
     this.statusBar.setPercentage(0);
-
-    let gameOverScreen = document.getElementById("game-over-screen");
-
-    if (gameOverScreen) {
-      gameOverScreen.style.display = "flex";
-    }
+    showGameOverScreen();
   }
 
   triggerYouWin() {
     if (this.gameOver) {
       return;
     }
-
+  
     this.gameOver = true;
-
-    let youWinScreen = document.getElementById("you-win-screen");
-
-    if (youWinScreen) {
-      youWinScreen.style.display = "flex";
-    }
-
+    showYouWinScreen();
+  
     this.restartTimeout = setTimeout(() => {
       showStartScreen();
     }, 6000);

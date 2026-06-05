@@ -124,6 +124,23 @@ function clearCanvas() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+function showGameOverScreen() {
+  let gameOverScreen = document.getElementById("game-over-screen");
+
+  if (gameOverScreen) {
+    gameOverScreen.style.display = "flex";
+  }
+}
+
+function showYouWinScreen() {
+  let youWinScreen = document.getElementById("you-win-screen");
+
+  if (youWinScreen) {
+    youWinScreen.style.display = "flex";
+  }
+}
+
+
 window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") keyboard.RIGHT = true;
   if (e.key === "ArrowLeft") keyboard.LEFT = true;
