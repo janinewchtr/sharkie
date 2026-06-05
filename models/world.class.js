@@ -5,6 +5,7 @@ class World {
   camera_x = 0;
   statusBar = new StatusBar('life');
   throwableObjects = [];
+  maxCoins = 40;
   poisonBar = new StatusBar('poison');
   coinBar = new StatusBar('coin');
   lastBubbleThrow = 0;
@@ -365,8 +366,9 @@ class World {
   
         this.character.collectCoins();
   
-        // Statusbar aktualisieren
-        this.coinBar.setPercentage(this.character.collectedCoins * 20);
+        this.coinBar.setPercentage(
+          this.character.collectedCoins * (100 / this.maxCoins)
+        );
   
         return false;
       }

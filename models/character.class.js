@@ -283,11 +283,8 @@ IMAGES_HURT_ELECTRO = [
       this.collectedPoison++;
     }
   }
-
   collectCoins() {
-    if (this.collectedCoins < 5) {
-      this.collectedCoins++;
-    }
+    this.collectedCoins++;
   }
 
   die() {
