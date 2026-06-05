@@ -5,7 +5,7 @@ class World {
   camera_x = 0;
   statusBar = new StatusBar('life');
   throwableObjects = [];
-  maxCoins = 40;
+  maxCoins = 26;
   poisonBar = new StatusBar('poison');
   coinBar = new StatusBar('coin');
   lastBubbleThrow = 0;
