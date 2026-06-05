@@ -65,13 +65,17 @@ function createLevelBackgroundObjects() {
     return coins;
   }
 
-  function createLevelCoins() {
-    this.coins = [];
-    this.createCoinArc(400, 300, 7, 60, 120);
-    this.createCoinArc(1400, 280, 6, 60, 100);
-    this.createCoinArc(2400, 260, 8, 60, 140);
-    this.createCoinArc(3300, 300, 5, 60, 80);
-  }
+
+function createLevelCoins() {
+  let coins = [];
+
+  coins = coins.concat(createCoinArc(400, 300, 7, 60, 120));
+  coins = coins.concat(createCoinArc(1400, 280, 6, 60, 100));
+  coins = coins.concat(createCoinArc(2400, 260, 8, 60, 140));
+  coins = coins.concat(createCoinArc(3300, 300, 5, 60, 80));
+
+  return coins;
+}
 
   function getLevelWidth() {
     return 5 * 920;
