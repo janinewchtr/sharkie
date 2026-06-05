@@ -15,12 +15,10 @@
     <script src="models/jelly-fish.class.js"></script>
     <script src="models/poison.class.js"></script>
     <script src="models/coins.class.js"></script>
-    <script src="models/level.class.js"></script>
     <script src="models/throwable-object.class.js"></script>
     <script src="models/world.class.js"></script>
     <script src="models/keyboard.class.js"></script>
     <script src="models/endboss.class.js"></script>
-    <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
 </head>
 <body>
@@ -48,7 +46,7 @@
       
               <div class="control-row">
                 <img class="key-img space-key" src="img/6.Botones/Key/Space Bar key.png" alt="Space Bar">
-                <h2 class="finslap-title">Fin Slap</h2>
+                <h2 class="finslap-title">Fin Slap Puffer Fish</h2>
               </div>
 
               
@@ -60,15 +58,20 @@
           </div>
         </div>
 
+        <a class="fullscreen-button impressum-button" href="impressum.html">
+          Impressum
+        </a>
+
         <button class="fullscreen-button" onclick="toggleFullscreen()">
             <img src="img/6.Botones/Full Screen/Mesa de trabajo 7.png" alt="Fullscreen">
           </button>
+
 
         <div id="game-over-screen" class="overlay game-over-overlay">
             <div class="start-panel">
               <h2 class="start-title">Game Over</h2>
           
-              <button class="start-button" onclick="location.restartGame()">
+              <button class="start-button" onclick="restartGame()">
                 <img src="img/6.Botones/Try again/Recurso 17.png" alt="Restart">
               </button>
             </div>

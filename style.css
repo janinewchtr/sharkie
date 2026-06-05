@@ -98,13 +98,13 @@ body {
   
   .finslap-title {
     font-family: "Luckiest-Guy-Regular";
-    font-size: 32px;
+    font-size: 24px;
     color: white;
     text-align: center;
   }
   
   .desc-img {
-    height: 28px;
+    height: 20px;
     width: auto;
     object-fit: contain;
   }
@@ -141,7 +141,6 @@ body {
     bottom: 18px;
     z-index: 30;
     width: 82px;
-    height: 46px;
     padding: 0;
     border: none;
     background: transparent;
@@ -225,6 +224,25 @@ body {
     display: none;
   }
   
+
+  .impressum-button {
+    background: rgba(112, 238, 209, 0.9);
+    border: 1px solid white;
+    border-radius: 8px;
+    left: 18px;
+    right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a2185;
+    font-family: "Luckiest-Guy-Regular";
+    font-size: 8px;
+    text-decoration: none;
+    padding-top: 3px;
+    
+  }
+
+
   @media (max-width: 950px) and (orientation: landscape) {
     h1 {
       display: none;
