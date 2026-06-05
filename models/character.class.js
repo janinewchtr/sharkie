@@ -24,6 +24,8 @@ class Character extends MovableObject {
   finSlapFrame = 0;
   finSlapCounter = 0;
   finSlapFrameDelay = 3;
+  deadAnimationIndex = 0;
+  deadAnimationFinished = false;
   
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/2.png",
@@ -180,6 +182,11 @@ IMAGES_HURT_ELECTRO = [
     setInterval(() => {
       let isMoving = false;
 
+      if (this.isDead()) {
+        this.floatAwayAfterDeath();
+        return;
+      }
+
       if (this.isBubbleAttacking) {
         let path = this.IMAGES_ATTACK[this.bubbleAttackFrame];
         this.img = this.imageCache[path];
@@ -256,7 +263,7 @@ IMAGES_HURT_ELECTRO = [
 
     setInterval(() => {
       if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
+        this.playDeathAnimationOnce();
       } else if (this.isHurtElectro()) {
         this.playAnimation(this.IMAGES_HURT_ELECTRO);
       } else if (this.isHurtPoisoned()) {
@@ -285,6 +292,28 @@ IMAGES_HURT_ELECTRO = [
 
   die() {
     this.energy = 0;
+    this.isBubbleAttacking = false;
+    this.isFinSlap = false;
+  }
+
+  playDeathAnimationOnce() {
+    if (!this.deadAnimationFinished) {
+      let path = this.IMAGES_DEAD[this.deadAnimationIndex];
+      this.img = this.imageCache[path];
+  
+      this.deadAnimationIndex++;
+  
+      if (this.deadAnimationIndex >= this.IMAGES_DEAD.length) {
+        this.deadAnimationIndex = this.IMAGES_DEAD.length - 1;
+        this.deadAnimationFinished = true;
+      }
+    }
+  }
+  
+  floatAwayAfterDeath() {
+    if (this.deadAnimationFinished) {
+      this.y -= 2;
+    }
   }
 
 
