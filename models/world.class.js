@@ -139,14 +139,7 @@ class World {
     this.createCoinArc(2400, 260, 8, 60, 140);
     this.createCoinArc(3300, 300, 5, 60, 80);
   }
-  
-  getRandomX(min, max) {
-    return min + Math.random() * (max - min);
-  }
-  
-  getRandomY(min, max) {
-    return min + Math.random() * (max - min);
-  }
+
 
   removeBubblesOutsideCanvas() {
     this.throwableObjects = this.throwableObjects.filter((bubble) => {
@@ -242,10 +235,6 @@ class World {
       this.character.collectedPoison <= 0 &&
       !this.hasActivePoisonBubble()
     );
-  }
-
-  countActivePoisonBubbles() {
-    return this.throwableObjects.filter(bubble => bubble.isPoisonBubble).length;
   }
 
   
@@ -375,17 +364,6 @@ class World {
     });
   }
 
-  isNearEndboss() {
-    let endboss = this.enemies.find(enemy => enemy instanceof Endboss);
-  
-    if (!endboss || endboss.isDead()) {
-      return false;
-    }
-  
-    return Math.abs(this.character.x - endboss.x) < 350;
-  }
-
-  
 
   checkEndbossAttack() {
     let endboss = this.getEndboss();
