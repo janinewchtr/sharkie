@@ -65,7 +65,7 @@ function createLevelBackgroundObjects() {
     return coins;
   }
 
-  function createCoins() {
+  function createLevelCoins() {
     this.coins = [];
     this.createCoinArc(400, 300, 7, 60, 120);
     this.createCoinArc(1400, 280, 6, 60, 100);
