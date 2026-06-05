@@ -49,7 +49,7 @@ class PufferFish extends MovableObject {
 
       if (this.isDeadPuffer) {
         this.playDeathAnimationOnce();
-        this.y += 10; // Sink down when dead
+        this.y += 10; 
       } else if (this.isTransitioning) {
         this.playTransitionAnimation();
       } else if (this.isPuffed) {
