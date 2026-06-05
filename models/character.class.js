@@ -179,7 +179,7 @@ IMAGES_HURT_ELECTRO = [
   }
 
   animate() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       let isMoving = false;
 
       if (this.isDead()) {
@@ -261,7 +261,7 @@ IMAGES_HURT_ELECTRO = [
       this.world.camera_x = -this.x;
     }, 1000 / 60);
 
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.isDead()) {
         this.playDeathAnimationOnce();
       } else if (this.isHurtElectro()) {

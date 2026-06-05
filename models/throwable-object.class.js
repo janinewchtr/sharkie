@@ -24,7 +24,7 @@ class ThrowableObject extends MovableObject {
     }
   
     throw() {
-      setInterval(() => {
+      setStoppableInterval(() => {
         this.x += this.speedX;
       }, 1000 / 60);
     }

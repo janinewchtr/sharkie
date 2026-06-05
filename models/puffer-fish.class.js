@@ -44,7 +44,7 @@ class PufferFish extends MovableObject {
   }
 
   animate() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.checkDistanceToCharacter();
 
       if (this.isDeadPuffer) {

@@ -92,7 +92,7 @@ class Endboss extends MovableObject {
     animate() {
         let i = 0;
       
-        setInterval(() => {
+        setStoppableInterval(() => {
             if (this.isDead()) {
                 this.playDeathAnimationOnce();
                 this.y -= 3;

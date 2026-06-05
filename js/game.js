@@ -1,3 +1,16 @@
+let intervalIds = [];
+
+function setStoppableInterval(fn, time) {
+  let id = setInterval(fn, time);
+  intervalIds.push(id);
+  return id;
+}
+
+function stopGameIntervals() {
+  intervalIds.forEach(clearInterval);
+  intervalIds = [];
+}
+
 let canvas;
 let world;
 let keyboard = new Keyboard();

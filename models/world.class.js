@@ -493,7 +493,7 @@ class World {
   }
 
   stop() {
-    clearInterval(this.gameInterval);
+    stopGameIntervals();
     cancelAnimationFrame(this.animationFrameId);
     clearTimeout(this.restartTimeout);
   }
