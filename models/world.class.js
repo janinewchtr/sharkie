@@ -112,8 +112,8 @@ class World {
     let mouth = this.getSharkieMouthPosition();
 
     let isPoisonBubble =
-      this.isInEndbossBubbleRange() &&
-      this.character.collectedPoison > 0;
+    this.isCharacterNearEndboss(800) &&
+    this.character.collectedPoison > 0;
 
     let bubble = new ThrowableObject(
       mouth.x,
@@ -146,30 +146,6 @@ class World {
 
   getEndboss() {
     return this.enemies.find((enemy) => enemy instanceof Endboss);
-  }
-
-  isInEndbossBubbleRange() {
-    let endboss = this.getEndboss();
-
-    if (!endboss || endboss.isDead()) {
-      return false;
-    }
-
-    return Math.abs(this.character.x - endboss.x) < 800;
-  }
-
-  isInEndbossAttackRange() {
-    let endboss = this.getEndboss();
-
-    if (!endboss || endboss.isDead()) {
-      return false;
-    }
-
-    return Math.abs(this.character.x - endboss.x) < 350;
-  }
-
-  hasActivePoisonBubble() {
-    return this.throwableObjects.some((bubble) => bubble.isPoisonBubble);
   }
 
   isCharacterNearEndboss(distance) {
@@ -307,7 +283,7 @@ class World {
       return;
     }
 
-    if (this.isInEndbossAttackRange()) {
+    if (this.isCharacterNearEndboss(350)) {
       endboss.startAttack();
     }
   }
