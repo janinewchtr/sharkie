@@ -19,7 +19,6 @@ class World {
   poisonBottles;
   coins;
   levelWidth;
-  endbossFightStarted = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -150,28 +149,6 @@ class World {
     return Math.abs(this.character.x - endboss.x) < distance;
   }
 
-  /**
-   * Checks whether Sharkie has enough poison to defeat the endboss.
-   * @returns {boolean} True if the endboss can no longer be defeated.
-   */
-  hasNoChanceToBeatEndboss() {
-    let endboss = this.getEndboss();
-    if (!endboss) {
-      return false;
-    }
-    if (endboss.isDead()) {
-      return false;
-    }
-    let poisonDamage = 20;
-    let neededPoisonBubbles = endboss.energy / poisonDamage;
-    let flyingPoisonBubbles = this.countActivePoisonBubbles();
-    let availablePoisonBubbles =
-      this.character.collectedPoison + flyingPoisonBubbles;
-    if (availablePoisonBubbles < neededPoisonBubbles) {
-      return true;
-    }
-    return false;
-  }
 
   checkFinSlapAttack() {
     if (this.keyboard.SPACE && !this.character.isFinSlap) {
@@ -208,11 +185,11 @@ class World {
         ) {
           enemy.hit("poison");
           this.throwableObjects.splice(bubbleIndex, 1);
+        
           if (enemy.isDead()) {
             this.triggerYouWin();
             return;
           }
-          this.checkEndbossFightLost();
         }
       });
     });
@@ -294,29 +271,23 @@ class World {
   }
 
 /**
- * Checks whether Sharkie can still defeat the endboss.
+ * Checks whether Sharkie has run out of poison during the endboss fight.
  */
 checkEndbossFightLost() {
+  let endboss = this.getEndboss();
   if (!this.isCharacterNearEndboss(350)) {
     return;
   }
-  if (!this.endbossFightStarted) {
-    this.endbossFightStarted = true;
-
-    if (this.hasNoChanceToBeatEndboss()) {
-      this.triggerGameOver();
-    }
+  if (!endboss || endboss.isDead()) {
     return;
   }
-  if (
-    this.character.collectedPoison === 0 &&
-    this.countActivePoisonBubbles() === 0
-  ) {
-    let endboss = this.getEndboss();
-    if (endboss && !endboss.isDead()) {
-      this.triggerGameOver();
-    }
+  if (this.character.collectedPoison > 0) {
+    return;
   }
+  if (this.countActivePoisonBubbles() > 0) {
+    return;
+  }
+  this.triggerGameOver();
 }
 
   draw() {
