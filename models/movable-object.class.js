@@ -30,28 +30,56 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  /**
-   * Reduces the object's energy and saves the damage type.
-   * @param {string} type - Type of received damage.
-   */
-  hit(type) {
-    let now = Date.now();
+/**
+ * Reduces the object's energy and saves the damage type.
+ * @param {string} type - Type of received damage.
+ */
+hit(type) {
+  let now = Date.now();
 
-    if (now - this.lastHit < 1000) {
-      return;
-    }
-    this.lastHit = now;
-    this.energy -= 10;
-    if (this.energy < 0) {
-      this.energy = 0;
-    }
-    if (type === "poison") {
-      this.lastPoisonHit = now;
-    }
-    if (type === "electro") {
-      this.lastElectroHit = now;
-    }
+  if (!this.canReceiveDamage(now)) {
+    return;
   }
+
+  this.lastHit = now;
+  this.reduceEnergy();
+  this.saveDamageType(type, now);
+}
+
+/**
+ * Checks whether the object can receive damage.
+ * @param {number} now - Current timestamp.
+ * @returns {boolean} True if damage can be received.
+ */
+canReceiveDamage(now) {
+  return now - this.lastHit >= 1000;
+}
+
+/**
+ * Reduces the object's energy.
+ */
+reduceEnergy() {
+  this.energy -= 10;
+
+  if (this.energy < 0) {
+    this.energy = 0;
+  }
+}
+
+/**
+ * Saves when a specific damage type was received.
+ * @param {string} type - Type of received damage.
+ * @param {number} now - Current timestamp.
+ */
+saveDamageType(type, now) {
+  if (type === "poison") {
+    this.lastPoisonHit = now;
+  }
+
+  if (type === "electro") {
+    this.lastElectroHit = now;
+  }
+}
 
   /**
    * Checks whether the object has no energy left.

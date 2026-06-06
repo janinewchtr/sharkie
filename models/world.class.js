@@ -219,31 +219,60 @@ class World {
     });
   }
 
-  /**
-   * Checks collisions between bubbles and enemies.
-   */
-  checkBubbleCollisions() {
-    this.throwableObjects.forEach((bubble, bubbleIndex) => {
-      this.enemies.forEach((enemy) => {
-        if (!bubble.isColliding(enemy)) {
-          return;
-        }
-        if (enemy instanceof JellyFish && !enemy.isDeadJelly) {
-          enemy.dieInBubble();
-          this.throwableObjects.splice(bubbleIndex, 1);
-          return;
-        }
-        if (enemy instanceof Endboss &&!enemy.isDead() && bubble.isPoisonBubble) {
-          enemy.hit("poison");
-          this.throwableObjects.splice(bubbleIndex, 1);
-          if (enemy.isDead()) {
-            this.triggerYouWin();
-            return;
-          }
-        }
-      });
+/**
+ * Checks collisions between bubbles and enemies.
+ */
+checkBubbleCollisions() {
+  this.throwableObjects.forEach((bubble, bubbleIndex) => {
+    this.enemies.forEach((enemy) => {
+      this.handleBubbleEnemyCollision(bubble, bubbleIndex, enemy);
     });
+  });
+}
+
+/**
+ * Handles a collision between a bubble and an enemy.
+ * @param {ThrowableObject} bubble - Colliding bubble.
+ * @param {number} bubbleIndex - Position of the bubble inside the array.
+ * @param {MovableObject} enemy - Colliding enemy.
+ */
+handleBubbleEnemyCollision(bubble, bubbleIndex, enemy) {
+  if (!bubble.isColliding(enemy)) {
+    return;
   }
+
+  if (enemy instanceof JellyFish && !enemy.isDeadJelly) {
+    this.defeatJellyFish(enemy, bubbleIndex);
+  }
+
+  if (enemy instanceof Endboss && !enemy.isDead() && bubble.isPoisonBubble) {
+    this.hitEndbossWithBubble(enemy, bubbleIndex);
+  }
+}
+
+/**
+ * Defeats a jellyfish and removes the bubble.
+ * @param {JellyFish} jellyFish - Jellyfish hit by the bubble.
+ * @param {number} bubbleIndex - Position of the bubble inside the array.
+ */
+defeatJellyFish(jellyFish, bubbleIndex) {
+  jellyFish.dieInBubble();
+  this.throwableObjects.splice(bubbleIndex, 1);
+}
+
+/**
+ * Damages the endboss and removes the poison bubble.
+ * @param {Endboss} endboss - Endboss hit by the poison bubble.
+ * @param {number} bubbleIndex - Position of the bubble inside the array.
+ */
+hitEndbossWithBubble(endboss, bubbleIndex) {
+  endboss.hit("poison");
+  this.throwableObjects.splice(bubbleIndex, 1);
+
+  if (endboss.isDead()) {
+    this.triggerYouWin();
+  }
+}
 
   /**
    * Checks collisions between Sharkie and living enemies.
@@ -358,24 +387,64 @@ class World {
   /**
    * Draws all game objects and requests the next animation frame.
    */
-  draw() {
-    this.updateCamera();
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.translate(this.camera_x, 0);
-    this.addObjectsToMap(this.backgroundObjects);
-    this.ctx.translate(-this.camera_x, 0);
-    this.addToMap(this.statusBar);
-    this.addToMap(this.poisonBar);
-    this.addToMap(this.coinBar);
-    this.ctx.translate(this.camera_x, 0);
-    this.addToMap(this.character);
-    this.addObjectsToMap(this.enemies);
-    this.addObjectsToMap(this.poisonBottles);
-    this.addObjectsToMap(this.coins);
-    this.addObjectsToMap(this.throwableObjects);
-    this.ctx.translate(-this.camera_x, 0);
-    this.animationFrameId = requestAnimationFrame(() => this.draw());
-  }
+/**
+ * Draws all game objects and requests the next animation frame.
+ */
+draw() {
+  this.updateCamera();
+  this.clearCanvas();
+  this.drawBackgroundObjects();
+  this.drawStatusBars();
+  this.drawGameObjects();
+  this.animationFrameId = requestAnimationFrame(() => this.draw());
+}
+
+/**
+ * Clears the canvas.
+ */
+clearCanvas() {
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
+
+/**
+ * Draws all background objects using the camera position.
+ */
+drawBackgroundObjects() {
+  this.ctx.save();
+  this.ctx.translate(this.camera_x, 0);
+  this.addObjectsToMap(this.backgroundObjects);
+  this.ctx.restore();
+}
+
+/**
+ * Draws all status bars without moving them with the camera.
+ */
+drawStatusBars() {
+  this.addToMap(this.statusBar);
+  this.addToMap(this.poisonBar);
+  this.addToMap(this.coinBar);
+}
+
+/**
+ * Draws all moving and collectible game objects.
+ */
+drawGameObjects() {
+  this.ctx.save();
+  this.ctx.translate(this.camera_x, 0);
+  this.addGameObjectsToMap();
+  this.ctx.restore();
+}
+
+/**
+ * Adds all moving and collectible objects to the canvas.
+ */
+addGameObjectsToMap() {
+  this.addToMap(this.character);
+  this.addObjectsToMap(this.enemies);
+  this.addObjectsToMap(this.poisonBottles);
+  this.addObjectsToMap(this.coins);
+  this.addObjectsToMap(this.throwableObjects);
+}
 
   /**
    * Adds multiple objects to the canvas.

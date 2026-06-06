@@ -16,7 +16,7 @@ class PufferFish extends MovableObject {
   IMAGES_SWIM = IMAGE_PATHS.pufferFish.swim;
   IMAGES_TRANSITION = IMAGE_PATHS.pufferFish.transition;
   IMAGES_DEAD = IMAGE_PATHS.pufferFish.dead;
-  
+
   /**
    * Creates a puffer fish and starts its animation.
    * @param {number} x - Horizontal position of the puffer fish.
@@ -36,27 +36,46 @@ class PufferFish extends MovableObject {
     this.animate();
   }
 
-  /**
-   * Starts the movement and animations of the puffer fish.
-   */
-  animate() {
-    setStoppableInterval(() => {
-      this.checkDistanceToCharacter();
+/**
+ * Starts the movement and animations of the puffer fish.
+ */
+animate() {
+  setStoppableInterval(() => {
+    this.updatePufferFish();
+  }, 150);
+}
 
-      if (this.isDeadPuffer) {
-        this.playDeathAnimationOnce();
-        this.y += 10;
-      } else if (this.isTransitioning) {
-        this.playTransitionAnimation();
-      } else if (this.isPuffed) {
-        this.showPuffedImage();
-      } else {
-        this.playAnimation(this.IMAGES_SWIM);
-      }
+/**
+ * Updates the movement and animation of the puffer fish.
+ */
+updatePufferFish() {
+  this.checkDistanceToCharacter();
+  this.playCurrentAnimation();
+  this.x -= 2;
+}
 
-      this.x -= 2;
-    }, 150);
+/**
+ * Selects the correct animation for the current state.
+ */
+playCurrentAnimation() {
+  if (this.isDeadPuffer) {
+    this.handleDeath();
+  } else if (this.isTransitioning) {
+    this.playTransitionAnimation();
+  } else if (this.isPuffed) {
+    this.showPuffedImage();
+  } else {
+    this.playAnimation(this.IMAGES_SWIM);
   }
+}
+
+/**
+ * Plays the death animation and moves the puffer fish downwards.
+ */
+handleDeath() {
+  this.playDeathAnimationOnce();
+  this.y += 10;
+}
 
   /**
    * Checks the distance to Sharkie and starts a transition if needed.
