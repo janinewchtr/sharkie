@@ -6,13 +6,7 @@ function createLevelBackgroundObjects() {
     let backgroundObjects = [];
     let segmentWidth = 920;
     let numberOfSegments = 5;
-    let backgroundLayerImages = [
-      "img/3. Background/Layers/5. Water/D.png",
-      "img/3. Background/Layers/4.Fondo 2/D.png",
-      "img/3. Background/Layers/3.Fondo 1/D.png",
-      "img/3. Background/Legacy/Layers/1. Light/3.png",
-      "img/3. Background/Layers/2. Floor/D.png",
-    ];
+    let backgroundLayerImages = IMAGE_PATHS.background;
     for (let segmentIndex = 0; segmentIndex < numberOfSegments; segmentIndex++) {
       backgroundLayerImages.forEach((image) => {
         backgroundObjects.push(

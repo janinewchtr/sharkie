@@ -2,32 +2,9 @@
  * Represents a status bar for life, coins or poison bubbles.
  */
 class StatusBar extends DrawableObject {
-    IMAGES_LIFE = [
-      "img/4. Marcadores/green/Life/0copia 3.png",
-      "img/4. Marcadores/green/Life/20copia 4.png",
-      "img/4. Marcadores/green/Life/40copia 3.png",
-      "img/4. Marcadores/green/Life/60copia 3.png",
-      "img/4. Marcadores/green/Life/80copia 3.png",
-      "img/4. Marcadores/green/Life/100copia 2.png",
-    ];
-  
-    IMAGES_COINS = [
-      "img/4. Marcadores/green/Coin/0copia 4.png",
-      "img/4. Marcadores/green/Coin/20copia 2.png",
-      "img/4. Marcadores/green/Coin/40copia 4.png",
-      "img/4. Marcadores/green/Coin/60copia 4.png",
-      "img/4. Marcadores/green/Coin/80copia 4.png",
-      "img/4. Marcadores/green/Coin/100copia 4.png",
-    ];
-  
-    IMAGES_POISONED_BUBBLES = [
-      "img/4. Marcadores/green/poisoned bubbles/0_ copia 2.png",
-      "img/4. Marcadores/green/poisoned bubbles/20_ copia 3.png",
-      "img/4. Marcadores/green/poisoned bubbles/40_ copia 2.png",
-      "img/4. Marcadores/green/poisoned bubbles/60_ copia 2.png",
-      "img/4. Marcadores/green/poisoned bubbles/80_ copia 2.png",
-      "img/4. Marcadores/green/poisoned bubbles/100_ copia 3.png",
-    ];
+  IMAGES_LIFE = IMAGE_PATHS.statusBar.life;
+  IMAGES_COINS = IMAGE_PATHS.statusBar.coins;
+  IMAGES_POISONED_BUBBLES = IMAGE_PATHS.statusBar.poison;
   
     percentage = 100;
     images = [];

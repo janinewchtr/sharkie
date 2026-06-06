@@ -6,13 +6,7 @@ class Coin extends MovableObject {
   width = 40;
   y = 40;
 
-  IMAGES_IDLE = [
-    "img/4. Marcadores/1. Coins/1.png",
-    "img/4. Marcadores/1. Coins/2.png",
-    "img/4. Marcadores/1. Coins/3.png",
-    "img/4. Marcadores/1. Coins/4.png",
-  ];
-
+  IMAGES_IDLE = IMAGE_PATHS.coin;
   /**
    * Creates a coin at the given position and starts its animation.
    * @param {number} x - Horizontal position of the coin.

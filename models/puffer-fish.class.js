@@ -13,25 +13,10 @@ class PufferFish extends MovableObject {
   deadAnimationIndex = 0;
   deadAnimationFinished = false;
 
-  IMAGES_SWIM = [
-    "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim3.png",
-  ];
-
-  IMAGES_TRANSITION = [
-    "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition1.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition2.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition3.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition4.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/2.transition5.png",
-  ];
-
-  IMAGES_DEAD = [
-    "img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.2.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/2.3.png",
-  ];
-
+  IMAGES_SWIM = IMAGE_PATHS.pufferFish.swim;
+  IMAGES_TRANSITION = IMAGE_PATHS.pufferFish.transition;
+  IMAGES_DEAD = IMAGE_PATHS.pufferFish.dead;
+  
   /**
    * Creates a puffer fish and starts its animation.
    * @param {number} x - Horizontal position of the puffer fish.
