@@ -22,6 +22,7 @@ class World {
   poisonBottles;
   coins;
   levelWidth;
+  collisions;
 
   /**
    * Creates and starts a new game world.
@@ -33,7 +34,7 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.initBars();
-    this.initLevel();
+    this.collisions = new Collisions(this);
     this.setWorld();
     this.character.start();
     this.draw();
@@ -91,15 +92,9 @@ class World {
    */
   run() {
     setStoppableInterval(() => {
-      this.checkCollisions();
-      this.checkCollectPoison();
-      this.checkCollectCoins();
       this.checkThrowObjects();
-      this.checkBubbleCollisions();
       this.removeBubblesOutsideCanvas();
-      this.checkFinSlapAttack();
-      this.checkEndbossAttack();
-      this.checkEndbossFightLost();
+      this.collisions.runChecks();
     }, 100);
   }
 
@@ -194,194 +189,6 @@ class World {
       return false;
     }
     return Math.abs(this.character.x - endboss.x) < distance;
-  }
-
-  /**
-   * Checks whether Sharkie performs a fin-slap attack.
-   */
-  checkFinSlapAttack() {
-    if (this.keyboard.SPACE && !this.character.isFinSlap) {
-      this.character.startFinSlap();
-      this.hitPufferFishWithFinSlap();
-    }
-  }
-
-  /**
-   * Defeats colliding puffer fish during a fin-slap attack.
-   */
-  hitPufferFishWithFinSlap() {
-    this.enemies.forEach((enemy) => {
-      if (enemy instanceof PufferFish && !enemy.isDeadPuffer) {
-        if (this.character.isColliding(enemy)) {
-          enemy.dieByFinSlap();
-        }
-      }
-    });
-  }
-
-/**
- * Checks collisions between bubbles and enemies.
- */
-checkBubbleCollisions() {
-  this.throwableObjects.forEach((bubble, bubbleIndex) => {
-    this.enemies.forEach((enemy) => {
-      this.handleBubbleEnemyCollision(bubble, bubbleIndex, enemy);
-    });
-  });
-}
-
-/**
- * Handles a collision between a bubble and an enemy.
- * @param {ThrowableObject} bubble - Colliding bubble.
- * @param {number} bubbleIndex - Position of the bubble inside the array.
- * @param {MovableObject} enemy - Colliding enemy.
- */
-handleBubbleEnemyCollision(bubble, bubbleIndex, enemy) {
-  if (!bubble.isColliding(enemy)) {
-    return;
-  }
-
-  if (enemy instanceof JellyFish && !enemy.isDeadJelly) {
-    this.defeatJellyFish(enemy, bubbleIndex);
-  }
-
-  if (enemy instanceof Endboss && !enemy.isDead() && bubble.isPoisonBubble) {
-    this.hitEndbossWithBubble(enemy, bubbleIndex);
-  }
-}
-
-/**
- * Defeats a jellyfish and removes the bubble.
- * @param {JellyFish} jellyFish - Jellyfish hit by the bubble.
- * @param {number} bubbleIndex - Position of the bubble inside the array.
- */
-defeatJellyFish(jellyFish, bubbleIndex) {
-  jellyFish.dieInBubble();
-  this.throwableObjects.splice(bubbleIndex, 1);
-}
-
-/**
- * Damages the endboss and removes the poison bubble.
- * @param {Endboss} endboss - Endboss hit by the poison bubble.
- * @param {number} bubbleIndex - Position of the bubble inside the array.
- */
-hitEndbossWithBubble(endboss, bubbleIndex) {
-  endboss.hit("poison");
-  this.throwableObjects.splice(bubbleIndex, 1);
-
-  if (endboss.isDead()) {
-    this.triggerYouWin();
-  }
-}
-
-  /**
-   * Checks collisions between Sharkie and living enemies.
-   */
-  checkCollisions() {
-    this.enemies.forEach((enemy) => {
-      if (enemy instanceof Endboss && enemy.isDead()) {
-        return;
-      }
-      if (enemy instanceof JellyFish && enemy.isDeadJelly) {
-        return;
-      }
-      if (enemy instanceof PufferFish && enemy.isDeadPuffer) {
-        return;
-      }
-      if (this.character.isColliding(enemy)) {
-        this.handleCharacterEnemyCollision(enemy);
-      }
-    });
-  }
-
-  /**
-   * Handles damage caused by an enemy collision.
-   * @param {MovableObject} enemy - Enemy colliding with Sharkie.
-   */
-  handleCharacterEnemyCollision(enemy) {
-    if (enemy instanceof JellyFish) {
-      this.character.hit("electro");
-    } else if (enemy instanceof PufferFish) {
-      this.character.hit("poison");
-    } else if (enemy instanceof Endboss) {
-      this.character.hit("electro");
-    }
-    this.statusBar.reducePercentage(this.character.energy);
-    if (this.character.isDead()) {
-      this.triggerGameOver();
-    }
-  }
-
-  /**
-   * Checks whether Sharkie collects poison bottles.
-   */
-  checkCollectPoison() {
-    this.poisonBottles = this.poisonBottles.filter((bottle) => {
-      if (this.character.isColliding(bottle)) {
-        this.character.collectPoison();
-        this.poisonBar.setPercentage(this.character.collectedPoison * 20);
-        return false;
-      }
-      return true;
-    });
-  }
-
-  /**
-   * Checks whether Sharkie collects coins.
-   */
-  checkCollectCoins() {
-    this.coins = this.coins.filter((coin) => {
-      if (this.character.isColliding(coin)) {
-        this.character.collectCoins();
-        this.coinBar.setPercentage(
-          this.character.collectedCoins * (100 / this.maxCoins)
-        );
-        return false;
-      }
-      return true;
-    });
-  }
-
-  /**
-   * Starts the endboss attack when Sharkie is close enough.
-   */
-  checkEndbossAttack() {
-    let endboss = this.getEndboss();
-    if (!endboss || endboss.isDead() || this.gameOver) {
-      return;
-    }
-    if (this.isCharacterNearEndboss(350)) {
-      endboss.startAttack();
-    }
-  }
-
-  /**
-   * Counts all poison bubbles currently flying through the level.
-   * @returns {number} Number of active poison bubbles.
-   */
-  countActivePoisonBubbles() {
-    return this.throwableObjects.filter((bubble) => bubble.isPoisonBubble)
-      .length;
-  }
-
-  /**
-   * Checks whether Sharkie has run out of poison during the endboss fight.
-   */
-  checkEndbossFightLost() {
-    let endboss = this.getEndboss();
-    if (!this.isCharacterNearEndboss(350)) {
-      return;
-    }
-    if (!endboss || endboss.isDead()) {
-      return;
-    }
-    if (this.character.collectedPoison > 0) {
-      return;
-    }
-    if (this.countActivePoisonBubbles() > 0) {
-      return;
-    }
-    this.triggerGameOver();
   }
 
   /**
