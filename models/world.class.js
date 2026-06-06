@@ -13,23 +13,21 @@ class World {
   animationFrameId;
   restartTimeout;
   maxCoins = 0;
-
   character;
   enemies;
   backgroundObjects;
   poisonBottles;
   coins;
   levelWidth;
+  endbossFightStarted = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-
     this.initBars();
     this.initLevel();
     this.setWorld();
-
     this.character.start();
     this.draw();
     this.run();
@@ -55,19 +53,16 @@ class World {
 
   setWorld() {
     this.character.world = this;
-    this.enemies.forEach((enemy) => enemy.world = this);
+    this.enemies.forEach((enemy) => (enemy.world = this));
   }
 
   updateCamera() {
     this.camera_x = -this.character.x + 100;
-
     const minCameraX = -(this.levelWidth - this.canvas.width);
     const maxCameraX = 0;
-
     if (this.camera_x < minCameraX) {
       this.camera_x = minCameraX;
     }
-
     if (this.camera_x > maxCameraX) {
       this.camera_x = maxCameraX;
     }
@@ -83,6 +78,7 @@ class World {
       this.removeBubblesOutsideCanvas();
       this.checkFinSlapAttack();
       this.checkEndbossAttack();
+      this.checkEndbossFightLost();
     }, 100);
   }
 
@@ -97,8 +93,11 @@ class World {
     if (this.gameOver) {
       return;
     }
-
-    if (this.keyboard.D && this.canThrowBubble() && !this.character.isBubbleAttacking) {
+    if (
+      this.keyboard.D &&
+      this.canThrowBubble() &&
+      !this.character.isBubbleAttacking
+    ) {
       this.character.startBubbleAttack();
       this.lastBubbleThrow = Date.now();
     }
@@ -112,21 +111,17 @@ class World {
     let mouth = this.getSharkieMouthPosition();
 
     let isPoisonBubble =
-    this.isCharacterNearEndboss(800) &&
-    this.character.collectedPoison > 0;
-
+    this.isCharacterNearEndboss(800) && this.character.collectedPoison > 0;
     let bubble = new ThrowableObject(
       mouth.x,
       mouth.y,
       this.character.otherDirection,
       isPoisonBubble
     );
-
     if (isPoisonBubble) {
       this.character.collectedPoison--;
       this.poisonBar.setPercentage(this.character.collectedPoison * 20);
     }
-
     this.throwableObjects.push(bubble);
   }
 
@@ -137,7 +132,6 @@ class World {
         y: this.character.y + 115,
       };
     }
-
     return {
       x: this.character.x + this.character.width - 40,
       y: this.character.y + 115,
@@ -150,23 +144,33 @@ class World {
 
   isCharacterNearEndboss(distance) {
     let endboss = this.getEndboss();
-  
     if (!endboss || endboss.isDead()) {
       return false;
     }
-  
     return Math.abs(this.character.x - endboss.x) < distance;
   }
 
+  /**
+   * Checks whether Sharkie has enough poison to defeat the endboss.
+   * @returns {boolean} True if the endboss can no longer be defeated.
+   */
   hasNoChanceToBeatEndboss() {
     let endboss = this.getEndboss();
-
-    return (
-      endboss &&
-      !endboss.isDead() &&
-      this.character.collectedPoison <= 0 &&
-      !this.hasActivePoisonBubble()
-    );
+    if (!endboss) {
+      return false;
+    }
+    if (endboss.isDead()) {
+      return false;
+    }
+    let poisonDamage = 20;
+    let neededPoisonBubbles = endboss.energy / poisonDamage;
+    let flyingPoisonBubbles = this.countActivePoisonBubbles();
+    let availablePoisonBubbles =
+      this.character.collectedPoison + flyingPoisonBubbles;
+    if (availablePoisonBubbles < neededPoisonBubbles) {
+      return true;
+    }
+    return false;
   }
 
   checkFinSlapAttack() {
@@ -192,22 +196,22 @@ class World {
         if (!bubble.isColliding(enemy)) {
           return;
         }
-
         if (enemy instanceof JellyFish && !enemy.isDeadJelly) {
           enemy.dieInBubble();
           this.throwableObjects.splice(bubbleIndex, 1);
           return;
         }
-
-        if (enemy instanceof Endboss && !enemy.isDead() && bubble.isPoisonBubble) {
+        if (
+          enemy instanceof Endboss &&
+          !enemy.isDead() &&
+          bubble.isPoisonBubble
+        ) {
           enemy.hit("poison");
           this.throwableObjects.splice(bubbleIndex, 1);
-
           if (enemy.isDead()) {
             this.triggerYouWin();
             return;
           }
-
           this.checkEndbossFightLost();
         }
       });
@@ -219,15 +223,12 @@ class World {
       if (enemy instanceof Endboss && enemy.isDead()) {
         return;
       }
-
       if (enemy instanceof JellyFish && enemy.isDeadJelly) {
         return;
       }
-
       if (enemy instanceof PufferFish && enemy.isDeadPuffer) {
         return;
       }
-
       if (this.character.isColliding(enemy)) {
         this.handleCharacterEnemyCollision(enemy);
       }
@@ -242,9 +243,7 @@ class World {
     } else if (enemy instanceof Endboss) {
       this.character.hit("electro");
     }
-
     this.statusBar.reducePercentage(this.character.energy);
-
     if (this.character.isDead()) {
       this.triggerGameOver();
     }
@@ -271,50 +270,71 @@ class World {
         );
         return false;
       }
-
       return true;
     });
   }
 
   checkEndbossAttack() {
     let endboss = this.getEndboss();
-
     if (!endboss || endboss.isDead() || this.gameOver) {
       return;
     }
-
     if (this.isCharacterNearEndboss(350)) {
       endboss.startAttack();
     }
   }
 
-  checkEndbossFightLost() {
+  /**
+   * Counts all poison bubbles currently flying through the level.
+   * @returns {number} Number of active poison bubbles.
+   */
+  countActivePoisonBubbles() {
+    return this.throwableObjects.filter((bubble) => bubble.isPoisonBubble)
+      .length;
+  }
+
+/**
+ * Checks whether Sharkie can still defeat the endboss.
+ */
+checkEndbossFightLost() {
+  if (!this.isCharacterNearEndboss(350)) {
+    return;
+  }
+  if (!this.endbossFightStarted) {
+    this.endbossFightStarted = true;
+
     if (this.hasNoChanceToBeatEndboss()) {
       this.triggerGameOver();
     }
+    return;
   }
+  if (
+    this.character.collectedPoison === 0 &&
+    this.countActivePoisonBubbles() === 0
+  ) {
+    let endboss = this.getEndboss();
+    if (endboss && !endboss.isDead()) {
+      this.triggerGameOver();
+    }
+  }
+}
 
   draw() {
     this.updateCamera();
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.backgroundObjects);
-
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.poisonBar);
     this.addToMap(this.coinBar);
-
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
     this.addObjectsToMap(this.poisonBottles);
     this.addObjectsToMap(this.coins);
     this.addObjectsToMap(this.throwableObjects);
-
     this.ctx.translate(-this.camera_x, 0);
-
     this.animationFrameId = requestAnimationFrame(() => this.draw());
   }
 
@@ -346,7 +366,6 @@ class World {
     if (this.gameOver) {
       return;
     }
-
     this.gameOver = true;
     this.character.die();
     this.statusBar.setPercentage(0);
@@ -357,10 +376,8 @@ class World {
     if (this.gameOver) {
       return;
     }
-  
     this.gameOver = true;
     showYouWinScreen();
-  
     this.restartTimeout = setTimeout(() => {
       showStartScreen();
     }, 6000);
