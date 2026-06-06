@@ -1,14 +1,19 @@
+/**
+ * Represents a background layer inside the game world.
+ */
 class BackgroundObject extends MovableObject {
-
-    width = 920; // Set a default width for the background object
-    height = 400; // Set a default height for the background object
-
-    constructor(imagePath, x, y) {
-        super();
-        this.loadImage(imagePath);
-        this.x = x; // Set a default x position for the background object
-        this.y = 400 - this.height; // Set a default y position for the background object
-      }
-      
-  }
+    width = 920;
+    height = 400;
   
+    /**
+     * Creates a new background object.
+     * @param {string} imagePath - Path to the background image.
+     * @param {number} x - Horizontal position of the background.
+     */
+    constructor(imagePath, x) {
+      super();
+      this.loadImage(imagePath);
+      this.x = x;
+      this.y = 400 - this.height;
+    }
+  }

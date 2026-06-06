@@ -1,3 +1,6 @@
+/**
+ * Controls the game world, collisions, attacks and drawing.
+ */
 class World {
   canvas;
   ctx;
@@ -20,6 +23,11 @@ class World {
   coins;
   levelWidth;
 
+  /**
+   * Creates and starts a new game world.
+   * @param {HTMLCanvasElement} canvas - Canvas used to display the game.
+   * @param {Keyboard} keyboard - Keyboard controls of the player.
+   */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -32,14 +40,19 @@ class World {
     this.run();
   }
 
+  /**
+   * Sets the starting positions and values of the status bars.
+   */
   initBars() {
     this.poisonBar.y = 30;
     this.poisonBar.setPercentage(0);
-
     this.coinBar.y = 60;
     this.coinBar.setPercentage(0);
   }
 
+  /**
+   * Creates the character and all objects belonging to the level.
+   */
   initLevel() {
     this.character = new Character();
     this.levelWidth = getLevelWidth();
@@ -50,11 +63,17 @@ class World {
     this.maxCoins = this.coins.length;
   }
 
+  /**
+   * Gives the character and enemies access to the current world.
+   */
   setWorld() {
     this.character.world = this;
     this.enemies.forEach((enemy) => (enemy.world = this));
   }
 
+  /**
+   * Updates the camera position and keeps it inside the level.
+   */
   updateCamera() {
     this.camera_x = -this.character.x + 100;
     const minCameraX = -(this.levelWidth - this.canvas.width);
@@ -67,6 +86,9 @@ class World {
     }
   }
 
+  /**
+   * Starts the interval that checks the main game actions.
+   */
   run() {
     setStoppableInterval(() => {
       this.checkCollisions();
@@ -81,6 +103,9 @@ class World {
     }, 100);
   }
 
+  /**
+   * Removes bubbles that have left the visible canvas area.
+   */
   removeBubblesOutsideCanvas() {
     this.throwableObjects = this.throwableObjects.filter((bubble) => {
       let screenX = bubble.x + this.camera_x;
@@ -88,6 +113,9 @@ class World {
     });
   }
 
+  /**
+   * Checks whether the player wants and is allowed to throw a bubble.
+   */
   checkThrowObjects() {
     if (this.gameOver) {
       return;
@@ -102,15 +130,21 @@ class World {
     }
   }
 
+  /**
+   * Checks whether the bubble cooldown has finished.
+   * @returns {boolean} True if another bubble can be thrown.
+   */
   canThrowBubble() {
     return Date.now() - this.lastBubbleThrow > this.bubbleCooldown;
   }
 
+  /**
+   * Creates a normal or poison bubble at Sharkie's mouth.
+   */
   createBubbleFromSharkieMouth() {
     let mouth = this.getSharkieMouthPosition();
-
     let isPoisonBubble =
-    this.isCharacterNearEndboss(800) && this.character.collectedPoison > 0;
+      this.isCharacterNearEndboss(800) && this.character.collectedPoison > 0;
     let bubble = new ThrowableObject(
       mouth.x,
       mouth.y,
@@ -124,6 +158,10 @@ class World {
     this.throwableObjects.push(bubble);
   }
 
+  /**
+   * Calculates Sharkie's mouth position based on his direction.
+   * @returns {{x: number, y: number}} Position of Sharkie's mouth.
+   */
   getSharkieMouthPosition() {
     if (this.character.otherDirection) {
       return {
@@ -137,10 +175,19 @@ class World {
     };
   }
 
+  /**
+   * Finds the endboss inside the enemy list.
+   * @returns {Endboss|undefined} The endboss or undefined.
+   */
   getEndboss() {
     return this.enemies.find((enemy) => enemy instanceof Endboss);
   }
 
+  /**
+   * Checks whether Sharkie is near the endboss.
+   * @param {number} distance - Maximum distance from the endboss.
+   * @returns {boolean} True if Sharkie is near the endboss.
+   */
   isCharacterNearEndboss(distance) {
     let endboss = this.getEndboss();
     if (!endboss || endboss.isDead()) {
@@ -149,7 +196,9 @@ class World {
     return Math.abs(this.character.x - endboss.x) < distance;
   }
 
-
+  /**
+   * Checks whether Sharkie performs a fin-slap attack.
+   */
   checkFinSlapAttack() {
     if (this.keyboard.SPACE && !this.character.isFinSlap) {
       this.character.startFinSlap();
@@ -157,6 +206,9 @@ class World {
     }
   }
 
+  /**
+   * Defeats colliding puffer fish during a fin-slap attack.
+   */
   hitPufferFishWithFinSlap() {
     this.enemies.forEach((enemy) => {
       if (enemy instanceof PufferFish && !enemy.isDeadPuffer) {
@@ -167,6 +219,9 @@ class World {
     });
   }
 
+  /**
+   * Checks collisions between bubbles and enemies.
+   */
   checkBubbleCollisions() {
     this.throwableObjects.forEach((bubble, bubbleIndex) => {
       this.enemies.forEach((enemy) => {
@@ -178,14 +233,9 @@ class World {
           this.throwableObjects.splice(bubbleIndex, 1);
           return;
         }
-        if (
-          enemy instanceof Endboss &&
-          !enemy.isDead() &&
-          bubble.isPoisonBubble
-        ) {
+        if (enemy instanceof Endboss &&!enemy.isDead() && bubble.isPoisonBubble) {
           enemy.hit("poison");
           this.throwableObjects.splice(bubbleIndex, 1);
-        
           if (enemy.isDead()) {
             this.triggerYouWin();
             return;
@@ -195,6 +245,9 @@ class World {
     });
   }
 
+  /**
+   * Checks collisions between Sharkie and living enemies.
+   */
   checkCollisions() {
     this.enemies.forEach((enemy) => {
       if (enemy instanceof Endboss && enemy.isDead()) {
@@ -212,6 +265,10 @@ class World {
     });
   }
 
+  /**
+   * Handles damage caused by an enemy collision.
+   * @param {MovableObject} enemy - Enemy colliding with Sharkie.
+   */
   handleCharacterEnemyCollision(enemy) {
     if (enemy instanceof JellyFish) {
       this.character.hit("electro");
@@ -226,6 +283,9 @@ class World {
     }
   }
 
+  /**
+   * Checks whether Sharkie collects poison bottles.
+   */
   checkCollectPoison() {
     this.poisonBottles = this.poisonBottles.filter((bottle) => {
       if (this.character.isColliding(bottle)) {
@@ -233,11 +293,13 @@ class World {
         this.poisonBar.setPercentage(this.character.collectedPoison * 20);
         return false;
       }
-
       return true;
     });
   }
 
+  /**
+   * Checks whether Sharkie collects coins.
+   */
   checkCollectCoins() {
     this.coins = this.coins.filter((coin) => {
       if (this.character.isColliding(coin)) {
@@ -251,6 +313,9 @@ class World {
     });
   }
 
+  /**
+   * Starts the endboss attack when Sharkie is close enough.
+   */
   checkEndbossAttack() {
     let endboss = this.getEndboss();
     if (!endboss || endboss.isDead() || this.gameOver) {
@@ -270,26 +335,29 @@ class World {
       .length;
   }
 
-/**
- * Checks whether Sharkie has run out of poison during the endboss fight.
- */
-checkEndbossFightLost() {
-  let endboss = this.getEndboss();
-  if (!this.isCharacterNearEndboss(350)) {
-    return;
+  /**
+   * Checks whether Sharkie has run out of poison during the endboss fight.
+   */
+  checkEndbossFightLost() {
+    let endboss = this.getEndboss();
+    if (!this.isCharacterNearEndboss(350)) {
+      return;
+    }
+    if (!endboss || endboss.isDead()) {
+      return;
+    }
+    if (this.character.collectedPoison > 0) {
+      return;
+    }
+    if (this.countActivePoisonBubbles() > 0) {
+      return;
+    }
+    this.triggerGameOver();
   }
-  if (!endboss || endboss.isDead()) {
-    return;
-  }
-  if (this.character.collectedPoison > 0) {
-    return;
-  }
-  if (this.countActivePoisonBubbles() > 0) {
-    return;
-  }
-  this.triggerGameOver();
-}
 
+  /**
+   * Draws all game objects and requests the next animation frame.
+   */
   draw() {
     this.updateCamera();
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -309,23 +377,33 @@ checkEndbossFightLost() {
     this.animationFrameId = requestAnimationFrame(() => this.draw());
   }
 
+  /**
+   * Adds multiple objects to the canvas.
+   * @param {DrawableObject[]} objects - Objects that should be drawn.
+   */
   addObjectsToMap(objects) {
     objects.forEach((object) => this.addToMap(object));
   }
 
+  /**
+   * Draws one object on the canvas.
+   * @param {DrawableObject} mo - Object that should be drawn.
+   */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-
     mo.draw(this.ctx);
     mo.drawFrame(this.ctx);
-
     if (mo.otherDirection) {
       this.ctx.restore();
     }
   }
 
+  /**
+   * Flips an object horizontally on the canvas.
+   * @param {DrawableObject} mo - Object that should be flipped.
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.x + mo.width / 2, 0);
@@ -333,6 +411,9 @@ checkEndbossFightLost() {
     this.ctx.translate(-mo.x - mo.width / 2, 0);
   }
 
+  /**
+   * Ends the game and displays the game-over screen.
+   */
   triggerGameOver() {
     if (this.gameOver) {
       return;
@@ -343,6 +424,9 @@ checkEndbossFightLost() {
     showGameOverScreen();
   }
 
+  /**
+   * Ends the game and displays the victory screen.
+   */
   triggerYouWin() {
     if (this.gameOver) {
       return;
@@ -354,6 +438,9 @@ checkEndbossFightLost() {
     }, 6000);
   }
 
+  /**
+   * Stops all running intervals, animations and timeouts.
+   */
   stop() {
     stopGameIntervals();
     cancelAnimationFrame(this.animationFrameId);

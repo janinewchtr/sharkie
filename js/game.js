@@ -1,37 +1,50 @@
 let intervalIds = [];
+let canvas;
+let world;
+let keyboard = new Keyboard();
 
+/**
+ * Starts an interval and saves its ID so it can be stopped later.
+ * @param {Function} fn - Function executed by the interval.
+ * @param {number} time - Time between executions in milliseconds.
+ * @returns {number} ID of the created interval.
+ */
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
   intervalIds.push(id);
   return id;
 }
 
+/**
+ * Stops all currently running game intervals.
+ */
 function stopGameIntervals() {
   intervalIds.forEach(clearInterval);
   intervalIds = [];
 }
 
-let canvas;
-let world;
-let keyboard = new Keyboard();
-
-
+/**
+ * Finds the canvas and creates a new game world.
+ */
 function init() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
 }
 
+/**
+ * Hides the start screen and starts the game.
+ */
 function startGame() {
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("game-wrapper").classList.add("game-started");
   init();
 }
 
-
-
+/**
+ * Opens or closes the fullscreen mode.
+ */
 function toggleFullscreen() {
   let gameWrapper = document.getElementById("game-wrapper");
-
   if (!document.fullscreenElement) {
     gameWrapper.requestFullscreen();
   } else {
@@ -39,28 +52,32 @@ function toggleFullscreen() {
   }
 }
 
+/**
+ * Connects a mobile button with a keyboard control.
+ * @param {string} id - ID of the mobile button.
+ * @param {string} key - Keyboard property controlled by the button.
+ */
 function bindMobileButton(id, key) {
   let button = document.getElementById(id);
-
   if (!button) {
     return;
   }
-
   button.addEventListener("touchstart", (event) => {
     event.preventDefault();
     keyboard[key] = true;
   });
-
   button.addEventListener("touchend", (event) => {
     event.preventDefault();
     keyboard[key] = false;
   });
-
   button.addEventListener("contextmenu", (event) => {
     event.preventDefault();
   });
 }
 
+/**
+ * Connects all mobile control buttons with their game controls.
+ */
 function bindMobileControls() {
   bindMobileButton("mobile-left", "LEFT");
   bindMobileButton("mobile-right", "RIGHT");
@@ -69,9 +86,11 @@ function bindMobileControls() {
   bindMobileButton("mobile-bubble", "D");
   bindMobileButton("mobile-fin", "SPACE");
 }
-
 bindMobileControls();
 
+/**
+ * Stops the current game and creates a new game world.
+ */
 function restartGame() {
   stopCurrentWorld();
   resetKeyboard();
@@ -83,6 +102,9 @@ function restartGame() {
   init();
 }
 
+/**
+ * Stops the game and displays the start screen.
+ */
 function showStartScreen() {
   stopCurrentWorld();
   resetKeyboard();
@@ -93,17 +115,26 @@ function showStartScreen() {
   document.getElementById("game-wrapper").classList.remove("game-started");
 }
 
+/**
+ * Stops the currently active game world.
+ */
 function stopCurrentWorld() {
   if (world && world.stop) {
     world.stop();
   }
 }
 
+/**
+ * Hides the game-over and victory screens.
+ */
 function hideEndScreens() {
   document.getElementById("game-over-screen").style.display = "none";
   document.getElementById("you-win-screen").style.display = "none";
 }
 
+/**
+ * Resets all keyboard controls.
+ */
 function resetKeyboard() {
   keyboard.RIGHT = false;
   keyboard.LEFT = false;
@@ -113,6 +144,9 @@ function resetKeyboard() {
   keyboard.D = false;
 }
 
+/**
+ * Clears the canvas and draws its default background color.
+ */
 function clearCanvas() {
   if (!canvas) {
     canvas = document.getElementById("canvas");
@@ -124,6 +158,9 @@ function clearCanvas() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+/**
+ * Displays the game-over screen.
+ */
 function showGameOverScreen() {
   let gameOverScreen = document.getElementById("game-over-screen");
 
@@ -132,6 +169,9 @@ function showGameOverScreen() {
   }
 }
 
+/**
+ * Displays the victory screen.
+ */
 function showYouWinScreen() {
   let youWinScreen = document.getElementById("you-win-screen");
 
@@ -140,22 +180,26 @@ function showYouWinScreen() {
   }
 }
 
-
-window.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight") keyboard.RIGHT = true;
-  if (e.key === "ArrowLeft") keyboard.LEFT = true;
-  if (e.key === "ArrowUp") keyboard.UP = true;
-  if (e.key === "ArrowDown") keyboard.DOWN = true;
-  if (e.key === " ") keyboard.SPACE = true;
-  if (e.key.toLowerCase() === "d") keyboard.D = true;
-  
+/**
+ * Activates keyboard controls when a supported key is pressed.
+ */
+window.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowRight") keyboard.RIGHT = true;
+  if (event.key === "ArrowLeft") keyboard.LEFT = true;
+  if (event.key === "ArrowUp") keyboard.UP = true;
+  if (event.key === "ArrowDown") keyboard.DOWN = true;
+  if (event.key === " ") keyboard.SPACE = true;
+  if (event.key.toLowerCase() === "d") keyboard.D = true;
 });
 
-window.addEventListener("keyup", (e) => {
-  if (e.key === "ArrowRight") keyboard.RIGHT = false;
-  if (e.key === "ArrowLeft") keyboard.LEFT = false;
-  if (e.key === "ArrowUp") keyboard.UP = false;
-  if (e.key === "ArrowDown") keyboard.DOWN = false;
-  if (e.key === " ") keyboard.SPACE = false;
-  if (e.key.toLowerCase() === "d") keyboard.D = false;
+/**
+ * Deactivates keyboard controls when a supported key is released.
+ */
+window.addEventListener("keyup", (event) => {
+  if (event.key === "ArrowRight") keyboard.RIGHT = false;
+  if (event.key === "ArrowLeft") keyboard.LEFT = false;
+  if (event.key === "ArrowUp") keyboard.UP = false;
+  if (event.key === "ArrowDown") keyboard.DOWN = false;
+  if (event.key === " ") keyboard.SPACE = false;
+  if (event.key.toLowerCase() === "d") keyboard.D = false;
 });

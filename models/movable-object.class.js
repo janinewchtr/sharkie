@@ -1,3 +1,6 @@
+/**
+ * Represents a drawable object that can move, collide and receive damage.
+ */
 class MovableObject extends DrawableObject {
   speed = 5;
   otherDirection = false;
@@ -13,7 +16,11 @@ class MovableObject extends DrawableObject {
     left: 0,
   };
 
-
+  /**
+   * Checks whether this object is colliding with another object.
+   * @param {MovableObject} mo - Object checked for collision.
+   * @returns {boolean} True if both objects are colliding.
+   */
   isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -23,49 +30,63 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * Reduces the object's energy and saves the damage type.
+   * @param {string} type - Type of received damage.
+   */
   hit(type) {
     let now = Date.now();
-  
+
     if (now - this.lastHit < 1000) {
       return;
     }
-  
     this.lastHit = now;
     this.energy -= 10;
-  
     if (this.energy < 0) {
       this.energy = 0;
     }
-  
     if (type === "poison") {
       this.lastPoisonHit = now;
     }
-  
     if (type === "electro") {
       this.lastElectroHit = now;
     }
   }
 
+  /**
+   * Checks whether the object has no energy left.
+   * @returns {boolean} True if the object is dead.
+   */
   isDead() {
-    return this.energy == 0;
+    return this.energy === 0;
   }
 
+  /**
+   * Checks whether the object was recently poisoned.
+   * @returns {boolean} True if the object is hurt by poison.
+   */
   isHurtPoisoned() {
-    let timePassed = new Date().getTime() - this.lastPoisonHit;
+    let timePassed = Date.now() - this.lastPoisonHit;
     return timePassed < 1000;
   }
-  
+
+  /**
+   * Checks whether the object recently received an electric shock.
+   * @returns {boolean} True if the object is hurt by electricity.
+   */
   isHurtElectro() {
-    let timePassed = new Date().getTime() - this.lastElectroHit;
+    let timePassed = Date.now() - this.lastElectroHit;
     return timePassed < 1000;
   }
 
-
+  /**
+   * Plays the next image of an animation.
+   * @param {string[]} images - Image paths belonging to the animation.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
   }
-
 }

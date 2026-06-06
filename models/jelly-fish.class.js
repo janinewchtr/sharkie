@@ -1,10 +1,12 @@
+/**
+ * Represents a jellyfish enemy inside the game world.
+ */
 class JellyFish extends MovableObject {
   height = 80;
   width = 80;
   y = 40;
 
   isDeadJelly = false;
-  deadAnimationPlayed = false;
 
   IMAGES_IDLE = [
     "img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png",
@@ -20,6 +22,11 @@ class JellyFish extends MovableObject {
     "img/2.Enemy/2 Jelly fish/Dead/Lila/L4.png",
   ];
 
+  /**
+   * Creates a jellyfish at the given position and starts its animation.
+   * @param {number} x - Horizontal position of the jellyfish.
+   * @param {number} y - Vertical position of the jellyfish.
+   */
   constructor(x, y) {
     super().loadImage(this.IMAGES_IDLE[0]);
     this.loadImages(this.IMAGES_IDLE);
@@ -29,6 +36,9 @@ class JellyFish extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Plays the idle or death animation of the jellyfish.
+   */
   animate() {
     setStoppableInterval(() => {
       if (this.isDeadJelly) {
@@ -36,11 +46,13 @@ class JellyFish extends MovableObject {
         this.y -= 5;
         return;
       }
-  
       this.playAnimation(this.IMAGES_IDLE);
     }, 200);
   }
 
+  /**
+   * Defeats the jellyfish after being hit by a bubble.
+   */
   dieInBubble() {
     this.isDeadJelly = true;
   }
