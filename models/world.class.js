@@ -33,14 +33,17 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+  
     this.initBars();
+    this.initLevel();
     this.collisions = new Collisions(this);
     this.setWorld();
+  
     this.character.start();
     this.draw();
     this.run();
   }
-
+  
   /**
    * Sets the starting positions and values of the status bars.
    */
