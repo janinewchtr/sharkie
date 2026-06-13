@@ -163,12 +163,20 @@ function stopCurrentWorld() {
   }
 }
 
-/**
- * Hides the game-over and victory screens.
- */
 function hideEndScreens() {
   document.getElementById("game-over-screen").style.display = "none";
-  document.getElementById("you-win-screen").style.display = "none";
+  let youWinScreen = document.getElementById("you-win-screen");
+  youWinScreen.style.display = "none";
+  youWinScreen.classList.remove("show-options");
+}
+/**
+ * Displays the restart and home options after winning.
+ */
+function showWinOptions() {
+  let youWinScreen = document.getElementById("you-win-screen");
+  if (youWinScreen) {
+    youWinScreen.classList.add("show-options");
+  }
 }
 
 /**

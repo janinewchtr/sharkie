@@ -324,6 +324,21 @@ canvas {
   animation: youWinPulse 1.2s ease-in-out infinite;
 }
 
+.win-options {
+  position: absolute;
+  display: none;
+  z-index: 2;
+}
+
+.you-win-overlay.show-options .you-win-img {
+  opacity: 0.35;
+  animation: none;
+}
+
+.you-win-overlay.show-options .win-options {
+  display: block;
+}
+
 @keyframes youWinPulse {
   0% {transform: scale(1);}
   50% {transform: scale(1.06);}

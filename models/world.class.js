@@ -313,8 +313,8 @@ addGameObjectsToMap() {
     this.gameOver = true;
     showYouWinScreen();
     this.restartTimeout = setTimeout(() => {
-      showStartScreen();
-    }, 6000);
+      showWinOptions();
+    }, 3000);
   }
 
   /**
