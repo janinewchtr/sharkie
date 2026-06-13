@@ -60,7 +60,7 @@ canDrawFrame() {
 drawCollisionFrame(ctx) {
   ctx.beginPath();
   ctx.lineWidth = 2;
-  ctx.strokeStyle = "red";
+  ctx.strokeStyle = "transparent";
   ctx.rect(
     this.x + this.offset.left,
     this.y + this.offset.top,

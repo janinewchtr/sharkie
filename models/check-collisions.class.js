@@ -23,17 +23,18 @@ runChecks() {
   this.checkEndbossFightLost();
 }
   
-    /**
-     * Checks whether Sharkie performs a fin-slap attack.
-     */
-    checkFinSlapAttack() {
-      let character = this.world.character;
-  
-      if (this.world.keyboard.SPACE && !character.isFinSlap) {
-        character.startFinSlap();
-        this.hitPufferFishWithFinSlap();
-      }
-    }
+/**
+ * Starts the fin slap and checks for hits during the animation.
+ */
+checkFinSlapAttack() {
+  let character = this.world.character;
+  if (this.world.keyboard.SPACE && !character.isFinSlap) {
+    character.startFinSlap();
+  }
+  if (character.isFinSlap) {
+    this.hitPufferFishWithFinSlap();
+  }
+}
   
     /**
      * Defeats colliding puffer fish during a fin-slap attack.
@@ -126,15 +127,20 @@ runChecks() {
       return true;
     }
   
-    /**
-     * Checks whether Sharkie collides with an enemy.
-     * @param {MovableObject} enemy - Enemy that should be checked.
-     */
-    checkCharacterCollision(enemy) {
-      if (this.world.character.isColliding(enemy)) {
-        this.handleCharacterEnemyCollision(enemy);
-      }
-    }
+/**
+ * Checks whether Sharkie collides with an enemy.
+ * @param {MovableObject} enemy - Enemy that should be checked.
+ */
+checkCharacterCollision(enemy) {
+  let character = this.world.character;
+  if (!character.isColliding(enemy)) {
+    return;
+  }
+  if (enemy instanceof PufferFish && character.isFinSlap) {
+    return;
+  }
+  this.handleCharacterEnemyCollision(enemy);
+}
   
     /**
      * Handles damage caused by an enemy collision.
