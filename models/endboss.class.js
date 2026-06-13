@@ -5,6 +5,12 @@ class Endboss extends MovableObject {
   height = 600;
   width = 500;
   y = -140;
+  offset = {
+    top: 220,
+    right: 45,
+    bottom: 100,
+    left: 45,
+  };
   energy = 100;
   lastHit = 0;
   isAttacking = false;
@@ -205,7 +211,7 @@ class Endboss extends MovableObject {
       let character = this.world.character;
       let distanceX = Math.abs(character.x - this.x);
       let distanceY = Math.abs(character.y - this.y);
-      return distanceX < 250 && distanceY < 400;
+      return distanceX < 200 && distanceY < 300;
     }
   
     /**

@@ -5,7 +5,12 @@ class PufferFish extends MovableObject {
   height = 60;
   width = 80;
   y = 250;
-
+  offset = {
+    top: 8,
+    right: 12,
+    bottom: 12,
+    left: 2,
+  };
   isPuffed = false;
   isTransitioning = false;
   transitionIndex = 0;

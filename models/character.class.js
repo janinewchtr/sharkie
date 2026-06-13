@@ -7,10 +7,10 @@ class Character extends MovableObject {
   y = 40;
 
   offset = {
-    top: 115,
+    top: 117,
     right: 40,
-    bottom: 50,
-    left: 25,
+    bottom: 62,
+    left: 40,
   };
   isSwimming = false;
   lastMove = Date.now();

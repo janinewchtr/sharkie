@@ -5,7 +5,12 @@ class JellyFish extends MovableObject {
   height = 80;
   width = 80;
   y = 40;
-
+  offset = {
+    top: 15,
+    right: 8,
+    bottom: 8,
+    left: 8,
+  };
   isDeadJelly = false;
 
   IMAGES_IDLE = IMAGE_PATHS.jellyFish.idle;
