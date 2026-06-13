@@ -102,6 +102,20 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
+ * Displays the instruction screen.
+ */
+function showInstructions() {
+  document.getElementById("instructions-screen").style.display = "flex";
+}
+
+/**
+ * Hides the instruction screen.
+ */
+function hideInstructions() {
+  document.getElementById("instructions-screen").style.display = "none";
+}
+
+/**
  * Stops the current game and creates a new game world.
  */
 function restartGame() {

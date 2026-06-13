@@ -1,337 +1,523 @@
+@font-face {
+  font-family: "Luckiest-Guy-Regular";
+  src: url("font/Luckiest_Guy/LuckiestGuy-Regular.ttf") format("truetype");
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-image: url("img/7.BackgroundAsset/sharkie_koralle_background.png");
-    background-position: center;
-    background-size: cover;
-    overflow: hidden;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-image: url("img/7.BackgroundAsset/sharkie_koralle_background.png");
+  background-position: center;
+  background-size: cover;
+  font-family: "Luckiest-Guy-Regular", sans-serif;
+}
+
+button,
+a {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.game-wrapper {
+  position: relative;
+  width: min(1100px, calc(100vw - 32px));
+  aspect-ratio: 820 / 400;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0, 20, 70, 0.45);
+  background: #071934;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #071934;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-screen {
+  z-index: 30;
+  background-image:
+    linear-gradient(rgba(0, 72, 176, 0.12), rgba(0, 32, 112, 0.15)),
+    url("img/7.BackgroundAsset/sharkie_koralle_background.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.start-menu {
+  width: min(430px, 90%);
+  height: 96%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: clamp(48px, 7vw, 82px);
+  line-height: 0.75;
+  text-transform: uppercase;
+  text-align: center;
+  -webkit-text-stroke: 2px #071934;
+  text-shadow:
+    0 5px 0 #16477e,
+    0 9px 0 #071934,
+    0 14px 18px rgba(0, 0, 0, 0.45);
+  transform: rotate(-2deg);
+  z-index: 2;
+}
+
+.menu-buttons {
+  width: min(330px, 90%);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.menu-button {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  color: white;
+  font-size: 22px;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 -5px 0 rgba(0, 0, 0, 0.18),
+    0 5px 0 rgba(5, 33, 86, 0.55);
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
+}
+
+.menu-button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+.menu-button:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18),
+    0 2px 0 rgba(5, 33, 86, 0.55);
+}
+
+.start-menu-button {
+  min-height: 58px;
+  color: #55217f;
+  font-size: 32px;
+  background: linear-gradient(#8cf8df, #55dfbd);
+}
+
+.instructions-menu-button {
+  background: linear-gradient(#a340ec, #7025cf);
+}
+
+.fullscreen-menu-button {
+  background: linear-gradient(#38baf3, #208fd6);
+}
+
+.impressum-menu-button {
+  color: #9a5b00;
+  background: linear-gradient(#ffe067, #ffc32e);
+}
+
+.instructions-overlay {
+  z-index: 50;
+  display: none;
+  padding: 18px;
+  background: rgba(0, 12, 48, 0.76);
+}
+
+.instructions-panel {
+  width: min(620px, 95%);
+  padding: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  background: rgba(7, 25, 52, 0.96);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.instructions-title {
+  margin: 0 0 22px;
+  color: white;
+  font-size: 36px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.controls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.key-img {
+  width: 110px;
+  height: 65px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.d-key {
+  width: 80px;
+}
+
+.space-key {
+  width: 210px;
+}
+
+.desc-img {
+  max-width: 230px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.finslap-title {
+  margin: 0;
+  color: white;
+  font-size: 27px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.close-instructions-button,
+.end-button {
+  min-width: 160px;
+  min-height: 44px;
+  margin: 22px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid white;
+  border-radius: 10px;
+  color: #55217f;
+  font-size: 21px;
+  text-transform: uppercase;
+  background: #70eed1;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+.close-instructions-button:active,
+.end-button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.game-over-overlay {
+  display: none;
+  background: rgba(0, 10, 40, 0.78);
+}
+
+.end-panel {
+  width: min(430px, 90%);
+  padding: 30px;
+  border: 3px solid white;
+  border-radius: 14px;
+  background: rgba(7, 25, 52, 0.94);
+}
+
+.end-title {
+  margin: 0;
+  color: white;
+  font-size: 52px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.home-button {
+  color: white;
+  background: #7128ce;
+}
+
+.you-win-overlay {
+  display: none;
+  padding: 0;
+  background: black;
+}
+
+.you-win-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: youWinPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes youWinPulse {
+  0% {
+    transform: scale(1);
   }
-  
-  canvas {
-    display: block;
-    background-color: black;
-  }
-  
-  @font-face {
-    font-family: "Luckiest-Guy-Regular";
-    src: url("font/Luckiest_Guy/LuckiestGuy-Regular.ttf") format("truetype");
-  }
-  
-  h1 {
-    font-family: "Luckiest-Guy-Regular";
-    color: white;
-    font-size: 48px;
-    -webkit-text-stroke: 1px #000000;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
-    margin: 16px 0;
-  }
-  
-  .game-wrapper {
-    position: relative;
-    width: 820px;
-    height: 400px;
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 10px;
-  }
-  
-  .overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(83, 141, 228, 0.45);
-  }
-  
-  .start-panel {
-    width: 520px;
-    max-width: 90%;
-    background: rgba(7, 25, 52, 0.8);
-    border-radius: 24px;
-    padding: 10px;
-    box-sizing: border-box;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  }
-  
-  .start-title {
-    margin: 0 0 24px 0;
-    font-family: "Luckiest-Guy-Regular";
-    font-size: 32px;
-    color: white;
-    text-align: center;
-  }
-  
-  .controls-list {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-  
-  .control-row {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 22px;
-    margin-left: 10px;
-  }
-  
-  .key-img {
-    width: 98px;
-    height: auto;
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-  
-  .space-key {
-    width: 200px;
-  }
-  
-  .d-key {
-    width: 70px;
-  }
-  
-  .finslap-title {
-    font-family: "Luckiest-Guy-Regular";
-    font-size: 24px;
-    color: white;
-    text-align: center;
-  }
-  
-  .desc-img {
-    height: 20px;
-    width: auto;
-    object-fit: contain;
-  }
-  
-  .start-button {
-    margin: 28px auto 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-  }
-  
-  .start-button img {
-    width: 120px;
-    height: auto;
-    display: block;
-  }
-  
-  .start-button:hover {
-    transform: scale(1.05);
-    transition: transform 120ms ease-in-out;
-  }
-  
-  .start-button:active {
-    transform: scale(0.98);
-  }
-  
-  .fullscreen-button {
-    position: absolute;
-    right: 18px;
-    bottom: 18px;
-    z-index: 30;
-    width: 82px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-  }
-  
-  .fullscreen-button img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-  }
-  
-  .fullscreen-button:hover {
+
+  50% {
     transform: scale(1.06);
   }
-  
-  .fullscreen-button:active {
-    transform: scale(0.96);
-  }
 
-  .game-wrapper:fullscreen {
+  100% {
+    transform: scale(1);
+  }
+}
+
+.mobile-controls {
+  display: none;
+}
+
+.rotate-screen {
+  display: none;
+}
+
+.game-wrapper:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  border: none;
+  border-radius: 0;
+}
+
+.game-wrapper:fullscreen canvas {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 950px) and (orientation: landscape) {
+  .game-wrapper {
     width: 100vw;
     height: 100vh;
+    border: none;
     border-radius: 0;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .game-wrapper:fullscreen canvas {
-    width: min(100vw, calc(100vh * 2.05));
-    height: auto;
-    max-height: 100vh;
-    aspect-ratio: 820 / 400;
   }
 
-  .game-wrapper:fullscreen .fullscreen-button {
-    display: none;
-  }
-  
-  .game-over-overlay {
-    display: none;
-    background: rgba(0, 0, 0, 0.65);
-  }
-  
-  .you-win-overlay {
-    display: none;
-    background: black;
-    padding: 0;
-  }
-  
-  .you-win-img {
-    width: 100%;
+  .start-menu {
     height: 100%;
-    object-fit: contain;
-    animation: youWinPulse 1.2s ease-in-out infinite;
   }
 
-  
-  @keyframes youWinPulse {
-    0% {
-      transform: scale(1);
-    }
-  
-    50% {
-      transform: scale(1.08);
-    }
-  
-    100% {
-      transform: scale(1);
-    }
+  .game-title {
+    font-size: clamp(38px, 10vh, 64px);
+  }
+
+  .menu-buttons {
+    width: min(300px, 70vw);
+    gap: 5px;
+  }
+
+  .menu-button {
+    min-height: 37px;
+    font-size: 17px;
+  }
+
+  .start-menu-button {
+    min-height: 45px;
+    font-size: 24px;
+  }
+
+  .instructions-title {
+    margin-bottom: 10px;
+    font-size: 28px;
+  }
+
+  .game-rules {
+    margin-top: 18px;
+    padding: 14px 18px;
+    border: 2px solid rgba(112, 238, 209, 0.8);
+    border-radius: 10px;
+    color: white;
+    background: rgba(31, 102, 155, 0.45);
   }
   
+  .game-rules h3 {
+    margin: 0 0 10px;
+    color: #70eed1;
+    font-size: 22px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  
+  .rule-item {
+    display: flex;
+    gap: 10px;
+    margin: 7px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+  
+  .rule-item strong {
+    min-width: 90px;
+    color: #70eed1;
+  }
+  
+  .game-over-rule {
+    margin: 12px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.35;
+    text-align: center;
+  }
+  
+  .instructions-panel {
+    max-height: 94vh;
+    overflow-y: auto;
+  }
+
+  .controls-list {
+    gap: 8px;
+  }
+
+  .control-row {
+    gap: 20px;
+  }
+
+  .key-img {
+    width: 88px;
+    height: 45px;
+  }
+
+  .d-key {
+    width: 55px;
+  }
+
+  .space-key {
+    width: 150px;
+  }
+
+  .desc-img {
+    max-width: 190px;
+    height: 22px;
+  }
+
+  .finslap-title {
+    font-size: 20px;
+  }
+
+  .close-instructions-button {
+    min-height: 36px;
+    margin-top: 10px;
+    font-size: 17px;
+  }
+
+  .game-wrapper.game-started .mobile-controls {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 14px;
+    pointer-events: none;
+  }
+
+  .mobile-left-controls {
+    width: 172px;
+    display: grid;
+    grid-template-columns: repeat(3, 52px);
+    grid-template-rows: repeat(2, 52px);
+    gap: 5px;
+    pointer-events: auto;
+  }
+
+  .mobile-up {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .mobile-left {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .mobile-down {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .mobile-right {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .mobile-right-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: auto;
+  }
+
+  .mobile-btn {
+    width: 52px;
+    height: 52px;
+    border: 3px solid white;
+    border-radius: 12px;
+    color: #542080;
+    font-size: 20px;
+    background: rgba(112, 238, 209, 0.85);
+    user-select: none;
+    touch-action: none;
+  }
+
+  .attack-btn {
+    width: 72px;
+  }
+}
+
+@media (max-width: 950px) and (orientation: portrait) {
+  body {
+    background: #071934;
+  }
+
+  .game-wrapper {
+    display: none;
+  }
+
   .rotate-screen {
-    display: none;
-  }
-  
-  .mobile-controls {
-    display: none;
-  }
-  
-
-  .impressum-button {
-    background: rgba(112, 238, 209, 0.9);
-    border: 1px solid white;
-    border-radius: 8px;
-    left: 18px;
-    right: auto;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #4a2185;
-    font-family: "Luckiest-Guy-Regular";
-    font-size: 8px;
-    text-decoration: none;
-    padding-top: 3px;
-    
+    padding: 20px;
+    text-align: center;
   }
 
-
-  @media (max-width: 950px) and (orientation: landscape) {
-    h1 {
-      display: none;
-    }
-  
-    .game-wrapper {
-      width: 100vw;
-      height: 100vh;
-      border-radius: 0;
-    }
-  
-    canvas {
-      width: 100%;
-      height: 100%;
-    }
-  
-    .fullscreen-button {
-      display: none;
-    }
-  
-    .game-wrapper.game-started .mobile-controls {
-      position: absolute;
-      inset: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      padding: 18px;
-      box-sizing: border-box;
-      pointer-events: none;
-    }
-  
-    .mobile-left-controls,
-    .mobile-right-controls {
-      display: flex;
-      gap: 10px;
-      pointer-events: auto;
-    }
-  
-    .mobile-left-controls {
-      flex-wrap: wrap;
-      width: 150px;
-    }
-  
-    .mobile-right-controls {
-      flex-direction: column;
-    }
-  
-    .mobile-btn {
-      width: 58px;
-      height: 58px;
-      border: 3px solid white;
-      border-radius: 14px;
-      background: rgba(112, 238, 209, 0.85);
-      color: #4a2185;
-      font-family: "Luckiest-Guy-Regular";
-      font-size: 24px;
-      cursor: pointer;
-      user-select: none;
-      touch-action: none;
-    }
-  
-    .attack-btn {
-      width: 76px;
-    }
+  .rotate-screen h2 {
+    margin: 0;
+    color: white;
+    font-size: 38px;
+    text-transform: uppercase;
+    -webkit-text-stroke: 1px black;
   }
-  
-  @media (max-width: 950px) and (orientation: portrait) {
-    body {
-      background: #071934;
-    }
-  
-    h1,
-    .game-wrapper {
-      display: none;
-    }
-  
-    .rotate-screen {
-      display: flex;
-      min-height: 100vh;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-  
-    .rotate-screen h2 {
-      font-family: "Luckiest-Guy-Regular";
-      color: white;
-      font-size: 38px;
-      -webkit-text-stroke: 1px black;
-    }
-  }
+}

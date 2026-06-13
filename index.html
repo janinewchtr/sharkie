@@ -3,10 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sharkie</title>
-  
-    <link rel="shortcut icon" href="img/1.Sharkie/1.IDLE/1.png" type="image/x-icon">
+
+    <title>Sharkie Attack</title>
+
+    <link
+      rel="shortcut icon"
+      href="img/1.Sharkie/1.IDLE/1.png"
+      type="image/x-icon"
+    >
     <link rel="stylesheet" href="style.css">
+
     <script src="js/image-paths.js"></script>
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
@@ -25,81 +31,102 @@
     <script src="models/keyboard.class.js"></script>
     <script src="js/game.js"></script>
   </head>
-<body>
-    <h1>Sharkie Attack</h1>
 
+  <body>
     <div id="rotate-screen" class="rotate-screen">
-        <h2>Turn your display</h2>
-      </div>
+      <h2>Turn your display</h2>
+    </div>
 
     <div class="game-wrapper" id="game-wrapper">
-        <div id="start-screen" class="overlay">
-          <div class="start-panel">
-            <h2 class="start-title">How to Play</h2>
-      
-            <div class="controls-list">
-              <div class="control-row">
-                <img class="key-img" src="img/6.Botones/Key/arrow keys.png" alt="Arrow Keys">
-                <img class="desc-img" src="img/6.Botones/Tittles/Move title.png" alt="Move Sharkie">
-              </div>
-      
-              <div class="control-row">
-                <img class="key-img d-key" src="img/6.Botones/Key/D key.png" alt="D Key">
-                <img class="desc-img" src="img/6.Botones/Tittles/Attack tittle.png" alt="Attack">
-              </div>
-      
-              <div class="control-row">
-                <img class="key-img space-key" src="img/6.Botones/Key/Space Bar key.png" alt="Space Bar">
-                <h2 class="finslap-title">Fin Slap Puffer Fish</h2>
-              </div>
+      <div id="start-screen" class="overlay start-screen">
+        <div class="start-menu">
+          <h1 class="game-title">
+            <span>Sharkie</span>
+            <span>Attack</span>
+          </h1>
 
-              
-            </div>
-      
-            <button class="start-button" onclick="restartGame()">
-              <img src="img/6.Botones/Start/2.png" alt="Start">
-            </button>
+          <div class="menu-buttons">
+            <button class="menu-button start-menu-button" onclick="restartGame()"> Start </button>
+            <button class="menu-button instructions-menu-button" onclick="showInstructions()"> Instructions </button>
+            <button class="menu-button fullscreen-menu-button" onclick="toggleFullscreen()"> Fullscreen </button>
+            <a class="menu-button impressum-menu-button" href="impressum.html"> Impressum </a>
           </div>
         </div>
-
-        <a class="fullscreen-button impressum-button" href="impressum.html">
-          Impressum
-        </a>
-
-        <button class="fullscreen-button" onclick="toggleFullscreen()">
-            <img src="img/6.Botones/Full Screen/Mesa de trabajo 7.png" alt="Fullscreen">
-          </button>
-
-
-        <div id="game-over-screen" class="overlay game-over-overlay">
-            <div class="start-panel">
-              <h2 class="start-title">Game Over</h2>
-          
-              <button class="start-button" onclick="restartGame()">
-                <img src="img/6.Botones/Try again/Recurso 17.png" alt="Restart">
-              </button>
-            </div>
-          </div>
-
-          <div id="you-win-screen" class="overlay you-win-overlay">
-            <img class="you-win-img" src="img/6.Botones/Tittles/You win/Mesa de trabajo 1.png" alt="You Win">
-          </div>
-      
-        <canvas id="canvas" width="820" height="400"></canvas>
-
-        <div class="mobile-controls">
-            <div class="mobile-left-controls">
-              <button class="mobile-btn" id="mobile-left">◀</button>
-              <button class="mobile-btn" id="mobile-right">▶</button>
-              <button class="mobile-btn" id="mobile-up">▲</button>
-              <button class="mobile-btn" id="mobile-down">▼</button>
-            </div>
-          
-            <div class="mobile-right-controls">
-              <button class="mobile-btn attack-btn" id="mobile-bubble">D</button>
-              <button class="mobile-btn attack-btn" id="mobile-fin">SLAP</button>
-            </div>
-          </div>
       </div>
-</body>
+
+      <div id="instructions-screen" class="overlay instructions-overlay" onclick="hideInstructions()">
+        <div class="instructions-panel" onclick="event.stopPropagation()">
+          <h2 class="instructions-title">How to Play</h2>
+
+          <div class="controls-list">
+            <div class="control-row">
+              <img class="key-img" src="img/6.Botones/Key/arrow keys.png" alt="Arrow Keys">
+              <img class="desc-img" src="img/6.Botones/Tittles/Move title.png"alt="Move Sharkie">
+            </div>
+
+            <div class="control-row">
+              <img class="key-img d-key" src="img/6.Botones/Key/D key.png" alt="D Key">
+              <img class="desc-img" src="img/6.Botones/Tittles/Attack tittle.png" alt="Attack">
+            </div>
+
+            <div class="control-row">
+              <img class="key-img space-key" src="img/6.Botones/Key/Space Bar key.png" alt="Space Bar">
+              <h2 class="finslap-title">Fin Slap Puffer Fish</h2>
+            </div>
+          </div>
+
+          <div class="game-rules">
+            <h3>Your Mission</h3>
+          
+            <div class="rule-item">
+              <strong>Puffer Fish</strong>
+              <span>Defeat them with Sharkie's fin slap.</span>
+            </div>
+          
+            <div class="rule-item">
+              <strong>Jellyfish</strong>
+              <span>Defeat them with normal bubbles.</span>
+            </div>
+          
+            <div class="rule-item">
+              <strong>Endboss</strong>
+              <span> Collect at least 5 poison bottles to defeat the endboss with poison bubbles.</span>
+            </div>
+          
+            <p class="game-over-rule"> If you run out of poison before defeating the endboss, the game is over.</p>
+          </div>
+
+          <button class="close-instructions-button" onclick="hideInstructions()"> Close </button>
+        </div>
+      </div>
+
+      <div id="game-over-screen" class="overlay game-over-overlay">
+        <div class="end-panel">
+          <h2 class="end-title">Game Over</h2>
+          <button class="end-button" onclick="restartGame()"> Try Again </button>
+          <button class="end-button home-button" onclick="showStartScreen()"> Home </button>
+        </div>
+      </div>
+
+      <div id="you-win-screen" class="overlay you-win-overlay">
+        <img class="you-win-img" src="img/6.Botones/Tittles/You win/Mesa de trabajo 1.png" alt="You Win">
+      </div>
+
+      <canvas id="canvas" width="820" height="400"></canvas>
+
+      <div class="mobile-controls">
+        <div class="mobile-left-controls">
+          <button class="mobile-btn mobile-up" id="mobile-up">▲</button>
+          <button class="mobile-btn mobile-left" id="mobile-left">◀</button>
+          <button class="mobile-btn mobile-down" id="mobile-down">▼</button>
+          <button class="mobile-btn mobile-right" id="mobile-right">▶</button>
+        </div>
+
+        <div class="mobile-right-controls">
+          <button class="mobile-btn attack-btn" id="mobile-bubble">D</button>
+          <button class="mobile-btn attack-btn" id="mobile-fin">Slap</button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
