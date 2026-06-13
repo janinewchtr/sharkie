@@ -68,11 +68,6 @@ function enterMobileFullscreen() {
   }
 }
 
-/**
- * Connects a mobile button with a keyboard control.
- * @param {string} id - ID of the mobile button.
- * @param {string} key - Keyboard property controlled by the button.
- */
 function bindMobileButton(id, key) {
   let button = document.getElementById(id);
   if (!button) {
@@ -80,20 +75,22 @@ function bindMobileButton(id, key) {
   }
   button.addEventListener("pointerdown", (event) => {
     event.preventDefault();
-    button.setPointerCapture(event.pointerId);
     keyboard[key] = true;
   });
   button.addEventListener("pointerup", (event) => {
     event.preventDefault();
     keyboard[key] = false;
   });
+  button.addEventListener("pointerleave", () => {
+    keyboard[key] = false;
+  });
   button.addEventListener("pointercancel", () => {
     keyboard[key] = false;
   });
-  button.addEventListener("lostpointercapture", () => {
-    keyboard[key] = false;
-  });
   button.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
+  button.addEventListener("dragstart", (event) => {
     event.preventDefault();
   });
 }
