@@ -210,18 +210,20 @@ function clearCanvas() {
  */
 function showGameOverScreen() {
   let gameOverScreen = document.getElementById("game-over-screen");
-
+  let gameWrapper = document.getElementById("game-wrapper");
+  gameWrapper.classList.remove("game-started");
   if (gameOverScreen) {
     gameOverScreen.style.display = "flex";
   }
 }
 
 /**
- * Displays the victory screen.
+ * Displays the victory screen and hides the mobile controls.
  */
 function showYouWinScreen() {
   let youWinScreen = document.getElementById("you-win-screen");
-
+  let gameWrapper = document.getElementById("game-wrapper");
+  gameWrapper.classList.remove("game-started");
   if (youWinScreen) {
     youWinScreen.style.display = "flex";
   }
