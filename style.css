@@ -363,7 +363,7 @@ canvas {
   display: none;
 }
 
-@media (max-width: 950px) and (orientation: landscape) {
+@media (max-width: 1366px) and (orientation: landscape) {
   .game-wrapper {
     width: 100vw;
     height: 100vh;
@@ -459,7 +459,7 @@ canvas {
   }
 }
 
-@media (max-width: 950px) and (orientation: portrait) {
+@media (max-width: 1366px) and (orientation: portrait) {
   body {
     background: #071934;
   }
