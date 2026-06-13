@@ -62,12 +62,19 @@ function bindMobileButton(id, key) {
   if (!button) {
     return;
   }
-  button.addEventListener("touchstart", (event) => {
+  button.addEventListener("pointerdown", (event) => {
     event.preventDefault();
+    button.setPointerCapture(event.pointerId);
     keyboard[key] = true;
   });
-  button.addEventListener("touchend", (event) => {
+  button.addEventListener("pointerup", (event) => {
     event.preventDefault();
+    keyboard[key] = false;
+  });
+  button.addEventListener("pointercancel", () => {
+    keyboard[key] = false;
+  });
+  button.addEventListener("lostpointercapture", () => {
     keyboard[key] = false;
   });
   button.addEventListener("contextmenu", (event) => {
@@ -86,7 +93,13 @@ function bindMobileControls() {
   bindMobileButton("mobile-bubble", "D");
   bindMobileButton("mobile-fin", "SPACE");
 }
-bindMobileControls();
+
+/**
+ * Connects the mobile controls after the HTML has loaded.
+ */
+window.addEventListener("DOMContentLoaded", () => {
+  bindMobileControls();
+});
 
 /**
  * Stops the current game and creates a new game world.
