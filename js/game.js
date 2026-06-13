@@ -52,22 +52,6 @@ function toggleFullscreen() {
   }
 }
 
-/**
- * Opens fullscreen mode when the game is started on a mobile device.
- */
-function enterMobileFullscreen() {
-  let isMobileDevice = window.matchMedia("(max-width: 950px)").matches;
-  let gameWrapper = document.getElementById("game-wrapper");
-
-  if (
-    isMobileDevice &&
-    !document.fullscreenElement &&
-    gameWrapper.requestFullscreen
-  ) {
-    gameWrapper.requestFullscreen();
-  }
-}
-
 function bindMobileButton(id, key) {
   let button = document.getElementById(id);
   if (!button) {
@@ -132,7 +116,6 @@ function hideInstructions() {
  * Stops the current game and creates a new game world.
  */
 function restartGame() {
-  enterMobileFullscreen();
   stopCurrentWorld();
   resetKeyboard();
   hideEndScreens();
