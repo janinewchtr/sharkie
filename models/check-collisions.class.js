@@ -10,18 +10,18 @@ class Collisions {
       this.world = world;
     }
   
-    /**
-     * Runs all regularly required collision and combat checks.
-     */
-    runChecks() {
-      this.checkCollisions();
-      this.checkCollectPoison();
-      this.checkCollectCoins();
-      this.checkBubbleCollisions();
-      this.checkFinSlapAttack();
-      this.checkEndbossAttack();
-      this.checkEndbossFightLost();
-    }
+/**
+ * Runs all regularly required collision and combat checks.
+ */
+runChecks() {
+  this.checkFinSlapAttack();
+  this.checkCollisions();
+  this.checkCollectPoison();
+  this.checkCollectCoins();
+  this.checkBubbleCollisions();
+  this.checkEndbossAttack();
+  this.checkEndbossFightLost();
+}
   
     /**
      * Checks whether Sharkie performs a fin-slap attack.
