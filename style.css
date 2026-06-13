@@ -36,8 +36,8 @@ button {
   overflow: hidden;
   border: 3px solid rgba(255, 255, 255, 0.7);
   border-radius: 12px;
-  box-shadow: 0 18px 50px rgba(0, 20, 70, 0.45);
   background: #071934;
+  box-shadow: 0 18px 50px rgba(0, 20, 70, 0.45);
 }
 
 canvas {
@@ -55,6 +55,8 @@ canvas {
   align-items: center;
   justify-content: center;
 }
+
+/* Start screen */
 
 .start-screen {
   z-index: 30;
@@ -75,6 +77,7 @@ canvas {
 }
 
 .game-title {
+  z-index: 2;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -82,19 +85,19 @@ canvas {
   color: white;
   font-size: clamp(48px, 7vw, 82px);
   line-height: 0.75;
-  text-transform: uppercase;
   text-align: center;
+  text-transform: uppercase;
   -webkit-text-stroke: 2px #071934;
   text-shadow:
     0 5px 0 #16477e,
     0 9px 0 #071934,
     0 14px 18px rgba(0, 0, 0, 0.45);
   transform: rotate(-2deg);
-  z-index: 2;
 }
 
 .menu-buttons {
   width: min(330px, 90%);
+  margin-top: 28px;
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -152,16 +155,20 @@ canvas {
   background: linear-gradient(#ffe067, #ffc32e);
 }
 
+/* Instructions */
+
 .instructions-overlay {
   z-index: 50;
   display: none;
-  padding: 18px;
+  padding: 14px;
   background: rgba(0, 12, 48, 0.76);
 }
 
 .instructions-panel {
-  width: min(620px, 95%);
-  padding: 24px;
+  width: min(620px, 92vw);
+  max-height: 94vh;
+  padding: 14px 24px;
+  overflow-y: auto;
   border: 3px solid rgba(255, 255, 255, 0.85);
   border-radius: 14px;
   background: rgba(7, 25, 52, 0.96);
@@ -169,9 +176,9 @@ canvas {
 }
 
 .instructions-title {
-  margin: 0 0 22px;
+  margin: 0 0 10px;
   color: white;
-  font-size: 36px;
+  font-size: 28px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -179,56 +186,97 @@ canvas {
 .controls-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 8px;
 }
 
 .control-row {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .key-img {
-  width: 110px;
-  height: 65px;
+  width: 88px;
+  height: 45px;
   object-fit: contain;
   flex-shrink: 0;
 }
 
 .d-key {
-  width: 80px;
+  width: 55px;
 }
 
 .space-key {
-  width: 210px;
+  width: 150px;
 }
 
 .desc-img {
-  max-width: 230px;
-  height: 28px;
+  max-width: 190px;
+  height: 22px;
   object-fit: contain;
 }
 
 .finslap-title {
   margin: 0;
   color: white;
-  font-size: 27px;
+  font-size: 20px;
   text-align: center;
   text-transform: uppercase;
+}
+
+.game-rules {
+  margin-top: 18px;
+  padding: 14px 18px;
+  border: 2px solid rgba(112, 238, 209, 0.8);
+  border-radius: 10px;
+  color: white;
+  background: rgba(31, 102, 155, 0.45);
+}
+
+.game-rules h3 {
+  margin: 0 0 10px;
+  color: #70eed1;
+  font-size: 22px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.rule-item {
+  margin: 7px 0;
+  display: flex;
+  gap: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.rule-item strong {
+  min-width: 90px;
+  color: #70eed1;
+}
+
+.game-over-rule {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: center;
 }
 
 .close-instructions-button,
 .end-button {
   min-width: 160px;
-  min-height: 44px;
-  margin: 22px auto 0;
+  min-height: 36px;
+  margin: 10px auto 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 3px solid white;
   border-radius: 10px;
   color: #55217f;
-  font-size: 21px;
+  font-size: 17px;
   text-transform: uppercase;
   background: #70eed1;
   box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
@@ -239,6 +287,7 @@ canvas {
   transform: translateY(3px);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
 }
+
 
 .game-over-overlay {
   display: none;
@@ -293,13 +342,7 @@ canvas {
   }
 }
 
-.mobile-controls {
-  display: none;
-}
-
-.rotate-screen {
-  display: none;
-}
+/* Fullscreen */
 
 .game-wrapper:fullscreen {
   width: 100vw;
@@ -311,6 +354,13 @@ canvas {
 .game-wrapper:fullscreen canvas {
   width: 100%;
   height: 100%;
+}
+
+/* Mobile controls */
+
+.mobile-controls,
+.rotate-screen {
+  display: none;
 }
 
 @media (max-width: 950px) and (orientation: landscape) {
@@ -331,6 +381,7 @@ canvas {
 
   .menu-buttons {
     width: min(300px, 70vw);
+    margin-top: 12px;
     gap: 5px;
   }
 
@@ -342,93 +393,6 @@ canvas {
   .start-menu-button {
     min-height: 45px;
     font-size: 24px;
-  }
-
-  .instructions-title {
-    margin-bottom: 10px;
-    font-size: 28px;
-  }
-
-  .game-rules {
-    margin-top: 18px;
-    padding: 14px 18px;
-    border: 2px solid rgba(112, 238, 209, 0.8);
-    border-radius: 10px;
-    color: white;
-    background: rgba(31, 102, 155, 0.45);
-  }
-  
-  .game-rules h3 {
-    margin: 0 0 10px;
-    color: #70eed1;
-    font-size: 22px;
-    text-align: center;
-    text-transform: uppercase;
-  }
-  
-  .rule-item {
-    display: flex;
-    gap: 10px;
-    margin: 7px 0;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.35;
-  }
-  
-  .rule-item strong {
-    min-width: 90px;
-    color: #70eed1;
-  }
-  
-  .game-over-rule {
-    margin: 12px 0 0;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.35);
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    line-height: 1.35;
-    text-align: center;
-  }
-  
-  .instructions-panel {
-    max-height: 94vh;
-    overflow-y: auto;
-  }
-
-  .controls-list {
-    gap: 8px;
-  }
-
-  .control-row {
-    gap: 20px;
-  }
-
-  .key-img {
-    width: 88px;
-    height: 45px;
-  }
-
-  .d-key {
-    width: 55px;
-  }
-
-  .space-key {
-    width: 150px;
-  }
-
-  .desc-img {
-    max-width: 190px;
-    height: 22px;
-  }
-
-  .finslap-title {
-    font-size: 20px;
-  }
-
-  .close-instructions-button {
-    min-height: 36px;
-    margin-top: 10px;
-    font-size: 17px;
   }
 
   .game-wrapper.game-started .mobile-controls {
@@ -519,5 +483,129 @@ canvas {
     font-size: 38px;
     text-transform: uppercase;
     -webkit-text-stroke: 1px black;
+  }
+}
+
+/* Impressum */
+
+.impressum-page {
+  min-height: 100vh;
+  padding: 30px 16px;
+  overflow-y: auto;
+  background-attachment: fixed;
+}
+
+.impressum-container {
+  width: min(700px, 100%);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.impressum-title {
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: clamp(50px, 8vw, 82px);
+  line-height: 0.75;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-text-stroke: 2px #071934;
+  text-shadow:
+    0 5px 0 #16477e,
+    0 9px 0 #071934,
+    0 14px 18px rgba(0, 0, 0, 0.45);
+  transform: rotate(-2deg);
+}
+
+.impressum-panel {
+  width: 100%;
+  padding: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  color: white;
+  background: rgba(7, 25, 52, 0.94);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.impressum-panel h2 {
+  margin: 0 0 22px;
+  color: white;
+  font-size: 36px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.impressum-section {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border: 2px solid rgba(112, 238, 209, 0.65);
+  border-radius: 10px;
+  background: rgba(31, 102, 155, 0.45);
+}
+
+.impressum-section h3 {
+  margin: 0 0 8px;
+  color: #70eed1;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.impressum-section p {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.impressum-section a {
+  color: #70eed1;
+  font-family: Arial, sans-serif;
+}
+
+.impressum-section a:hover {
+  color: white;
+}
+
+.impressum-actions {
+  width: min(330px, 100%);
+  margin: 24px auto 0;
+}
+
+.impressum-actions .menu-button {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .impressum-page {
+    padding: 22px 12px;
+  }
+
+  .impressum-title {
+    margin-bottom: 22px;
+    font-size: 52px;
+  }
+
+  .impressum-panel {
+    padding: 18px;
+  }
+
+  .impressum-panel h2 {
+    font-size: 28px;
+  }
+
+  .impressum-section {
+    padding: 12px;
+  }
+
+  .impressum-section h3 {
+    font-size: 17px;
+  }
+
+  .impressum-section p {
+    font-size: 14px;
   }
 }
