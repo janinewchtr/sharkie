@@ -23,7 +23,7 @@ class World {
   coins;
   levelWidth;
   collisions;
-  poisonBubbleCooldown = 1800;
+  poisonBubbleCooldown = 3000;
   lastPoisonBubbleThrow = 0;
 
   /**
