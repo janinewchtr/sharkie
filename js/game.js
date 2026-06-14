@@ -4,6 +4,16 @@ let world;
 let keyboard = new Keyboard();
 
 /**
+ * Starts the main background music.
+ */
+function startMainMusic() {
+  audioManager.playMainMusic();
+}
+
+window.addEventListener("pointerdown", startMainMusic, { once: true });
+window.addEventListener("keydown", startMainMusic, { once: true });
+
+/**
  * Starts an interval and saves its ID so it can be stopped later.
  * @param {Function} fn - Function executed by the interval.
  * @param {number} time - Time between executions in milliseconds.
@@ -121,6 +131,7 @@ function hideInstructions() {
  * Stops the current game and creates a new game world.
  */
 function restartGame() {
+  audioManager.playMainMusic();
   stopCurrentWorld();
   resetKeyboard();
   hideEndScreens();
@@ -137,6 +148,7 @@ function showStartScreen() {
   resetKeyboard();
   hideEndScreens();
   clearCanvas();
+  audioManager.playMainMusic();
 
   document.getElementById("start-screen").style.display = "flex";
   document.getElementById("game-wrapper").classList.remove("game-started");
@@ -200,6 +212,7 @@ function clearCanvas() {
  * Displays the game-over screen.
  */
 function showGameOverScreen() {
+  audioManager.stopMusic();
   let gameOverScreen = document.getElementById("game-over-screen");
   let gameWrapper = document.getElementById("game-wrapper");
   gameWrapper.classList.remove("game-started");
@@ -212,6 +225,7 @@ function showGameOverScreen() {
  * Displays the victory screen and hides the mobile controls.
  */
 function showYouWinScreen() {
+  audioManager.stopMusic();
   let youWinScreen = document.getElementById("you-win-screen");
   let gameWrapper = document.getElementById("game-wrapper");
   gameWrapper.classList.remove("game-started");

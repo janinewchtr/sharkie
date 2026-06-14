@@ -167,15 +167,16 @@ playLongIdleAnimation() {
     }
   }
 
-  /**
-   * Finishes the bubble attack and creates a bubble.
-   */
-  finishBubbleAttack() {
-    this.isBubbleAttacking = false;
-    this.bubbleAttackFrame = 0;
-    this.bubbleAttackCounter = 0;
-    this.world.createBubbleFromSharkieMouth();
-  }
+/**
+ * Finishes the bubble attack and creates a bubble.
+ */
+finishBubbleAttack() {
+  this.isBubbleAttacking = false;
+  this.bubbleAttackFrame = 0;
+  this.bubbleAttackCounter = 0;
+  audioManager.playBubbleSound();
+  this.world.createBubbleFromSharkieMouth();
+}
 
   /**
    * Starts Sharkie's fin-slap attack.
@@ -187,6 +188,7 @@ playLongIdleAnimation() {
     this.finSlapCounter = 0;
     this.lastMove = Date.now();
     this.longIdleImageIndex = 0;
+    audioManager.playSlapSound();
   }
 
   /**
@@ -289,18 +291,18 @@ playLongIdleAnimation() {
     this.y += this.speed;
   }
 
-  /**
-   * Updates Sharkie's swimming state and last movement time.
-   * @param {boolean} isMoving - Indicates whether Sharkie is moving.
-   */
-  updateSwimmingState(isMoving) {
-    this.isSwimming = isMoving;
-
-    if (isMoving) {
-      this.lastMove = Date.now();
-      this.longIdleImageIndex = 0;
-    }
+/**
+ * Updates Sharkie's swimming state and plays the swimming sound.
+ * @param {boolean} isMoving - Indicates whether Sharkie is moving.
+ */
+updateSwimmingState(isMoving) {
+  this.isSwimming = isMoving;
+  if (isMoving) {
+    this.lastMove = Date.now();
+    this.longIdleImageIndex = 0;
+    audioManager.playSwimSound();
   }
+}
 
   /**
    * Updates the camera position based on Sharkie's position.

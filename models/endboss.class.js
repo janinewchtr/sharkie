@@ -155,21 +155,29 @@ class Endboss extends MovableObject {
     }
   }
 
-  /**
-   * Shows the endboss and starts his introduction near Sharkie.
-   */
-  checkFirstContact() {
-    if (!this.world || this.hadFirstContact) {
-      return;
-    }
-    if (this.world.isCharacterNearEndboss(550)) {
-      this.isVisible = true;
-      this.introduceFrameCounter = 0;
-      this.currentImage = 0;
-      this.hadFirstContact = true;
-      this.startFightDelay();
-    }
+/**
+ * Shows the endboss, starts his introduction and changes the music.
+ */
+checkFirstContact() {
+  if (!this.world || this.hadFirstContact) {
+    return;
   }
+  if (this.world.isCharacterNearEndboss(550)) {
+    this.isVisible = true;
+    this.prepareFirstContact();
+  }
+}
+
+/**
+ * Prepares the endboss fight after Sharkie enters the boss area.
+ */
+prepareFirstContact() {
+  this.introduceFrameCounter = 0;
+  this.currentImage = 0;
+  this.hadFirstContact = true;
+  audioManager.playBossMusic();
+  this.startFightDelay();
+}
 
   /**
  * Unlocks bubble attacks and slows the endboss after a short delay.
