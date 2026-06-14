@@ -19,7 +19,6 @@ class Endboss extends MovableObject {
   attackFrameDelay = 2;
   lastAttack = 0;
   attackCooldown = 1000;
-  movementSpeed = 15;
   hasHitDuringAttack = false;
   isDeadEndboss = false;
   deadAnimationIndex = 0;
@@ -79,10 +78,8 @@ class Endboss extends MovableObject {
       this.playAttackAnimation();
       return;
     }
-    this.moveTowardsCharacter();
-    this.playDefaultAnimation();
-    this.playDefaultAnimation();
     this.checkFirstContact();
+    this.playDefaultAnimation();
   }
 
   /**
@@ -109,24 +106,14 @@ class Endboss extends MovableObject {
    * Checks whether Sharkie has reached the endboss for the first time.
    */
   checkFirstContact() {
-    if (this.world && this.world.character.x > 4000 && !this.hadFirstContact) {
+    if (!this.world || this.hadFirstContact) {
+      return;
+    }
+    if (this.world.isCharacterNearEndboss(500)) {
       this.introduceFrameCounter = 0;
       this.hadFirstContact = true;
     }
   }
-
-  /**
- * Moves the endboss towards Sharkie after their first contact.
- */
-moveTowardsCharacter() {
-  if (!this.world || !this.hadFirstContact) {
-    return;
-  }
-  let character = this.world.character;
-  if (character.x < this.x) {
-    this.x -= this.movementSpeed;
-  }
-}
 
   /**
    * Starts an attack if the endboss is allowed to attack.
