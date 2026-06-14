@@ -13,6 +13,8 @@ class AudioManager {
   );
   hurtSound = new Audio("audio/ough-47202.mp3");
   electricHurtSound = new Audio("audio/electric-shock-33018.mp3");
+  coinCollectSound = new Audio("audio/liecio-collect-points-190037.mp3");
+  poisonCollectSound = new Audio("audio/collect_poison.mp3");
 
   currentMusic = null;
 
@@ -27,6 +29,8 @@ class AudioManager {
     this.slapSound.volume = 0.4;
     this.hurtSound.volume = 0.5;
     this.electricHurtSound.volume = 0.4;
+    this.coinCollectSound.volume = 0.45;
+    this.poisonCollectSound.volume = 0.45;
   }
 
   /**
@@ -113,15 +117,29 @@ class AudioManager {
   }
 
   /**
- * Plays the matching sound for the received damage type.
- * @param {string} type - Type of damage Sharkie received.
- */
-playHurtSound(type) {
+   * Plays the matching sound for the received damage type.
+   * @param {string} type - Type of damage Sharkie received.
+   */
+  playHurtSound(type) {
     if (type === "electro") {
       this.playEffect(this.electricHurtSound);
     } else {
       this.playEffect(this.hurtSound);
     }
+  }
+
+  /**
+ * Plays the coin collection sound.
+ */
+playCoinCollectSound() {
+    this.playEffect(this.coinCollectSound);
+  }
+  
+  /**
+   * Plays the poison bottle collection sound.
+   */
+  playPoisonCollectSound() {
+    this.playEffect(this.poisonCollectSound);
   }
 
   /**
