@@ -19,13 +19,16 @@ class DrawableObject {
     this.img.src = path;
   }
 
-  /**
-   * Draws the object onto the canvas.
-   * @param {CanvasRenderingContext2D} ctx - Canvas drawing context.
-   */
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+/**
+ * Draws the object when its image has loaded successfully.
+ * @param {CanvasRenderingContext2D} ctx - Canvas drawing context.
+ */
+draw(ctx) {
+  if (!this.img || !this.img.complete || this.img.naturalWidth === 0) {
+    return;
   }
+  ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+}
 
 /**
  * Draws the collision frame of supported game objects.
