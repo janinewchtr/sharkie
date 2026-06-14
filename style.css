@@ -362,6 +362,97 @@ canvas {
   display: none;
 }
 
+/* Impressum */
+
+.impressum-page {
+  min-height: 100vh;
+  padding: 30px 16px;
+  overflow-y: auto;
+  background-image: url("img/7.BackgroundAsset/sharkie_koralle_background.png");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.impressum-container {
+  width: min(700px, 100%);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.impressum-title {
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: clamp(50px, 8vw, 82px);
+  line-height: 0.75;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-text-stroke: 2px #071934;
+  text-shadow:
+    0 5px 0 #16477e,
+    0 9px 0 #071934,
+    0 14px 18px rgba(0, 0, 0, 0.45);
+  transform: rotate(-2deg);
+}
+
+.impressum-panel {
+  width: 100%;
+  padding: 28px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  color: white;
+  background: rgba(7, 25, 52, 0.94);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.impressum-panel h2 {
+  margin: 0 0 22px;
+  font-size: 36px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.impressum-section {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border: 2px solid rgba(112, 238, 209, 0.65);
+  border-radius: 10px;
+  background: rgba(31, 102, 155, 0.45);
+}
+
+.impressum-section h3 {
+  margin: 0 0 8px;
+  color: #70eed1;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.impressum-section p {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.impressum-section a {
+  color: #70eed1;
+  font-family: Arial, sans-serif;
+}
+
+.impressum-actions {
+  width: min(330px, 100%);
+  margin: 24px auto 0;
+}
+
+.impressum-actions .menu-button {
+  width: 100%;
+}
+
 
 @media (max-width: 1366px) {
   .game-wrapper.game-started .mobile-controls {
