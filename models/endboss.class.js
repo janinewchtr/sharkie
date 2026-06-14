@@ -28,6 +28,9 @@ class Endboss extends MovableObject {
   hadFirstContact = false;
   introduceFrameCounter = 0;
   isVisible = false;
+  canBeAttacked = false;
+  movementSpeedX = 24;
+  movementSpeedY = 8;
 
   IMAGES_IDLE = IMAGE_PATHS.endboss.introduce;
   IMAGES_FLOATING = IMAGE_PATHS.endboss.floating;
@@ -66,14 +69,14 @@ class Endboss extends MovableObject {
   }
 
   /**
- * Draws the endboss after Sharkie has reached the boss area.
- * @param {CanvasRenderingContext2D} ctx - Canvas drawing context.
- */
-draw(ctx) {
-  if (this.isVisible) {
-    super.draw(ctx);
+   * Draws the endboss after Sharkie has reached the boss area.
+   * @param {CanvasRenderingContext2D} ctx - Canvas drawing context.
+   */
+  draw(ctx) {
+    if (this.isVisible) {
+      super.draw(ctx);
+    }
   }
-}
 
   /**
    * Selects the correct animation based on the current state.
@@ -92,42 +95,42 @@ draw(ctx) {
   }
 
   /**
- * Controls the endboss after checking his current state.
- */
-handleActiveEndboss() {
-  if (this.isAttacking) {
-    this.playAttackAnimation();
-    return;
+   * Controls the endboss after checking his current state.
+   */
+  handleActiveEndboss() {
+    if (this.isAttacking) {
+      this.playAttackAnimation();
+      return;
+    }
+    this.moveTowardsCharacter();
+    this.playDefaultAnimation();
   }
-  this.moveTowardsCharacter();
-  this.playDefaultAnimation();
-}
 
-/**
- * Moves the endboss horizontally and vertically towards Sharkie.
- */
-moveTowardsCharacter() {
-  if (!this.canFollowCharacter()) {
-    return;
+  /**
+   * Moves the endboss horizontally and vertically towards Sharkie.
+   */
+  moveTowardsCharacter() {
+    if (!this.canFollowCharacter()) {
+      return;
+    }
+    let character = this.world.character;
+    let targetY = character.y - 200;
+    this.otherDirection = character.x > this.x;
+    this.x += character.x < this.x ? -this.movementSpeedX : this.movementSpeedX;
+    this.y += targetY < this.y ? -this.movementSpeedY : this.movementSpeedY;
   }
-  let character = this.world.character;
-  let targetY = character.y - 200;
-  this.otherDirection = character.x > this.x;
-  this.x += character.x < this.x ? -this.movementSpeedX : this.movementSpeedX;
-  this.y += targetY < this.y ? -this.movementSpeedY : this.movementSpeedY;
-}
 
-/**
- * Checks whether the endboss can follow Sharkie.
- * @returns {boolean} True after the introduction has finished.
- */
-canFollowCharacter() {
-  return (
-    this.hadFirstContact &&
-    this.introduceFrameCounter >= this.IMAGES_IDLE.length &&
-    !this.isCharacterInAttackRange()
-  );
-}
+  /**
+   * Checks whether the endboss can follow Sharkie.
+   * @returns {boolean} True after the introduction has finished.
+   */
+  canFollowCharacter() {
+    return (
+      this.hadFirstContact &&
+      this.introduceFrameCounter >= this.IMAGES_IDLE.length &&
+      !this.isCharacterInAttackRange()
+    );
+  }
 
   /**
    * Plays the death animation and moves the endboss upwards.
@@ -137,35 +140,48 @@ canFollowCharacter() {
     this.y -= 3;
   }
 
-/**
- * Plays the introduction once and otherwise shows the floating animation.
- */
-playDefaultAnimation() {
-  let introductionFinished =
-    this.introduceFrameCounter >= this.IMAGES_IDLE.length;
+  /**
+   * Plays the introduction once and otherwise shows the floating animation.
+   */
+  playDefaultAnimation() {
+    let introductionFinished =
+      this.introduceFrameCounter >= this.IMAGES_IDLE.length;
 
-  if (this.hadFirstContact && !introductionFinished) {
-    this.playAnimation(this.IMAGES_IDLE);
-    this.introduceFrameCounter++;
-  } else {
-    this.playAnimation(this.IMAGES_FLOATING);
+    if (this.hadFirstContact && !introductionFinished) {
+      this.playAnimation(this.IMAGES_IDLE);
+      this.introduceFrameCounter++;
+    } else {
+      this.playAnimation(this.IMAGES_FLOATING);
+    }
   }
+
+  /**
+   * Shows the endboss and starts his introduction near Sharkie.
+   */
+  checkFirstContact() {
+    if (!this.world || this.hadFirstContact) {
+      return;
+    }
+    if (this.world.isCharacterNearEndboss(550)) {
+      this.isVisible = true;
+      this.introduceFrameCounter = 0;
+      this.currentImage = 0;
+      this.hadFirstContact = true;
+      this.startFightDelay();
+    }
+  }
+
+  /**
+ * Unlocks bubble attacks and slows the endboss after a short delay.
+ */
+startFightDelay() {
+  setTimeout(() => {
+    this.canBeAttacked = true;
+    this.movementSpeedX = 12;
+    this.movementSpeedY = 5;
+  }, 3000);
 }
 
-/**
- * Shows the endboss and starts his introduction near Sharkie.
- */
-checkFirstContact() {
-  if (!this.world || this.hadFirstContact) {
-    return;
-  }
-  if (this.world.isCharacterNearEndboss(550)) {
-    this.isVisible = true;
-    this.introduceFrameCounter = 0;
-    this.currentImage = 0;
-    this.hadFirstContact = true;
-  }
-}
   /**
    * Starts an attack if the endboss is allowed to attack.
    */
@@ -183,8 +199,8 @@ checkFirstContact() {
   }
 
   /**
- * Finishes the attack and starts the cooldown after its animation ends.
- */
+   * Finishes the attack and starts the cooldown after its animation ends.
+   */
   finishAttackIfNeeded() {
     if (this.attackFrame >= this.IMAGES_ATTACK.length) {
       this.isAttacking = false;

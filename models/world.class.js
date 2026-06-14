@@ -23,6 +23,8 @@ class World {
   coins;
   levelWidth;
   collisions;
+  poisonBubbleCooldown = 1800;
+  lastPoisonBubbleThrow = 0;
 
   /**
    * Creates and starts a new game world.
@@ -33,17 +35,17 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-  
+
     this.initBars();
     this.initLevel();
     this.collisions = new Collisions(this);
     this.setWorld();
-  
+
     this.character.start();
     this.draw();
     this.run();
   }
-  
+
   /**
    * Sets the starting positions and values of the status bars.
    */
@@ -124,17 +126,25 @@ class World {
       !this.character.isBubbleAttacking
     ) {
       this.character.startBubbleAttack();
-      this.lastBubbleThrow = Date.now();
+      if (this.isCharacterNearEndboss(800)) {
+        this.lastPoisonBubbleThrow = Date.now();
+      } else {
+        this.lastBubbleThrow = Date.now();
+      }
     }
   }
 
-  /**
-   * Checks whether the bubble cooldown has finished.
-   * @returns {boolean} True if another bubble can be thrown.
-   */
-  canThrowBubble() {
-    return Date.now() - this.lastBubbleThrow > this.bubbleCooldown;
+
+/**
+ * Checks whether Sharkie can shoot another bubble.
+ * @returns {boolean} True if the required cooldown has finished.
+ */
+canThrowBubble() {
+  if (this.isCharacterNearEndboss(800)) {
+    return Date.now() - this.lastPoisonBubbleThrow > this.poisonBubbleCooldown;
   }
+  return Date.now() - this.lastBubbleThrow > this.bubbleCooldown;
+}
 
   /**
    * Creates a normal or poison bubble at Sharkie's mouth.
@@ -197,64 +207,64 @@ class World {
   /**
    * Draws all game objects and requests the next animation frame.
    */
-/**
- * Draws all game objects and requests the next animation frame.
- */
-draw() {
-  this.updateCamera();
-  this.clearCanvas();
-  this.drawBackgroundObjects();
-  this.drawStatusBars();
-  this.drawGameObjects();
-  this.animationFrameId = requestAnimationFrame(() => this.draw());
-}
+  /**
+   * Draws all game objects and requests the next animation frame.
+   */
+  draw() {
+    this.updateCamera();
+    this.clearCanvas();
+    this.drawBackgroundObjects();
+    this.drawStatusBars();
+    this.drawGameObjects();
+    this.animationFrameId = requestAnimationFrame(() => this.draw());
+  }
 
-/**
- * Clears the canvas.
- */
-clearCanvas() {
-  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-}
+  /**
+   * Clears the canvas.
+   */
+  clearCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
 
-/**
- * Draws all background objects using the camera position.
- */
-drawBackgroundObjects() {
-  this.ctx.save();
-  this.ctx.translate(this.camera_x, 0);
-  this.addObjectsToMap(this.backgroundObjects);
-  this.ctx.restore();
-}
+  /**
+   * Draws all background objects using the camera position.
+   */
+  drawBackgroundObjects() {
+    this.ctx.save();
+    this.ctx.translate(this.camera_x, 0);
+    this.addObjectsToMap(this.backgroundObjects);
+    this.ctx.restore();
+  }
 
-/**
- * Draws all status bars without moving them with the camera.
- */
-drawStatusBars() {
-  this.addToMap(this.statusBar);
-  this.addToMap(this.poisonBar);
-  this.addToMap(this.coinBar);
-}
+  /**
+   * Draws all status bars without moving them with the camera.
+   */
+  drawStatusBars() {
+    this.addToMap(this.statusBar);
+    this.addToMap(this.poisonBar);
+    this.addToMap(this.coinBar);
+  }
 
-/**
- * Draws all moving and collectible game objects.
- */
-drawGameObjects() {
-  this.ctx.save();
-  this.ctx.translate(this.camera_x, 0);
-  this.addGameObjectsToMap();
-  this.ctx.restore();
-}
+  /**
+   * Draws all moving and collectible game objects.
+   */
+  drawGameObjects() {
+    this.ctx.save();
+    this.ctx.translate(this.camera_x, 0);
+    this.addGameObjectsToMap();
+    this.ctx.restore();
+  }
 
-/**
- * Adds all moving and collectible objects to the canvas.
- */
-addGameObjectsToMap() {
-  this.addToMap(this.character);
-  this.addObjectsToMap(this.enemies);
-  this.addObjectsToMap(this.poisonBottles);
-  this.addObjectsToMap(this.coins);
-  this.addObjectsToMap(this.throwableObjects);
-}
+  /**
+   * Adds all moving and collectible objects to the canvas.
+   */
+  addGameObjectsToMap() {
+    this.addToMap(this.character);
+    this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.poisonBottles);
+    this.addObjectsToMap(this.coins);
+    this.addObjectsToMap(this.throwableObjects);
+  }
 
   /**
    * Adds multiple objects to the canvas.
@@ -305,13 +315,13 @@ addGameObjectsToMap() {
   }
 
   /**
- * Removes the endboss from the game world.
- */
-removeEndboss() {
-  this.enemies = this.enemies.filter((enemy) => {
-    return !(enemy instanceof Endboss);
-  });
-}
+   * Removes the endboss from the game world.
+   */
+  removeEndboss() {
+    this.enemies = this.enemies.filter((enemy) => {
+      return !(enemy instanceof Endboss);
+    });
+  }
 
   /**
    * Ends the game and displays the victory screen.
