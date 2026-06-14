@@ -52,6 +52,11 @@ function toggleFullscreen() {
   }
 }
 
+/**
+ * Connects a mobile button with a keyboard control.
+ * @param {string} id - ID of the mobile button.
+ * @param {string} key - Keyboard property controlled by the button.
+ */
 function bindMobileButton(id, key) {
   let button = document.getElementById(id);
   if (!button) {
@@ -146,6 +151,9 @@ function stopCurrentWorld() {
   }
 }
 
+/**
+ * Hides the game-over and you-win screens.
+ */
 function hideEndScreens() {
   document.getElementById("game-over-screen").style.display = "none";
   let youWinScreen = document.getElementById("you-win-screen");
