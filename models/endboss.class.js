@@ -19,12 +19,15 @@ class Endboss extends MovableObject {
   attackFrameDelay = 2;
   lastAttack = 0;
   attackCooldown = 1000;
+  movementSpeedX = 12;
+  movementSpeedY = 5;
   hasHitDuringAttack = false;
   isDeadEndboss = false;
   deadAnimationIndex = 0;
   deadAnimationFinished = false;
   hadFirstContact = false;
   introduceFrameCounter = 0;
+  isVisible = false;
 
   IMAGES_IDLE = IMAGE_PATHS.endboss.introduce;
   IMAGES_FLOATING = IMAGE_PATHS.endboss.floating;
@@ -63,6 +66,16 @@ class Endboss extends MovableObject {
   }
 
   /**
+ * Draws the endboss after Sharkie has reached the boss area.
+ * @param {CanvasRenderingContext2D} ctx - Canvas drawing context.
+ */
+draw(ctx) {
+  if (this.isVisible) {
+    super.draw(ctx);
+  }
+}
+
+  /**
    * Selects the correct animation based on the current state.
    */
   handleAnimationInterval() {
@@ -74,13 +87,47 @@ class Endboss extends MovableObject {
       this.playAnimation(this.IMAGES_HURT);
       return;
     }
-    if (this.isAttacking) {
-      this.playAttackAnimation();
-      return;
-    }
     this.checkFirstContact();
-    this.playDefaultAnimation();
+    this.handleActiveEndboss();
   }
+
+  /**
+ * Controls the endboss after checking his current state.
+ */
+handleActiveEndboss() {
+  if (this.isAttacking) {
+    this.playAttackAnimation();
+    return;
+  }
+  this.moveTowardsCharacter();
+  this.playDefaultAnimation();
+}
+
+/**
+ * Moves the endboss horizontally and vertically towards Sharkie.
+ */
+moveTowardsCharacter() {
+  if (!this.canFollowCharacter()) {
+    return;
+  }
+  let character = this.world.character;
+  let targetY = character.y - 200;
+  this.otherDirection = character.x > this.x;
+  this.x += character.x < this.x ? -this.movementSpeedX : this.movementSpeedX;
+  this.y += targetY < this.y ? -this.movementSpeedY : this.movementSpeedY;
+}
+
+/**
+ * Checks whether the endboss can follow Sharkie.
+ * @returns {boolean} True after the introduction has finished.
+ */
+canFollowCharacter() {
+  return (
+    this.hadFirstContact &&
+    this.introduceFrameCounter >= this.IMAGES_IDLE.length &&
+    !this.isCharacterInAttackRange()
+  );
+}
 
   /**
    * Plays the death animation and moves the endboss upwards.
@@ -90,31 +137,35 @@ class Endboss extends MovableObject {
     this.y -= 3;
   }
 
-  /**
-   * Plays the introduction or floating animation.
-   */
-  playDefaultAnimation() {
-    if (this.introduceFrameCounter < 10) {
-      this.playAnimation(this.IMAGES_IDLE);
-    } else {
-      this.playAnimation(this.IMAGES_FLOATING);
-    }
+/**
+ * Plays the introduction once and otherwise shows the floating animation.
+ */
+playDefaultAnimation() {
+  let introductionFinished =
+    this.introduceFrameCounter >= this.IMAGES_IDLE.length;
+
+  if (this.hadFirstContact && !introductionFinished) {
+    this.playAnimation(this.IMAGES_IDLE);
     this.introduceFrameCounter++;
+  } else {
+    this.playAnimation(this.IMAGES_FLOATING);
   }
+}
 
-  /**
-   * Checks whether Sharkie has reached the endboss for the first time.
-   */
-  checkFirstContact() {
-    if (!this.world || this.hadFirstContact) {
-      return;
-    }
-    if (this.world.isCharacterNearEndboss(500)) {
-      this.introduceFrameCounter = 0;
-      this.hadFirstContact = true;
-    }
+/**
+ * Shows the endboss and starts his introduction near Sharkie.
+ */
+checkFirstContact() {
+  if (!this.world || this.hadFirstContact) {
+    return;
   }
-
+  if (this.world.isCharacterNearEndboss(550)) {
+    this.isVisible = true;
+    this.introduceFrameCounter = 0;
+    this.currentImage = 0;
+    this.hadFirstContact = true;
+  }
+}
   /**
    * Starts an attack if the endboss is allowed to attack.
    */
@@ -129,7 +180,18 @@ class Endboss extends MovableObject {
     this.attackFrame = 0;
     this.attackCounter = 0;
     this.hasHitDuringAttack = false;
-    this.lastAttack = Date.now();
+  }
+
+  /**
+ * Finishes the attack and starts the cooldown after its animation ends.
+ */
+  finishAttackIfNeeded() {
+    if (this.attackFrame >= this.IMAGES_ATTACK.length) {
+      this.isAttacking = false;
+      this.attackFrame = 0;
+      this.attackCounter = 0;
+      this.lastAttack = Date.now();
+    }
   }
 
   /**

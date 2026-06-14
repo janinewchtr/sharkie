@@ -300,8 +300,18 @@ addGameObjectsToMap() {
     this.gameOver = true;
     this.character.die();
     this.statusBar.setPercentage(0);
+    this.removeEndboss();
     showGameOverScreen();
   }
+
+  /**
+ * Removes the endboss from the game world.
+ */
+removeEndboss() {
+  this.enemies = this.enemies.filter((enemy) => {
+    return !(enemy instanceof Endboss);
+  });
+}
 
   /**
    * Ends the game and displays the victory screen.

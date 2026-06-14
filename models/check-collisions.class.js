@@ -222,7 +222,7 @@ checkCharacterCollision(enemy) {
       if (!endboss || endboss.isDead() || this.world.gameOver) {
         return;
       }
-      if (this.world.isCharacterNearEndboss(500)) {
+      if (endboss.hadFirstContact && endboss.isCharacterInAttackRange()) {
         endboss.startAttack();
       }
     }
