@@ -292,7 +292,7 @@ finishBubbleAttack() {
   }
 
 /**
- * Updates Sharkie's swimming state and plays the swimming sound.
+ * Updates Sharkie's swimming state and swimming sound.
  * @param {boolean} isMoving - Indicates whether Sharkie is moving.
  */
 updateSwimmingState(isMoving) {
@@ -301,6 +301,8 @@ updateSwimmingState(isMoving) {
     this.lastMove = Date.now();
     this.longIdleImageIndex = 0;
     audioManager.playSwimSound();
+  } else {
+    audioManager.stopSwimSound();
   }
 }
 
@@ -334,6 +336,7 @@ updateSwimmingState(isMoving) {
     this.energy = 0;
     this.isBubbleAttacking = false;
     this.isFinSlap = false;
+    audioManager.stopSwimSound();
   }
 
   /**

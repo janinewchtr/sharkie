@@ -13,8 +13,6 @@ class AudioManager {
     );
   
     currentMusic = null;
-    lastSwimSound = 0;
-    swimSoundCooldown = 600;
   
     /**
      * Creates and configures the audio manager.
@@ -78,18 +76,23 @@ class AudioManager {
       this.currentMusic = null;
     }
   
-    /**
-     * Plays the swimming sound with a short cooldown.
-     */
-    playSwimSound() {
-      let cooldownFinished =
-        Date.now() - this.lastSwimSound > this.swimSoundCooldown;
-  
-      if (cooldownFinished) {
-        this.playEffect(this.swimSound);
-        this.lastSwimSound = Date.now();
-      }
+/**
+ * Starts the swimming sound while Sharkie is moving.
+ */
+playSwimSound() {
+    if (this.swimSound.paused) {
+      this.swimSound.loop = true;
+      this.swimSound.play().catch(() => {});
     }
+  }
+  
+  /**
+   * Stops the swimming sound when Sharkie stops moving.
+   */
+  stopSwimSound() {
+    this.swimSound.pause();
+    this.swimSound.currentTime = 0;
+  }
   
     /**
      * Plays the bubble attack sound.
