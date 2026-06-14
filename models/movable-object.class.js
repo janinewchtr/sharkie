@@ -67,7 +67,7 @@ reduceEnergy() {
 }
 
 /**
- * Saves when a specific damage type was received.
+ * Saves when a specific damage type was received and plays its sound.
  * @param {string} type - Type of received damage.
  * @param {number} now - Current timestamp.
  */
@@ -75,10 +75,10 @@ saveDamageType(type, now) {
   if (type === "poison") {
     this.lastPoisonHit = now;
   }
-
   if (type === "electro") {
     this.lastElectroHit = now;
   }
+  audioManager.playHurtSound(type);
 }
 
   /**
