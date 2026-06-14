@@ -219,12 +219,10 @@ checkCharacterCollision(enemy) {
      */
     checkEndbossAttack() {
       let endboss = this.world.getEndboss();
-  
       if (!endboss || endboss.isDead() || this.world.gameOver) {
         return;
       }
-  
-      if (this.world.isCharacterNearEndboss(350)) {
+      if (this.world.isCharacterNearEndboss(500)) {
         endboss.startAttack();
       }
     }
