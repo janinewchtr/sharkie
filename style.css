@@ -454,7 +454,7 @@ canvas {
 }
 
 
-@media (max-width: 1366px) {
+@media (max-width: 1366px) and (hover: none) and (pointer: coarse) {
   .game-wrapper.game-started .mobile-controls {
     position: absolute;
     inset: 0;
