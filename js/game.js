@@ -12,6 +12,10 @@ function startMainMusic() {
 
 window.addEventListener("pointerdown", startMainMusic, { once: true });
 window.addEventListener("keydown", startMainMusic, { once: true });
+window.addEventListener("DOMContentLoaded", () => {
+  bindMobileControls();
+  updateMuteButton();
+});
 
 /**
  * Starts an interval and saves its ID so it can be stopped later.
@@ -104,6 +108,26 @@ function bindMobileControls() {
   bindMobileButton("mobile-down", "DOWN");
   bindMobileButton("mobile-bubble", "D");
   bindMobileButton("mobile-fin", "SPACE");
+}
+
+/**
+ * Updates the visual state of the mute button.
+ */
+function updateMuteButton() {
+  let button = document.getElementById("mute-button");
+
+  if (button) {
+    button.classList.toggle("is-muted", audioManager.isMuted);
+    button.ariaLabel = audioManager.isMuted ? "Enable sound" : "Mute sound";
+  }
+}
+
+/**
+ * Toggles all game sounds and updates the mute button.
+ */
+function toggleMute() {
+  audioManager.toggleMute();
+  updateMuteButton();
 }
 
 /**

@@ -18,6 +18,8 @@ class AudioManager {
 
   currentMusic = null;
 
+  isMuted = localStorage.getItem("sharkieMuted") === "true";
+
   /**
    * Creates and configures the audio manager.
    */
@@ -31,6 +33,7 @@ class AudioManager {
     this.electricHurtSound.volume = 0.4;
     this.coinCollectSound.volume = 0.45;
     this.poisonCollectSound.volume = 0.45;
+    this.applyMutedState();
   }
 
   /**
@@ -143,14 +146,47 @@ playCoinCollectSound() {
   }
 
   /**
-   * Plays a copy of a sound effect.
-   * @param {HTMLAudioElement} sound - Sound effect being played.
+ * Toggles all game sounds and saves the setting.
+ */
+toggleMute() {
+    this.isMuted = !this.isMuted;
+    localStorage.setItem("sharkieMuted", this.isMuted);
+    this.applyMutedState();
+  }
+  
+  /**
+   * Applies the current muted state to every audio element.
    */
-  playEffect(sound) {
+  applyMutedState() {
+    this.getAllSounds().forEach((sound) => {
+      sound.muted = this.isMuted;
+    });
+  }
+  
+  /**
+   * Returns every audio element used by the game.
+   * @returns {HTMLAudioElement[]} All game sounds.
+   */
+  getAllSounds() {
+    return [
+      this.mainMusic, this.bossMusic, this.swimSound,
+      this.bubbleSound, this.slapSound, this.hurtSound,
+      this.electricHurtSound, this.coinCollectSound,
+      this.poisonCollectSound
+    ];
+  }
+
+/**
+ * Plays a copy of a sound effect.
+ * @param {HTMLAudioElement} sound - Sound effect being played.
+ */
+playEffect(sound) {
     let effect = sound.cloneNode();
     effect.volume = sound.volume;
+    effect.muted = this.isMuted;
     effect.play().catch(() => {});
   }
 }
 
 const audioManager = new AudioManager();
+
