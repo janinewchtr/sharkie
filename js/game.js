@@ -111,15 +111,16 @@ function bindMobileControls() {
 }
 
 /**
- * Updates the visual state of the mute button.
+ * Updates the sound button according to the current mute state.
  */
 function updateMuteButton() {
   let button = document.getElementById("mute-button");
-
-  if (button) {
-    button.classList.toggle("is-muted", audioManager.isMuted);
-    button.ariaLabel = audioManager.isMuted ? "Enable sound" : "Mute sound";
+  let image = document.getElementById("sound-button-image");
+  if (!button || !image) {
+    return;
   }
+  image.src = getSoundButtonImage();
+  button.ariaLabel = audioManager.isMuted ? "Enable sound" : "Mute sound";
 }
 
 /**
@@ -128,6 +129,17 @@ function updateMuteButton() {
 function toggleMute() {
   audioManager.toggleMute();
   updateMuteButton();
+}
+
+/**
+ * Returns the matching image for the current sound state.
+ * @returns {string} Path of the sound button image.
+ */
+function getSoundButtonImage() {
+  if (audioManager.isMuted) {
+    return "img/6.Botones/mute-button.png";
+  }
+  return "img/6.Botones/loud_button.png";
 }
 
 /**
