@@ -9,6 +9,7 @@ class World {
   statusBar = new StatusBar("life");
   poisonBar = new StatusBar("poison");
   coinBar = new StatusBar("coin");
+  endbossBar = new StatusBar("life");
   throwableObjects = [];
   lastBubbleThrow = 0;
   bubbleCooldown = 600;
@@ -54,6 +55,8 @@ class World {
     this.poisonBar.setPercentage(0);
     this.coinBar.y = 60;
     this.coinBar.setPercentage(0);
+    this.endbossBar.x = 650;
+    this.endbossBar.setPercentage(100);
   }
 
   /**
@@ -243,7 +246,19 @@ canThrowBubble() {
     this.addToMap(this.statusBar);
     this.addToMap(this.poisonBar);
     this.addToMap(this.coinBar);
+    if (this.shouldDrawEndbossBar()) {
+      this.addToMap(this.endbossBar);
+    }
   }
+
+  /**
+ * Checks whether the endboss status bar should be visible.
+ * @returns {boolean} True while the endboss fight is active.
+ */
+shouldDrawEndbossBar() {
+  let endboss = this.getEndboss();
+  return endboss && endboss.isVisible && !endboss.isDead();
+}
 
   /**
    * Draws all moving and collectible game objects.

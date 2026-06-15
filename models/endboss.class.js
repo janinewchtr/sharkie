@@ -303,18 +303,19 @@ startFightDelay() {
     return distanceX < 200 && distanceY < 300;
   }
 
-  /**
-   * Damages the endboss with the given attack type.
-   * @param {string} type - Type of attack hitting the endboss.
-   */
-  hit(type) {
-    if (!this.canReceiveHit(type)) {
-      return;
-    }
-    this.lastHit = Date.now();
-    this.reduceEnergy(type);
-    this.checkDeath();
+/**
+ * Damages the endboss and updates his status bar.
+ * @param {string} type - Type of attack hitting the endboss.
+ */
+hit(type) {
+  if (!this.canReceiveHit(type)) {
+    return;
   }
+  this.lastHit = Date.now();
+  this.reduceEnergy(type);
+  this.world.endbossBar.setPercentage(this.energy);
+  this.checkDeath();
+}
 
   /**
    * Checks whether the endboss can receive another hit.
